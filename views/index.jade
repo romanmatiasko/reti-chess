@@ -1,0 +1,22 @@
+extends layout
+
+block ribbon
+  a(href='https://github.com/romanmatiasko/reti-chess', class='fork clearfix')
+
+block content
+  script(type='text/javascript', src='/javascripts/start.js')
+  h1.knight
+  h2 Reti Chess
+  p.margin-fifty.center A lightweight real-time chess app built in Node.js, Express framework and Socket.IO
+
+  div#form
+    form#create_form(action='#', method='post')
+      input#game_link.game_link(type='text', readonly, value='', value='Game link will be generated here.')
+    input.button#play(type='button', value='Play')
+  
+    p#waiting Waiting for opponent to connect.
+  
+  p.center Click the button play to create a game. Send the link to your friend. Once the link is opened in your friend's browser, game should begin shortly. Colours are picked randomly by computer. 
+
+  p.center
+    a(href='/about', class='alpha') Read more about Reti Chess

@@ -1,0 +1,36 @@
+doctype 5
+html
+  head
+    - if (typeof(title) !== 'undefined')
+      title #{title} | Reti Chess
+    - else
+      title retichess.com
+    meta(charset='utf-8')
+    meta(name='robots', content='index, follow')
+    meta(itemprop='name=Reti Chess')
+    meta(name='description', content='Reti Chess is a lightweight real-time chess app built in Node.js with use of Express framework and Socket.IO')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='shortcut icon', href='/images/logo.png')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(type='text/javascript', src='/socket.io/socket.io.js')
+    script(type='text/javascript', src='/javascripts/jquery.js')
+    script(type='text/javascript', src='/javascripts/jquery.stickyFooter.js')
+    script(type='text/javascript', src='/javascripts/chess.js')
+    script(type='text/javascript', src='/javascripts/app.js')
+    link(href='http://fonts.googleapis.com/css?family=Cherry+Swash|Open+Sans:400,600', rel='stylesheet', type='text/css')
+    //if IE
+      script(src='http://html5shiv.googlecode.com/svn/trunk/html5.js')
+  body
+    block ribbon
+    
+    #container_wrapper.clearfix
+      #container.clearfix
+        block content
+        
+    footer
+      #footer.clearfix
+        p.center 2013. Reti Chess is available under 
+          a(href='http://opensource.org/licenses/MIT') the MIT License (MIT)
+          . Fork me on 
+          a(href='http://github.com/romanmatiasko/reti-chess') Github
+          .

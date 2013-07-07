@@ -1,0 +1,38 @@
+extends layout
+
+block ribbon
+  a(href='https://github.com/romanmatiasko/reti-chess', class='fork clearfix')
+
+block content
+  h1.knight
+  h2 About Reti Chess
+  p.margin-fifty Reti Chess is opensource chess app built in 
+    a(href='http://nodejs.org/') Node.js 
+    |  with use of 
+    a(href='http://expressjs.com/') Express framework 
+    |  and 
+    a(href='http://socket.io/') Socket.IO
+    |  . Reti Chess also uses 
+    a(href='https://github.com/jhlywa/chess.js') chess.js
+    |  for move validation and check/mate/draw detection. 
+  
+  h3 Why another online chess?
+  p The project may be useful resource for poeple willing to learn Node.js and Socket.IO. Read the source code, fork it, add more functionality and learn something. Besides programming, playing chess is also fun!
+
+  h3 Why Reti?
+  p The project is named after famous Czechoslovakian chess player Richard Réti. After him is also named a chess opening which begins with the move: 1. Nf3.
+
+  h3 What features chess supports?
+  p This is a very lightweight version of chess. You can only play real-time against the human, an AI is not available. Reti Chess doesn't have any timer, the time for a move is unlimited. Although, if you reload the window or disconnect from the game, the game will be cancelled.
+
+  h3 People behind this project
+  p
+    a(href='https://github.com/romanmatiasko/') Roman Matiasko
+    | , 
+    a(href='https://github.com/stepanbujnak') Stepan Bujnak 
+    | and 
+    a(href='https://github.com/lukasmatiasko') Lukas Matiasko
+    | .
+
+  p
+    a(href='/', class='button') Home

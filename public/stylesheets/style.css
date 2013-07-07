@@ -1,0 +1,420 @@
+* {
+  margin: 0;
+  padding: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
+
+html {
+  font-size: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%; }
+
+::-moz-selection {
+  background: #261e26;
+  color: #fefefe;
+  text-shadow: none; }
+
+::selection {
+  background: #261e26;
+  color: #fefefe;
+  text-shadow: none; }
+
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table; }
+
+.clearfix:after {
+  clear: both; }
+
+.clearfix {
+  zoom: 1; }
+
+footer, header, section {
+  display: block; }
+
+body, html {
+  color: #424242;
+  font-family: 'Open Sans', sans-serif;
+  background: #fefefe;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400; }
+
+a {
+  font-size: 1rem;
+  color: #299cad;
+  text-decoration: underline; }
+
+a:hover {
+  color: #2eafc2;
+  text-decoration: none;
+  -moz-transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out; }
+
+p {
+  text-align: left;
+  margin-bottom: 1em;
+  font-size: 1rem; }
+
+h1.knight {
+  height: 122px;
+  width: 122px;
+  background: url("../images/knight.png") no-repeat;
+  margin: 2em auto 0.5em auto; }
+
+h2 {
+  font-family: 'Cherry Swash';
+  font-weight: 400;
+  font-size: 2rem;
+  text-align: center;
+  color: #423443;
+  margin-bottom: 0.5em; }
+
+h3 {
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin: 1em 0 0.5em 0;
+  color: #503f51; }
+
+.alpha {
+  font-size: 1.125rem; }
+
+.center {
+  text-align: center !important; }
+
+.margin-fifty {
+  margin: 50px 0; }
+
+.last-origin {
+  background: #8cd8e4 !important; }
+
+.last-target {
+  background: #77d1df !important; }
+
+.about-in-play {
+  margin-right: 1em;
+  line-height: 50px;
+  float: right !important; }
+
+.fork {
+  float: left;
+  width: 149px;
+  height: 149px;
+  background: url("../images/forkme.png") no-repeat;
+  position: absolute; }
+
+header {
+  margin: 0 auto;
+  max-width: 800px;
+  width: 100%;
+  height: 50px; }
+
+#container_wrapper {
+  max-width: 960px;
+  width: 100%;
+  height: auto;
+  padding: 1em 2em;
+  margin: 0 auto;
+  clear: both; }
+
+#container {
+  width: 100%;
+  min-height: 600px;
+  margin: 0px 0px 20px 0px;
+  float: left; }
+
+#form {
+  width: 100%;
+  height: 150px;
+  margin: 0 auto; }
+
+input, button {
+  font-family: 'Open Sans'; }
+
+input.game_link {
+  width: 80%;
+  height: 50px;
+  line-height: 50px;
+  font-size: 1.125rem;
+  color: #fff;
+  border: 0;
+  border-bottom: 2px solid #2b222c;
+  border-left: 4px solid #2eafc2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  background: #423443;
+  padding: 0 1em;
+  float: left;
+  border-radius: 2px;
+  box-shadow: inset 0 -2px #2b222c; }
+
+.game_link:hover {
+  background: #4a3b4c;
+  border-bottom: 2px solid #3a2d3a;
+  box-shadow: inset 0 -2px #3a2d3a;
+  -moz-transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out; }
+
+.game_link:focus {
+  color: #eee; }
+
+.button {
+  width: 15%;
+  height: 50px;
+  display: block;
+  font-size: 1.125rem;
+  border-radius: 2px;
+  border: 0;
+  border-bottom: 2px solid #299cad;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  background: #2eafc2;
+  color: white;
+  cursor: pointer;
+  float: right;
+  box-shadow: inset 0 -2px #299cad;
+  position: relative; }
+
+.button:hover {
+  background: #39bdd0;
+  border-bottom: 2px solid #2ca8ba;
+  box-shadow: inset 0 -2px #2ca8ba;
+  -moz-transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out; }
+
+.button:active {
+  top: 1px; }
+
+a.button {
+  width: 120px;
+  line-height: 46px;
+  text-align: center;
+  text-decoration: none; }
+
+a.button:hover {
+  color: white; }
+
+p#waiting {
+  font-family: 'Cherry Swash';
+  font-size: 1.275rem;
+  color: #bb211e;
+  width: 100%;
+  text-align: center;
+  margin: 15px 0px 0px 0px;
+  display: none;
+  float: left; }
+
+footer {
+  font-size: 1rem;
+  width: 100%;
+  line-height: 2em;
+  text-align: center;
+  background: #dad7d2;
+  border-bottom: 4px solid #c3beb6;
+  box-shadow: inset 0 -4px #c3beb6; }
+  footer a {
+    color: #6d665a; }
+  footer a:hover {
+    color: #7b7365; }
+
+#footer {
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 3em 2em 1em 2em; }
+
+#sounds_label {
+  width: 800px;
+  height: 30px;
+  line-height: 30px;
+  display: block;
+  margin: 0px 0px 5px 0px;
+  float: left; }
+
+/* Chessboard */
+#board_moves_wrapper {
+  width: 100%;
+  max-width: 800px;
+  min-height: 600px;
+  margin: 0 auto; }
+
+table#moves {
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 270px;
+  height: 518px;
+  background: #e6e3e0;
+  box-shadow: inset 0 -4px #dad7d2;
+  margin-left: 10px;
+  border-radius: 2px;
+  border-bottom: 4px solid #dad7d2;
+  display: block;
+  float: left; }
+
+#moves thead {
+  font-family: 'Cherry Swash';
+  width: 270px;
+  height: 3em;
+  line-height: 3em;
+  font-size: 1.225rem;
+  color: #423443;
+  float: left;
+  text-align: center; }
+
+#moves thead th, #moves thead tr {
+  width: 100%;
+  text-align: center;
+  float: left; }
+
+#moves tbody tr {
+  width: 270px;
+  float: left; }
+
+#moves tbody tr td {
+  width: 105px;
+  text-align: left;
+  line-height: 20px;
+  margin: 0 15px;
+  float: left; }
+
+#board_wrapper {
+  float: left; }
+
+.chess_board {
+  border: 8px solid #5e4a60;
+  border-radius: 2px;
+  width: 500px;
+  height: 500px;
+  float: left; }
+  .chess_board tr {
+    width: 500px;
+    height: 62.5px;
+    float: left;
+    display: block; }
+    .chess_board tr td {
+      width: 62.5px;
+      height: 62.5px;
+      line-height: 62.5px;
+      text-align: center;
+      background: #fefefe;
+      display: block;
+      float: left; }
+      .chess_board tr td a {
+        width: 62.5px;
+        height: 62.5px;
+        font-size: 3.5rem;
+        color: #424242;
+        text-decoration: none;
+        display: block; }
+
+.chess_board tr:nth-child(odd) td:nth-child(even),
+.chess_board tr:nth-child(even) td:nth-child(odd) {
+  background: #dad7d2; }
+
+span.feedback {
+  color: #424242;
+  line-height: 28px;
+  text-indent: 28px;
+  margin-top: 1em;
+  display: block;
+  clear: left;
+  float: left; }
+
+.feedback-status {
+  font-weight: bold; }
+
+span.whitefeedback {
+  background: url("../images/whiteking.png") 0% 50% no-repeat; }
+
+span.blackfeedback {
+  background: url("../images/blackking.png") 0% 50% no-repeat; }
+
+span.promotion {
+  line-height: 28px;
+  text-indent: 28px;
+  margin-top: 1em;
+  display: block;
+  float: right; }
+
+.chess_board td.selected {
+  background: #ef9e9c !important; }
+
+/* Media queries */
+@media only screen and (min-width: 760px) and (max-width: 900px) {
+  header, #board_moves_wrapper {
+    max-width: 760px; }
+
+  #sounds_label {
+    max-width: 530px; }
+
+  #container_wrapper {
+    max-width: 900px;
+    padding: 1em 10px; }
+
+  table#moves {
+    margin-left: 0;
+    float: right;
+    height: 516px; }
+
+  table#moves, #moves thead, #moves tbody tr {
+    width: 200px; }
+
+  #moves tbody tr td {
+    width: 90px;
+    margin: 0 5px; } }
+@media only screen and (min-width: 530px) and (max-width: 759px) {
+  header, #board_moves_wrapper, #sounds_label {
+    max-width: 530px; } }
+@media only screen and (max-width: 759px) {
+  html {
+    font-size: 14px; }
+
+  #container_wrapper {
+    max-width: 759px;
+    padding: 1em 5px; }
+
+  span.feedback {
+    float: right;
+    clear: none; }
+
+  table#moves {
+    margin-left: 0;
+    margin-top: 0.5em;
+    height: 258px; } }
+@media only screen and (max-width: 529px) {
+  header, #board_moves_wrapper, #sounds_label {
+    max-width: 470px; }
+
+  input.game_link {
+    font-size: 1rem; }
+
+  #container_wrapper {
+    max-width: 529px;
+    padding: 1em 5px; }
+
+  .chess_board {
+    border: 4px solid #5e4a60;
+    width: 456px;
+    height: 456px; }
+    .chess_board tr {
+      width: 456px;
+      height: 57px; }
+      .chess_board tr td {
+        width: 57px;
+        height: 57px;
+        line-height: 57px; }
+        .chess_board tr td a {
+          width: 57px;
+          height: 57px;
+          font-size: 3.5rem; } }

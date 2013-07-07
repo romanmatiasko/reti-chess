@@ -1,0 +1,478 @@
+$dark-purple: #423443;
+$blue: #2eafc2;
+$red: #d12521;
+$grey: #dad7d2;
+
+@mixin all-transition{
+  -moz-transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+* { 
+  margin: 0;
+  padding: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html { font-size: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+
+::-moz-selection { background: darken($dark-purple, 10%); color: #fefefe; text-shadow: none; }
+::selection { background: darken($dark-purple, 10%); color: #fefefe; text-shadow: none; }
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+.clearfix {
+    zoom:1;
+}
+
+footer, header, section {
+  display: block;
+}
+
+body, html {
+  color: #424242;
+  font-family: 'Open Sans', sans-serif;
+  background: #fefefe;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+a { 
+  font-size: 1rem;
+  color: darken($blue, 5%);
+  text-decoration: underline; }
+
+a:hover { 
+  color: $blue;
+  text-decoration: none; 
+  @include all-transition }
+
+p {
+  text-align: left;
+  margin-bottom: 1em;
+  font-size: 1rem;
+}
+
+h1.knight {
+  height: 122px;
+  width: 122px;
+  background: url('../images/knight.png') no-repeat;
+  margin: 2em auto 0.5em auto;
+}
+
+h2 {
+  font-family: 'Cherry Swash';
+  font-weight: 400;
+  font-size: 2rem;
+  text-align: center;
+  color: $dark-purple;
+  margin-bottom: 0.5em;
+}
+
+h3 {
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin: 1em 0 0.5em 0;
+  color: lighten($dark-purple, 5%);
+}
+
+.alpha {
+  font-size: 1.125rem;
+}
+.center {
+  text-align: center !important;
+}
+.margin-fifty{
+  margin: 50px 0;
+}
+.last-origin{
+  background: lighten($blue, 25%) !important;
+}
+.last-target{
+  background: lighten($blue, 20%) !important;
+}
+.about-in-play {
+  margin-right: 1em;
+  line-height: 50px;
+  float: right !important;
+}
+.fork{
+  float: left;
+  width: 149px;
+  height: 149px;
+  background: url('../images/forkme.png') no-repeat;
+  position: absolute;
+}
+
+header {
+  margin: 0 auto;
+  max-width: 800px;
+  width: 100%;
+  height: 50px;
+}
+
+#container_wrapper {
+  max-width: 960px;
+  width: 100%;
+  height: auto;
+  padding: 1em 2em;
+  margin: 0 auto;
+  clear: both;
+}
+
+#container {
+  width: 100%;
+  min-height: 600px;
+  margin: 0px 0px 20px 0px;
+  float: left;
+}
+
+#form{
+  width: 100%;
+  height: 150px;
+  margin: 0 auto;
+}
+
+input, button{
+  font-family: 'Open Sans';
+}
+
+input.game_link {
+  width: 80%;
+  height: 50px;
+  line-height: 50px;
+  font-size: 1.125rem;
+  color: #fff;
+  border: 0;
+  border-bottom: 2px solid darken($dark-purple, 8%);
+  border-left: 4px solid $blue;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  background: $dark-purple;
+  padding: 0 1em;
+  float: left;
+  border-radius: 2px;
+  box-shadow: inset 0 -2px darken($dark-purple, 8%);
+}
+
+.game_link:hover {
+  background: lighten($dark-purple, 3%);
+  border-bottom: 2px solid darken($dark-purple, 3%);;
+  box-shadow: inset 0 -2px darken($dark-purple, 3%);
+  @include all-transition;
+}
+.game_link:focus {
+  color: #eee;
+}
+
+.button {
+  width: 15%;
+  height: 50px;
+  display: block;
+  font-size: 1.125rem;
+  border-radius: 2px;
+  border: 0;
+  border-bottom: 2px solid darken($blue, 5%);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  background: $blue;
+  color: white;
+  cursor: pointer;
+  float: right;
+  box-shadow: inset 0 -2px darken($blue, 5%);
+  position: relative;
+}
+
+.button:hover{
+  background: lighten($blue, 5%);
+  border-bottom: 2px solid darken($blue, 2%);
+  box-shadow: inset 0 -2px darken($blue, 2%);
+  @include all-transition;
+}
+.button:active{
+  top: 1px;
+}
+a.button{
+  width: 120px;
+  line-height: 46px;
+  text-align: center;
+  text-decoration: none;
+}
+a.button:hover{
+  color: white;
+}
+
+p#waiting {
+  font-family: 'Cherry Swash';
+  font-size: 1.275rem;
+  color: darken($red, 5%);
+  width: 100%;
+  text-align: center;
+  margin: 15px 0px 0px 0px;
+  display: none;
+  float: left;
+}
+
+footer {
+  font-size: 1rem;
+  width: 100%;
+  line-height: 2em;
+  text-align: center;
+  background: $grey;
+  border-bottom: 4px solid darken($grey, 10%);
+  box-shadow: inset 0 -4px darken($grey, 10%);
+
+  a{
+    color: darken($grey, 45%);
+  }
+
+  a:hover{
+    color: darken($grey, 40%);
+  }
+}
+
+#footer{
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 3em 2em 1em 2em; 
+}
+
+#sounds_label {
+  width: 800px;
+  height: 30px;
+  line-height: 30px;
+  display: block;
+  margin: 0px 0px 5px 0px;
+  float: left;
+}
+
+/* Chessboard */
+
+#board_moves_wrapper {
+  width: 100%;
+  max-width: 800px;
+  min-height: 600px;
+  margin: 0 auto;
+}
+
+table#moves {
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 270px;
+  height: 518px;
+  background: lighten($grey, 5%);
+  box-shadow: inset 0 -4px $grey;
+  margin-left: 10px;
+  border-radius: 2px;
+  border-bottom: 4px solid $grey;
+  display: block;
+  float: left;
+}
+
+#moves thead {
+  font-family: 'Cherry Swash';
+  width: 270px;
+  height: 3em;
+  line-height: 3em;
+  font-size: 1.225rem;
+  color: $dark-purple;
+  float: left;
+  text-align: center;
+}
+
+#moves thead th, #moves thead tr {
+  width: 100%;
+  text-align: center;
+  float: left;
+}
+
+#moves tbody tr {
+  width: 270px;
+  float: left;
+}
+
+#moves tbody tr td {
+  width: 105px;
+  text-align: left;
+  line-height: 20px;
+  margin: 0 15px;
+  float: left;
+}
+
+#board_wrapper {
+  float: left;
+}
+
+.chess_board {
+  border: 8px solid lighten($dark-purple, 10%);
+  border-radius: 2px;
+  width: 500px;
+  height: 500px;
+  float: left;
+  
+  tr {
+    width: 500px;
+    height: 62.5px;
+    float: left;
+    display: block;
+
+    td {
+      width: 62.5px;
+      height: 62.5px;
+      line-height: 62.5px;
+      text-align: center;
+      background: #fefefe;
+      display: block;
+      float: left;
+
+      a {
+        width: 62.5px;
+        height: 62.5px;
+        font-size: 3.5rem;
+        color: #424242;
+        text-decoration: none;
+        display: block;
+      }
+    }
+  }
+}
+
+.chess_board tr:nth-child(odd) td:nth-child(even), 
+.chess_board tr:nth-child(even) td:nth-child(odd) { 
+  background: $grey; }
+
+span.feedback {
+  color: #424242;
+  line-height: 28px;
+  text-indent: 28px;
+  margin-top: 1em;
+  display: block;
+  clear: left;
+  float: left;
+}
+.feedback-status {
+  font-weight: bold;
+}
+span.whitefeedback {
+  background: url('../images/whiteking.png') 0% 50% no-repeat;
+}
+span.blackfeedback {
+  background: url('../images/blackking.png') 0% 50% no-repeat;
+}
+span.promotion{
+  line-height: 28px;
+  text-indent: 28px;
+  margin-top: 1em;
+  display: block;
+  float: right;
+}
+.chess_board td.selected {
+  background: lighten($red, 30%) !important;
+}
+
+/* Media queries */
+
+@media only screen and (min-width: 760px) and (max-width: 900px) {
+  header, #board_moves_wrapper{
+    max-width: 760px;
+  }
+
+  #sounds_label{
+    max-width: 530px;
+  }
+
+  #container_wrapper{
+    max-width: 900px;
+    padding: 1em 10px;
+  }
+
+  table#moves{
+    margin-left: 0;
+    float: right;
+    height: 516px;
+  }
+
+  table#moves, #moves thead, #moves tbody tr{
+    width: 200px;
+  }
+
+  #moves tbody tr td {
+    width: 90px;
+    margin: 0 5px;
+  }
+}
+
+@media only screen and (min-width: 530px) and (max-width: 759px) {
+  header, #board_moves_wrapper, #sounds_label{
+    max-width: 530px;
+  }
+}
+
+@media only screen and (max-width: 759px){
+  html{
+    font-size: 14px;
+  }
+
+  #container_wrapper{
+    max-width: 759px;
+    padding: 1em 5px;
+  }
+  span.feedback{
+    float: right;
+    clear: none;
+  }
+  table#moves{
+    margin-left: 0;
+    margin-top: 0.5em;
+    height: 258px;
+  }
+}
+
+@media only screen and (max-width: 529px){
+  header, #board_moves_wrapper, #sounds_label{
+    max-width: 470px;
+  }
+
+  input.game_link{
+    font-size: 1rem;
+  }
+  
+  #container_wrapper{
+    max-width: 529px;
+    padding: 1em 5px;
+  }
+
+  .chess_board {
+  border: 4px solid lighten($dark-purple, 10%);
+  width: 456px;
+  height: 456px;
+  
+  tr {
+    width: 456px;
+    height: 57px;
+
+    td {
+      width: 57px;
+      height: 57px;
+      line-height: 57px;
+
+      a {
+        width: 57px;
+        height: 57px;
+        font-size: 3.5rem;
+      }
+    }
+  }
+}
+}
