@@ -74,7 +74,7 @@ io.sockets.on('connection', function (socket) {
 
     game = games[data.token];
 
-    if (game.players.length > 2) {
+    if (game.players.length >= 2) {
       socket.emit('full');
       return;
     } else if (game.players.length == 1) {

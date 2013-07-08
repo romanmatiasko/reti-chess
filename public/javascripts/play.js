@@ -208,7 +208,12 @@ $(document).ready(function () {
   });
 
   $socket.on('opponent-disconnected', function (data) {
-    alert("Your opponent has disconnected");
+    alert("Your opponent has disconnected.");
+    window.location = '/';
+  });
+
+  $socket.on('full', function (data) {
+    alert("This game already has two players. You have to create a new one.");
     window.location = '/';
   });
 });

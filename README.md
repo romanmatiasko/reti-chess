@@ -1,7 +1,9 @@
 Reti Chess
 ==========
 
-Reti Chess is opensource chess app built in [Node.js](http://nodejs.org/) with use of [Express framework](http://expressjs.com/) and [Socket.IO](http://socket.io/). Reti Chess also uses [chess.js](https://github.com/jhlywa/chess.js) for move validation and check/mate/draw detection.
+Reti Chess is an open source chess app built in [Node.js](http://nodejs.org/) with use of [Express framework](http://expressjs.com/) and [Socket.IO](http://socket.io/). Reti Chess also uses [chess.js](https://github.com/jhlywa/chess.js) for move validation and check/mate/draw detection.
+
+It's currently hosted on [retichess.nodejitsu.com](http://retichess.nodejitsu.com/)
 
 Why another online chess?
 -------------------------
