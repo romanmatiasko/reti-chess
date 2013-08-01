@@ -26,6 +26,6 @@ People behind this project
 [Roman Matiasko](http://github.com/romanmatiasko/), [Stepan Bujnak](http://github.com/stepanbujnak/) and [Lukas Matiasko](http://github.com/lukasmatiasko/).
 
 License
-_______
+-------
 
 Available under [the MIT License (MIT)](http://opensource.org/licenses/MIT).
