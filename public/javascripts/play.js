@@ -2,23 +2,19 @@ var $side  = 'w';
 var $piece = null;
 var $chess = new Chess();
 
-function selectPiece(el) { // add html class which highlights the square according to css
+function selectPiece(el) {
   el.addClass('selected');
 }
 
-function unselectPiece(el) { // remove highlighting 
+function unselectPiece(el) {
   el.removeClass('selected');
 }
 
-function isSelected(el) { // function checks if chess piece is selected
-  if (el) {
-    return el.hasClass('selected');
-  } else {
-    return false;
-  }
+function isSelected(el) {
+  return el ? el.hasClass('selected') : false;
 }
 
-function movePiece(from, to, promotion, rcvd) { // function moves the piece
+function movePiece(from, to, promotion, rcvd) {
   var move = $chess.move({
     'from': from,
     'to': to,
@@ -29,19 +25,13 @@ function movePiece(from, to, promotion, rcvd) { // function moves the piece
     var tdFrom = $('td.' + from.toUpperCase());
     var tdTo = $('td.' + to.toUpperCase());
 
-    //check if last moves are highlighted
-    if($('td').hasClass('last-target')){
-      //if so, remove highlight of last move
-      //and highlight current move instead
-      $('td').removeClass('last-target');
-      $('td').removeClass('last-origin');
-      tdFrom.addClass('last-origin');
-      tdTo.addClass('last-target');
-    } else{
-      // otherwise highlight current move
-      tdFrom.addClass('last-origin');
-      tdTo.addClass('last-target');
+    //highlight moves
+    if ($('td').hasClass('last-target')){
+      $('td').removeClass('last-target last-origin');
     }
+    tdFrom.addClass('last-origin');
+    tdTo.addClass('last-target');
+    
     var piece = tdFrom.find('a'); // find out what piece is being moved
     var moveSnd = $("#moveSnd")[0]; // sound file variable
     unselectPiece(piece.parent()); 
@@ -50,115 +40,88 @@ function movePiece(from, to, promotion, rcvd) { // function moves the piece
     $piece = null;
 
     // en passant move
-    if (move.flags == 'e'){
+    if (move.flags === 'e'){
       var enpassant = move.to.charAt(0) + move.from.charAt(1);
       $('td.' + enpassant.toUpperCase()).html('');
     }
     
     //kingside castling
-    if (move.flags == 'k'){
-      if (move.to == 'g1'){
-        var rook = $('td.H1').find('a');
+    var rook;
+    if (move.flags === 'k'){
+      if (move.to === 'g1'){
+        rook = $('td.H1').find('a');
         $('td.F1').html(rook);
       }
-      else if (move.to == 'g8'){
-        var rook = $('td.H8').find('a');
+      else if (move.to === 'g8'){
+        rook = $('td.H8').find('a');
         $('td.F8').html(rook);
       }
     }
 
     //queenside castling
-    if (move.flags == 'q'){
-      if (move.to == 'c1'){
-        var rook = $('td.A1').find('a');
+    if (move.flags === 'q'){
+      if (move.to === 'c1'){
+        rook = $('td.A1').find('a');
         $('td.D1').html(rook);
       }
-      else if (move.to == 'c8'){
-        var rook = $('td.A8').find('a');
+      else if (move.to === 'c8'){
+        rook = $('td.A8').find('a');
         $('td.D8').html(rook);
       }
     }
 
-    
     //promotion
-    if (move.flags == 'np' || move.flags == 'cp'){
+    if (move.flags === 'np' || move.flags === 'cp'){
       var square = $('td.' + move.to.toUpperCase()).find('a');
       var option = move.promotion;
+      var promotion_w = {
+        'q': '&#9813;',
+        'r': '&#9814;',
+        'n': '&#9816;',
+        'b': '&#9815;'
+      };
+      var promotion_b = {
+        'q': '&#9819;',
+        'r': '&#9820;',
+        'n': '&#9822;',
+        'b': '&#9821;'
+      };
       if (square.hasClass('white')){
-        switch(true){
-          case(option == 'q'):
-            square.html('&#9813;');
-            break;
-          case(option == 'r'):
-            square.html('&#9814;');
-            break;
-          case(option == 'n'):
-            square.html('&#9816;');
-            break;
-          case(option == 'b'):
-            square.html('&#9815;');
-            break;
-        }
+        square.html(promotion_w[option]);
       } else {
-        switch(true){
-          case(option == 'q'):
-            square.html('&#9819;');
-            break;
-          case(option == 'r'):
-            square.html('&#9820;');
-            break;
-          case(option == 'n'):
-            square.html('&#9822;');
-            break;
-          case(option == 'b'):
-            square.html('&#9821;');
-            break;
-        }
+        square.html(promotion_b[option]);
       }
     }
     
-    if ($('#sounds').is(':checked')) { // if enable sounds checkbox is ticked, play sounds
+    if ($('#sounds').is(':checked')) {
       moveSnd.play();
     }
     
-    
-    if ($chess.turn() == 'b') { // if black's turn
-      var f = $('.feedback-move');
+    //feedback
+    var fm = $('.feedback-move');
+    var fs = $('.feedback-status');
 
-      f.text('Black to move.'); // display black to move text
-      f.parent().removeClass('whitefeedback');
-      f.parent().addClass('blackfeedback');
-    } else { // otherwise display white to move
-      var f = $('.feedback-move');
+    $chess.turn() === 'b' ? fm.text('Black to move.') : fm.text('White to move.');
+    fm.parent().toggleClass('blackfeedback whitefeedback');
 
-      f.text('White to move.');
-      f.parent().removeClass('blackfeedback');
-      f.parent().addClass('whitefeedback');
-    }
+    $chess.in_check() ? fs.text(' Check.') : fs.text('');
 
-    if ($chess.in_check()) {
-      $('.feedback-status').text(' Check.');
-    } else{
-      $('.feedback-status').text('');
-    }
-
+    //game over
     if ($chess.game_over()) {
-      $('.feedback-move').text('');
+      fm.text('');
       var result = "";
 
-      if ($chess.in_checkmate()) {
-        result = $chess.turn() == 'b' ? 'Checkmate. White wins!' : 'Checkmate. Black wins!'
-      
-      } else if ($chess.in_draw()) {
+      if ($chess.in_checkmate())
+        result = $chess.turn() === 'b' ? 'Checkmate. White wins!' : 'Checkmate. Black wins!'
+      else if ($chess.in_draw())
         result = "Draw.";
-      } else if ($chess.in_stalemate()) {
+      else if ($chess.in_stalemate())
         result = "Stalemate.";
-      } else if ($chess.in_threefold_repetition()) {
+      else if ($chess.in_threefold_repetition())
         result = "Draw. (Threefold Repetition)";
-      } else if ($chess.insufficient_material()) {
+      else if ($chess.insufficient_material())
         result = "Draw. (Insufficient Material)";
-      }
-      $('.feedback-status').text(result);
+      fs.text(result);
     }
 
     /* Add all moves to the table */
@@ -192,12 +155,11 @@ $(document).ready(function () {
   });
 
   $socket.on('joined', function (data) {
-    if (data.color == 'white') {
+    if (data.color === 'white') {
       $side = 'w';
       $('.chess_board.black').remove();
     } else {
       $side = 'b';
-
       $('.chess_board.white').remove();
       $('.chess_board.black').show();
     }
