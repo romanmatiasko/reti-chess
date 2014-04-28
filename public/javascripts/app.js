@@ -1,5 +1,6 @@
 var $URL, $WS, $token, $socket;
-var ENVIRONMENT = 'openshift';
+//var ENVIRONMENT = 'openshift';
+var ENVIRONMENT = 'dev';
 
 if (ENVIRONMENT === 'dev') {
   $URL = 'http://localhost:3000';
