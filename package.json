@@ -1,8 +1,8 @@
 {
   "name": "retichess",
-  "version": "0.0.1-3",
+  "version": "0.0.1-4",
   "scripts": {
-    "start": "app.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "~3.3.0",
@@ -11,6 +11,6 @@
   },
   "subdomain": "retichess",
   "engines": {
-    "node": "0.8.x"
+    "node": ">=0.8.x"
   }
 }

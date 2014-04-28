@@ -6,7 +6,8 @@ var express = require('express')
 var app = express();
 
 app.configure(function() {
-  app.set('port', process.env.PORT || 3000);
+  app.set('ipaddress', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
+  app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 8080);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.favicon());
@@ -37,7 +38,7 @@ app.get('/play/:token', function(req, res) {
   });
 });
 
-var server = http.createServer(app).listen(app.get('port'), function() {
+var server = http.createServer(app).listen(app.get('port'), app.get('ipaddress'), function() {
   console.log("Express server listening on port " + app.get('port'));
 });
 
@@ -47,6 +48,11 @@ var games = {};
  * Sockets
  */
 var io = require('socket.io').listen(server, {log: false});
+if (process.env.OPENSHIFT_NODEJS_IP) {
+  io.configure(function(){
+    io.set("transports", ["xhr-polling"]);
+  });
+}
 
 io.sockets.on('connection', function (socket) {
   socket.on('start', function (data) {

@@ -1,4 +1,4 @@
-var $URL = 'http://localhost:3000';
+var $URL = 'http://retichess-rmn.rhcloud.com';
 var $token;
 var $socket;
 
