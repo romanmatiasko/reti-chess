@@ -131,20 +131,28 @@ io.sockets.on('connection', function (socket) {
     });
   });
 
+  socket.on('resign', function(data) {
+    cancelGame('opponent-resigned', socket);
+  });
+
   socket.on('disconnect', function () {
-    for (token in games) {
-      var game = games[token];
-
-      for (j in game.players) {
-        var player = game.players[j];
-
-        if (player.socket == socket) {
-          var opponent = game.players[Math.abs(j - 1)];
-
-          delete games[token];
-          opponent.socket.emit('opponent-disconnected');
-        }
-      }
-    }
+    cancelGame('opponent-disconnected', socket);
   });
 });
+
+function cancelGame(event, socket) {
+  for (var token in games) {
+    var game = games[token];
+
+    for (var j in game.players) {
+      var player = game.players[j];
+
+      if (player.socket == socket) {
+        var opponent = game.players[Math.abs(j - 1)];
+
+        delete games[token];
+        opponent.socket.emit(event);
+      }
+    }
+  }
+}

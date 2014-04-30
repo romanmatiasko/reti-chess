@@ -122,6 +122,9 @@ function movePiece(from, to, promotion, rcvd) {
       else if ($chess.insufficient_material())
         result = "Draw. (Insufficient Material)";
       fs.text(result);
+      
+      $('.resign').hide();
+      alert(result);
     }
 
     /* Add all moves to the table */
@@ -174,6 +177,11 @@ $(document).ready(function () {
     window.location = '/';
   });
 
+  $socket.on('opponent-resigned', function (data) {
+    alert("Your opponent has resigned. You won!");
+    window.location = '/';
+  });
+
   $socket.on('full', function (data) {
     alert("This game already has two players. You have to create a new one.");
     window.location = '/';
@@ -223,5 +231,11 @@ $(document).ready(function () {
         promotion=$('#promotion option:selected').val()
       )
     }
+  });
+
+  $('.resign').click(function (e) {
+    $socket.emit('resign');
+    alert('You resigned.');
+    window.location = '/';
   });
 });
