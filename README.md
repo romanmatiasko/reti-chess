@@ -5,20 +5,16 @@ Reti Chess is an open source chess app built in [Node.js](http://nodejs.org/) wi
 
 You can check out demo on [retichess-rmn.rhcloud.com](http://retichess-rmn.rhcloud.com/)
 
-Why another online chess?
--------------------------
-
-The project may be useful resource for poeple willing to learn Node.js and Socket.IO. Read the source code, fork it, add more functionality and learn something. Besides programming, playing chess is also fun!
-
 Why Reti?
 ---------
 
-The project is named after famous Czechoslovakian chess player Richard Réti. After him is also named a chess opening which begins with the move: 1. Nf3.
+The project is named after famous Czechoslovakian chess player Richard Réti. After him is also named a chess opening which begins with the the moves: 1. Nf3 d5, 2. d4.
 
 What features chess supports?
 -----------------------------
 
 This is a very lightweight version of chess. You can only play real-time against the human, an AI is not available. Reti Chess doesn't have any timer, the time for a move is unlimited. Although, if you reload the window or disconnect from the game, the game will be cancelled.
+
 
 People behind this project
 --------------------------
