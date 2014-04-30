@@ -495,6 +495,9 @@ span.promotion {
   #moves tbody tr td {
     width: 90px;
     margin: 0 5px; } }
+@media only screen and (min-width: 1400px) {
+  #chat-wrapper {
+    display: block; } }
 @media only screen and (min-width: 530px) and (max-width: 759px) {
   header, #board_moves_wrapper, #sounds_label {
     max-width: 530px; } }
