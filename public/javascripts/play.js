@@ -122,9 +122,6 @@ function movePiece(from, to, promotion, rcvd) {
       else if ($chess.insufficient_material())
         result = "Draw. (Insufficient Material)";
       fs.text(result);
-      
-      $('.resign').hide();
-      alert(result);
     }
 
     /* Add all moves to the table */
@@ -147,6 +144,11 @@ function movePiece(from, to, promotion, rcvd) {
         'move': move
       });
     }
+
+    if ($chess.game_over()) {
+      $('.resign').hide();
+      alert(result);
+    }
   }
 }
 
@@ -166,6 +168,8 @@ $(document).ready(function () {
       $('.chess_board.white').remove();
       $('.chess_board.black').show();
     }
+
+    $('#sendMessage').find('input').addClass($side === 'b' ? 'black' : 'white');
   });
 
   $socket.on('move', function (data) {
@@ -185,6 +189,24 @@ $(document).ready(function () {
   $socket.on('full', function (data) {
     alert("This game already has two players. You have to create a new one.");
     window.location = '/';
+  });
+
+  $socket.on('receive-message', function (data) {
+    var chat = $('ul#chat');
+    var chat_node = $('ul#chat')[0];
+    var messageSnd = $("#messageSnd")[0];
+
+    chat.append('<li class="' + data.color + ' left" >' + data.message + '</li>');
+
+    if (chat.is(':visible') && chat_node.scrollHeight > 300) {
+      setTimeout(function() { chat_node.scrollTop = chat_node.scrollHeight; }, 50);
+    } else if (!chat.is(':visible') && !$('.new-message').is(':visible')) {
+      $('#bubble').before('<span class="new-message">You have a new message!</span>');
+    }
+
+    if ($('#sounds').is(':checked')) {
+      messageSnd.play();
+    }
   });
 });
 
@@ -238,4 +260,37 @@ $(document).ready(function () {
     alert('You resigned.');
     window.location = '/';
   });
+
+  $('a.chat').click(function (e) {
+    $('#chat-wrapper').toggle();
+    $('.new-message').remove();
+    var chat_node = $('ul#chat')[0];
+    if (chat_node.scrollHeight > 300) {
+      setTimeout(function() { chat_node.scrollTop = chat_node.scrollHeight; }, 50);
+    }
+  });
+
+  $('#chat-wrapper .close').click(function (e) {
+    $('#chat-wrapper').hide();
+  });
+
+  $('#sendMessage').submit(function (e) {
+    e.preventDefault();
+    var input = $(this).find('input');
+    var message = input.val();
+    var color = $side === 'b' ? 'black' : 'white';
+
+    if (!/^\W*$/.test(message)) {
+      input.val('');
+      $('ul#chat').append('<li class="' + color + ' right" >' + message + '</li>');
+
+      var chat_node = $('ul#chat')[0];
+      if (chat_node.scrollHeight > 300) {
+        setTimeout(function() { chat_node.scrollTop = chat_node.scrollHeight; }, 50);
+      }
+
+      $socket.emit('send-message', { 'message': message, 'color': color });
+    }
+  });
+
 });

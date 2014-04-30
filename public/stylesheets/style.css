@@ -99,10 +99,22 @@ h3 {
 .last-target {
   background: #77d1df !important; }
 
-.about-in-play {
+.chat {
+  text-decoration: none;
+  color: #248a99;
   margin-right: 1em;
   line-height: 50px;
-  float: right !important; }
+  float: right !important;
+  cursor: pointer;
+  font-weight: 600; }
+  .chat:hover {
+    color: #299cad; }
+    .chat:hover .new-message {
+      color: #d12521; }
+  .chat img {
+    vertical-align: middle; }
+  .chat .new-message {
+    color: #d12521; }
 
 .fork {
   float: left;
@@ -257,6 +269,100 @@ footer {
   display: block;
   margin: 0px 0px 5px 0px;
   float: left; }
+
+/* Chat */
+#chat-wrapper {
+  display: none;
+  position: absolute;
+  width: 270px;
+  right: 10px;
+  top: 99px;
+  border: 4px solid #fff;
+  background: #e6e3e0; }
+  #chat-wrapper h4 {
+    font-family: 'Cherry Swash';
+    font-size: 1.225rem;
+    height: 3em;
+    line-height: 3em;
+    margin: 5px 5%;
+    text-align: center;
+    color: #423443; }
+  #chat-wrapper a.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #423443;
+    color: #fff;
+    font-size: 1.125rem;
+    padding: 0 7px;
+    text-decoration: none;
+    font-weight: 600;
+    margin: 1em 5%;
+    cursor: pointer; }
+    #chat-wrapper a.close:hover {
+      text-decoration: none;
+      background: #503f51; }
+  #chat-wrapper > span {
+    font-size: .9rem;
+    margin: 5px 5%;
+    display: block; }
+
+ul#chat {
+  position: relative;
+  top: 0;
+  max-height: 300px;
+  width: 100%;
+  overflow-y: scroll;
+  list-style-type: none; }
+  ul#chat li {
+    font-size: .9rem;
+    padding: 10px;
+    margin: 5px auto;
+    width: 90%;
+    border-radius: 5px;
+    position: relative; }
+    ul#chat li:before {
+      position: absolute;
+      content: '';
+      top: 10px; }
+  ul#chat li.black {
+    background: #444;
+    color: #fff; }
+  ul#chat li.white {
+    background: #fff;
+    color: #444; }
+  ul#chat li.left:before {
+    left: 0;
+    margin-left: -7px;
+    border-bottom: 7px solid transparent;
+    border-top: 7px solid transparent; }
+  ul#chat li.black.left:before {
+    border-right: 7px solid #444; }
+  ul#chat li.white.left:before {
+    border-right: 7px solid #fff; }
+  ul#chat li.right:before {
+    right: 0;
+    margin-right: -7px;
+    border-bottom: 7px solid transparent;
+    border-top: 7px solid transparent; }
+  ul#chat li.black.right:before {
+    border-left: 7px solid #444; }
+  ul#chat li.white.right:before {
+    border-left: 7px solid #fff; }
+
+#sendMessage input {
+  width: 100%;
+  padding: 15px 10px;
+  border: none;
+  outline: none;
+  font-size: .9rem;
+  border: 4px solid #e6e3e0; }
+#sendMessage input.black {
+  background: #444;
+  color: #fff; }
+#sendMessage input.white {
+  background: #fff;
+  color: #444; }
 
 /* Chessboard */
 #board_moves_wrapper {

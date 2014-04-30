@@ -4,7 +4,9 @@ block content
   header.clearfix
     a.button(href='/') New game
     a.button.resign Resign
-    a.about-in-play(href='/about/') About Reti Chess
+    a.chat
+      img#bubble(src='/images/chat.svg', width='50', height='50')
+      | Chat
 
   script(type='text/javascript')
     $token = '#{token}';
@@ -12,6 +14,16 @@ block content
   audio(id='moveSnd', preload='auto')
     source(src='/sounds/move.mp3')
     source(src='/sounds/move.ogg')
+  audio(id='messageSnd', preload='auto')
+    source(src='/sounds/message.mp3')
+
+  #chat-wrapper
+    h4 Chat
+    a.close x
+    ul#chat
+    span Write your message:
+    form#sendMessage
+      input
 
   #board_moves_wrapper.clearfix
     label(id='sounds_label')

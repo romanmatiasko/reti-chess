@@ -131,14 +131,34 @@ io.sockets.on('connection', function (socket) {
     });
   });
 
-  socket.on('resign', function(data) {
+  socket.on('resign', function (data) {
     cancelGame('opponent-resigned', socket);
   });
 
-  socket.on('disconnect', function () {
+  socket.on('disconnect', function (data) {
     cancelGame('opponent-disconnected', socket);
   });
+
+  socket.on('send-message', function (data) {
+    var opponent = getOpponent(socket);
+    opponent.socket.emit('receive-message', data);
+  });
 });
+
+function getOpponent(socket) {
+  for (var token in games) {
+    var game = games[token];
+
+    for (var j in game.players) {
+      var player = game.players[j];
+
+      if (player.socket == socket) {
+        var opponent = game.players[Math.abs(j - 1)];
+        return opponent;
+      }
+    }
+  }
+}
 
 function cancelGame(event, socket) {
   for (var token in games) {
@@ -149,7 +169,6 @@ function cancelGame(event, socket) {
 
       if (player.socket == socket) {
         var opponent = game.players[Math.abs(j - 1)];
-
         delete games[token];
         opponent.socket.emit(event);
       }
