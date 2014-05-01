@@ -407,6 +407,29 @@ ul#chat{
   }
 }
 
+/* Captured pieces */
+
+#captured-pieces{
+  position: absolute;
+  width: 100px;
+  margin-left: -100px;
+  font-size: 2rem;
+  line-height: 2rem;
+  height: 517px;
+  overflow-y: scroll;
+
+  ul{
+    width: 50px;
+    min-height: 5px;
+    float: left;
+    display: block;
+    text-align: center;
+    li{
+      list-style-type: none;
+    }
+  }
+}
+
 /* Chessboard */
 
 #board_moves_wrapper {
@@ -566,6 +589,12 @@ span.promotion{
 @media only screen and (min-width: 1400px) {
   #chat-wrapper{
     display: block;
+  }
+}
+
+@media only screen and (max-width: 999px) {
+  #captured-pieces{
+    display: none;
   }
 }
 

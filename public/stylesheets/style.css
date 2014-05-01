@@ -364,6 +364,24 @@ ul#chat {
   background: #fff;
   color: #444; }
 
+/* Captured pieces */
+#captured-pieces {
+  position: absolute;
+  width: 100px;
+  margin-left: -100px;
+  font-size: 2rem;
+  line-height: 2rem;
+  height: 517px;
+  overflow-y: scroll; }
+  #captured-pieces ul {
+    width: 50px;
+    min-height: 5px;
+    float: left;
+    display: block;
+    text-align: center; }
+    #captured-pieces ul li {
+      list-style-type: none; }
+
 /* Chessboard */
 #board_moves_wrapper {
   width: 100%;
@@ -498,6 +516,9 @@ span.promotion {
 @media only screen and (min-width: 1400px) {
   #chat-wrapper {
     display: block; } }
+@media only screen and (max-width: 999px) {
+  #captured-pieces {
+    display: none; } }
 @media only screen and (min-width: 530px) and (max-width: 759px) {
   header, #board_moves_wrapper, #sounds_label {
     max-width: 530px; } }

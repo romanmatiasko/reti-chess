@@ -32,10 +32,17 @@ function movePiece(from, to, promotion, rcvd) {
     tdFrom.addClass('last-origin');
     tdTo.addClass('last-target');
     
-    var piece = tdFrom.find('a'); // find out what piece is being moved
-    var moveSnd = $("#moveSnd")[0]; // sound file variable
-    unselectPiece(piece.parent()); 
-    tdTo.html(piece); // replace td attributes
+    var piece = tdFrom.find('a'); // piece being moved
+    var moveSnd = $("#moveSnd")[0];
+    unselectPiece(piece.parent());
+    
+    if (tdTo.html() !== '') { //place captured piece next to the chessboard
+      $('#captured-pieces')
+        .find($chess.turn() === 'b' ? '.b' : '.w')
+        .append('<li>' + tdTo.find('a').html() + '</li>');
+    }
+    
+    tdTo.html(piece);
 
     $piece = null;
 
