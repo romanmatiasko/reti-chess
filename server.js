@@ -152,11 +152,28 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('resign', function (data) {
-    cancelGame('opponent-resigned', data.token, socket);
+    clearInterval(games[data.token].interval);
+    io.sockets.in(data.token).emit('player-resigned', {
+      'color': data.color
+    });
   });
 
   socket.on('disconnect', function (data) {
-    cancelGame('opponent-disconnected', null, socket);
+    var player, opponent, game;
+    for (var token in games) {
+    game = games[token];
+
+      for (var j in game.players) {
+        player = game.players[j];
+
+        if (player.socket === socket) {
+          opponent = game.players[Math.abs(j - 1)];
+          opponent.socket.emit('opponent-disconnected');
+          clearInterval(games[token].interval);
+          delete games[token];
+        }
+      }
+    }
   });
 
   socket.on('send-message', function (data) {
@@ -166,6 +183,7 @@ io.sockets.on('connection', function (socket) {
 });
 
 function runTimer(color, token, socket) {
+  console.log(games);
   var player, time_left, game = games[token];
 
   for (var i in game.players) {
@@ -190,7 +208,6 @@ function runTimer(color, token, socket) {
             'color': color
           });
           clearInterval(games[token].interval);
-          delete games[token];
         }
       }, 1000);
     }
@@ -207,37 +224,6 @@ function getOpponent(token, socket) {
       var opponent = game.players[Math.abs(j - 1)];
 
       return opponent;
-    }
-  }
-}
-
-function cancelGame(event, token, socket) {
-  var player, game, opponent;
-
-  function removeGame(game, opponent) {    
-    clearInterval(game.interval);
-
-    opponent.socket.emit(event);
-    delete games[token];
-  }
-
-  if (token) {
-    game = games[token];
-    opponent = getOpponent(token, socket);
-    removeGame(game, opponent);
-  } else {
-
-    for (var token in games) {
-    game = games[token];
-
-      for (var j in game.players) {
-        player = game.players[j];
-
-        if (player.socket === socket) {
-          opponent = game.players[Math.abs(j - 1)];
-          removeGame(game, opponent);
-        }
-      }
     }
   }
 }

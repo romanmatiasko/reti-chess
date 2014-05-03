@@ -1,6 +1,7 @@
 var $side  = 'w';
 var $piece = null;
 var $chess = new Chess();
+var $gameOver = false;
 
 function selectPiece(el) {
   el.addClass('selected');
@@ -21,7 +22,7 @@ function movePiece(from, to, promotion, rcvd) {
     promotion: promotion
   });
 
-  if (move) {
+  if (move && !$gameOver) {
     var tdFrom = $('td.' + from.toUpperCase());
     var tdTo = $('td.' + to.toUpperCase());
 
@@ -203,13 +204,24 @@ $(document).ready(function () {
   });
 
   $socket.on('opponent-disconnected', function (data) {
-    alert("Your opponent has disconnected.");
-    window.location = '/';
+    $('.resign').remove();
+    $('.chess_board a').off();
+    $('#sendMessage').off();
+    $('#sendMessage').submit(function(e) {
+      e.preventDefault();
+      alert("Your opponent has diconnected. You can't send messages.");
+    });
   });
 
-  $socket.on('opponent-resigned', function (data) {
-    alert("Your opponent has resigned. You won!");
-    window.location = '/';
+  $socket.on('player-resigned', function (data) {
+    $('.resign').remove();
+    $('.chess_board a').off();
+    var winner = data.color === 'w' ? 'Black' : 'White';
+    var loser = data.color === 'w' ? 'White' : 'Black';
+    var message = loser + ' resigned. ' + winner + ' wins.';
+    alert(message);
+    $('.feedback-move').text('');
+    $('.feedback-status').text(message);
   });
 
   $socket.on('full', function (data) {
@@ -248,11 +260,14 @@ $(document).ready(function () {
   });
 
   $socket.on('countdown-gameover', function (data) {
+    $('.chess_board a').off();
     var loser = data.color === 'black' ? 'Black' : 'White';
     var winner = data.color === 'black' ? 'White' : 'Black';
+    var message = loser + "'s time is out. " + winner + " won.";
     $('.resign').hide();
-    alert(loser + "'s time is out. " + winner + " won.");
-    window.location = '/';
+    alert(message);
+    $('.feedback-move').text('');
+    $('.feedback-status').text(message);
   });
 
 });
@@ -310,10 +325,9 @@ $(document).ready(function () {
 
   $('.resign').click(function (e) {
     $socket.emit('resign', {
-      'token': $token
+      'token': $token,
+      'color': $side
     });
-    alert('You resigned.');
-    window.location = '/';
   });
 
   $('a.chat').click(function (e) {
