@@ -1,5 +1,12 @@
 extends layout
 
+block head
+  script(type='text/javascript')
+    $token = '#{token}';
+    $time = #{time};
+    $increment = #{increment};
+  script(type='text/javascript', src='/javascripts/play.js')
+
 block content
   header.clearfix
     a.button(href='/') New game
@@ -7,10 +14,6 @@ block content
     a.chat
       img#bubble(src='/images/chat.svg', width='50', height='50')
       | Chat
-
-  script(type='text/javascript')
-    $token = '#{token}';
-  script(type='text/javascript', src='/javascripts/play.js')
   audio(id='moveSnd', preload='auto')
     source(src='/sounds/move.mp3')
     source(src='/sounds/move.ogg')

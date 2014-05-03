@@ -32,9 +32,11 @@ app.get('/about', function(req, res) {
   res.render('about');
 });
 
-app.get('/play/:token', function(req, res) {
+app.get('/play/:token/:time/:increment', function(req, res) {
   res.render('play', {
-    'token': req.params.token
+    'token': req.params.token,
+    'time': req.params.time,
+    'increment': req.params.increment
   });
 });
 
@@ -43,6 +45,7 @@ var server = http.createServer(app).listen(app.get('port'), app.get('ipaddress')
 });
 
 var games = {};
+var timer;
 
 /**
  * Sockets
@@ -56,15 +59,16 @@ if (process.env.OPENSHIFT_NODEJS_IP) {
 }
 
 io.sockets.on('connection', function (socket) {
+  
   socket.on('start', function (data) {
     var token;
-
     var b = new Buffer(Math.random() + new Date().getTime() + socket.id);
     token = b.toString('base64').slice(12, 32);
 
     games[token] = {
       'creator': socket,
-      'players': []
+      'players': [],
+      'interval': null
     };
 
     socket.emit('created', {
@@ -73,7 +77,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('join', function (data) {
-    var game, color;
+    var game, color, time = data.time;
 
     if (!(data.token in games)) {
       return;
@@ -84,8 +88,8 @@ io.sockets.on('connection', function (socket) {
     if (game.players.length >= 2) {
       socket.emit('full');
       return;
-    } else if (game.players.length == 1) {
-      if (game.players[0].color == 'black') {
+    } else if (game.players.length === 1) {
+      if (game.players[0].color === 'black') {
         color = 'white';
       } else {
         color = 'black';
@@ -99,7 +103,9 @@ io.sockets.on('connection', function (socket) {
     games[data.token].players.push({
       'id': socket.id,
       'socket': socket,
-      'color': color
+      'color': color,
+      'time': data.time - data.increment + 1,
+      'increment': data.increment
     });
 
     game.creator.emit('ready', {});
@@ -107,6 +113,14 @@ io.sockets.on('connection', function (socket) {
     socket.emit('joined', {
       'color': color
     });
+  });
+
+  socket.on('timer-white', function (data) {
+    runTimer('white', data.token, socket);
+  });
+
+  socket.on('timer-black', function (data) {
+    runTimer('black', data.token, socket);
   });
 
   socket.on('new-move', function (data) {
@@ -132,45 +146,95 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('resign', function (data) {
-    cancelGame('opponent-resigned', socket);
+    cancelGame('opponent-resigned', data.token, socket);
   });
 
   socket.on('disconnect', function (data) {
-    cancelGame('opponent-disconnected', socket);
+    cancelGame('opponent-disconnected', null, socket);
   });
 
   socket.on('send-message', function (data) {
-    var opponent = getOpponent(socket);
+    var opponent = getOpponent(data.token, socket);
     opponent.socket.emit('receive-message', data);
   });
 });
 
-function getOpponent(socket) {
-  for (var token in games) {
-    var game = games[token];
+function runTimer(color, token, socket) {
+  var player, time_left, game = games[token];
 
-    for (var j in game.players) {
-      var player = game.players[j];
+  for (var i in game.players) {
+    player = game.players[i];
 
-      if (player.socket == socket) {
-        var opponent = game.players[Math.abs(j - 1)];
-        return opponent;
-      }
+    if (player.socket === socket && player.color === color) {
+
+      clearInterval(games[token].interval);
+      games[token].players[i].time += games[token].players[i].increment;
+
+      return games[token].interval = setInterval(function() {
+        games[token].players[i].time -= 1;
+        time_left = games[token].players[i].time;
+
+        if (time_left >= 0) {
+          socket.emit('countdown-' + color, {
+            'time': time_left
+          });
+        } else {
+          var opponent = getOpponent(token, socket);
+
+          socket.emit('countdown-gameover', {
+            'color': color
+          });
+          opponent.socket.emit('countdown-gameover', {
+            'color': color
+          });
+          clearInterval(games[token].interval);
+          delete games[token];
+        }
+      }, 1000);
     }
   }
 }
 
-function cancelGame(event, socket) {
-  for (var token in games) {
-    var game = games[token];
+function getOpponent(token, socket) {
+  var player, game = games[token];
 
-    for (var j in game.players) {
-      var player = game.players[j];
+  for (var j in game.players) {
+    player = game.players[j];
 
-      if (player.socket == socket) {
-        var opponent = game.players[Math.abs(j - 1)];
-        delete games[token];
-        opponent.socket.emit(event);
+    if (player.socket == socket) {
+      var opponent = game.players[Math.abs(j - 1)];
+
+      return opponent;
+    }
+  }
+}
+
+function cancelGame(event, token, socket) {
+  var player, game, opponent;
+
+  function removeGame(game, opponent) {    
+    clearInterval(game.interval);
+
+    opponent.socket.emit(event);
+    delete games[token];
+  }
+
+  if (token) {
+    game = games[token];
+    opponent = getOpponent(token, socket);
+    removeGame(game, opponent);
+  } else {
+
+    for (var token in games) {
+    game = games[token];
+
+      for (var j in game.players) {
+        player = game.players[j];
+
+        if (player.socket == socket) {
+          opponent = game.players[Math.abs(j - 1)];
+          removeGame(game, opponent);
+        }
       }
     }
   }

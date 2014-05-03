@@ -145,8 +145,24 @@ header {
 
 #form {
   width: 100%;
-  height: 150px;
+  height: 200px;
   margin: 0 auto; }
+  #form fieldset {
+    border: 0;
+    text-align: right;
+    margin-bottom: 1em;
+    width: 80%; }
+    #form fieldset input {
+      margin-left: 1em;
+      width: 100px;
+      outline: none;
+      height: 40px;
+      line-height: 30px;
+      padding-left: 1em;
+      font-size: 1.125rem;
+      color: #424242;
+      border: 2px solid #2b222c;
+      border-left: 4px solid #2eafc2; }
 
 input, button {
   font-family: 'Open Sans'; }
@@ -523,6 +539,14 @@ span.promotion {
   header, #board_moves_wrapper, #sounds_label {
     max-width: 530px; } }
 @media only screen and (max-width: 759px) {
+  #form fieldset {
+    width: 100%;
+    text-align: center; }
+  #form label {
+    display: block;
+    line-height: 45px;
+    padding-left: 0; }
+
   html {
     font-size: 14px; }
 

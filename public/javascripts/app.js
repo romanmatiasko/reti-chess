@@ -1,4 +1,4 @@
-var $URL, $WS, $token, $socket;
+var $URL, $WS, $socket;
 //var ENVIRONMENT = 'openshift';
 var ENVIRONMENT = 'dev';
 

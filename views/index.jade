@@ -7,9 +7,14 @@ block content
   p.margin-fifty.center A lightweight real-time chess app built in Node.js, Express framework and Socket.IO
 
   div#form
-    form#create_form(action='#', method='post')
-      input#game_link.game_link(type='text', readonly, value='', value='Game link will be generated here.')
-    input.button#play(type='button', value='Play')
+    form#create_form(action='')
+      fieldset
+        label Minutes per side: 
+          input#minutes(type='number', value='30', min='1', max='50', required)
+        label(style='padding-left: 2em;') Increment in seconds:
+          input#seconds(type='number', value='0', min='0', max='50', required)
+      input#game_link.game_link(type='text', readonly, value='Game link will be generated here.')
+      button.button#play(type='submit') Play
   
     p#waiting Waiting for opponent to connect.
   

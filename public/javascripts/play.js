@@ -155,6 +155,16 @@ function movePiece(from, to, promotion, rcvd) {
     if ($chess.game_over()) {
       $('.resign').hide();
       alert(result);
+    } else {
+      if ($chess.turn() === 'b') {
+        $socket.emit('timer-black', {
+          'token': $token
+        });
+      } else {
+        $socket.emit('timer-white', {
+          'token': $token
+        });
+      }
     }
   }
 }
@@ -163,13 +173,18 @@ function movePiece(from, to, promotion, rcvd) {
 $(document).ready(function () {
 
   $socket.emit('join', {
-    'token': $token
+    'token': $token,
+    'time': $time * 60,
+    'increment': $increment
   });
 
   $socket.on('joined', function (data) {
     if (data.color === 'white') {
       $side = 'w';
       $('.chess_board.black').remove();
+      $socket.emit('timer-white', {
+        'token': $token
+      });
     } else {
       $side = 'b';
       $('.chess_board.white').remove();
@@ -215,6 +230,23 @@ $(document).ready(function () {
       messageSnd.play();
     }
   });
+
+  $socket.on('countdown-white', function (data) {
+    console.log('white', data.time);
+  });
+
+  $socket.on('countdown-black', function (data) {
+    console.log('black', data.time);
+  });
+
+  $socket.on('countdown-gameover', function (data) {
+    var loser = data.color === 'black' ? 'Black' : 'White';
+    var winner = data.color === 'black' ? 'White' : 'Black';
+    $('.resign').hide();
+    alert(loser + "'s time is out. " + winner + " won.");
+    window.location = '/';
+  });
+
 });
 
 /* gameplay */
@@ -263,7 +295,9 @@ $(document).ready(function () {
   });
 
   $('.resign').click(function (e) {
-    $socket.emit('resign');
+    $socket.emit('resign', {
+      'token': $token
+    });
     alert('You resigned.');
     window.location = '/';
   });
@@ -296,7 +330,11 @@ $(document).ready(function () {
         setTimeout(function() { chat_node.scrollTop = chat_node.scrollHeight; }, 50);
       }
 
-      $socket.emit('send-message', { 'message': message, 'color': color });
+      $socket.emit('send-message', {
+        'message': message,
+        'color': color,
+        'token': $token
+      });
     }
   });
 
