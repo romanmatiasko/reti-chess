@@ -153,6 +153,10 @@ function movePiece(from, to, promotion, rcvd) {
     }
 
     if ($chess.game_over()) {
+      $socket.emit('timer-clear-interval', {
+        'token': $token
+      });
+
       $('.resign').hide();
       alert(result);
     } else {

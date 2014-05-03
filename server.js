@@ -125,6 +125,10 @@ io.sockets.on('connection', function (socket) {
     runTimer('black', data.token, socket);
   });
 
+  socket.on('timer-clear-interval', function (data) {
+    clearInterval(games[data.token].interval);
+  });
+
   socket.on('new-move', function (data) {
     var receiver, game;
 
