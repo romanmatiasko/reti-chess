@@ -231,12 +231,16 @@ $(document).ready(function () {
     }
   });
 
-  $socket.on('countdown-white', function (data) {
-    console.log('white', data.time);
-  });
-
-  $socket.on('countdown-black', function (data) {
-    console.log('black', data.time);
+  $socket.on('countdown', function (data) {
+    var color = data.color;
+    var opp_color = color === 'black' ? 'white' : 'black';
+    var min = Math.floor(data.time / 60);
+    var sec = data.time % 60;
+    if (sec.toString().length === 1) {
+      sec = '0' + sec;
+    }
+    $('#clock li.' + opp_color).removeClass('ticking');
+    $('#clock li.' + color).addClass('ticking').text(min + ':' + sec);
   });
 
   $socket.on('countdown-gameover', function (data) {
@@ -251,6 +255,12 @@ $(document).ready(function () {
 
 /* gameplay */
 $(document).ready(function () {
+
+  $('#clock li').each(function() {
+    $(this).text($time + ':00');
+  });
+  $('#game-type').text($time + '|' + $increment);
+
   $('.chess_board a').click(function (e) {
     var piece = $(this);
     if ((piece.hasClass('white') && $side != 'w') ||

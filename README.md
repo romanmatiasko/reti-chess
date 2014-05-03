@@ -13,7 +13,7 @@ The project is named after famous Czechoslovakian chess player Richard Réti. Af
 What features chess supports?
 -----------------------------
 
-This is a very lightweight version of chess. You can only play real-time against the human, an AI is not available. Reti Chess doesn't have any timer, the time for a move is unlimited. Although, if you reload the window or disconnect from the game, the game will be cancelled.
+This is a lightweight version of chess. You can only play real-time against the human, an AI is not available. Reti Chess supports simple chat and also timer. You can set timer up to 50 minutes with increment of max 50 seconds per side. If you reload the window or disconnect from the game, the game will be cancelled.
 
 
 People behind this project

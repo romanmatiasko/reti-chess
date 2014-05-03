@@ -82,8 +82,10 @@ io.sockets.on('connection', function (socket) {
     if (!(data.token in games)) {
       return;
     }
-
     game = games[data.token];
+
+    //join room
+    socket.join(data.token);
 
     if (game.players.length >= 2) {
       socket.emit('full');
@@ -104,7 +106,7 @@ io.sockets.on('connection', function (socket) {
       'id': socket.id,
       'socket': socket,
       'color': color,
-      'time': data.time - data.increment + 1,
+      'time': data.time - data.increment,
       'increment': data.increment
     });
 
@@ -160,7 +162,6 @@ io.sockets.on('connection', function (socket) {
 });
 
 function runTimer(color, token, socket) {
-  var player, time_left, game = games[token];
 
   for (var i in game.players) {
     player = game.players[i];
@@ -168,23 +169,19 @@ function runTimer(color, token, socket) {
     if (player.socket === socket && player.color === color) {
 
       clearInterval(games[token].interval);
-      games[token].players[i].time += games[token].players[i].increment;
+      games[token].players[i].time += games[token].players[i].increment + 1;
 
       return games[token].interval = setInterval(function() {
         games[token].players[i].time -= 1;
         time_left = games[token].players[i].time;
 
         if (time_left >= 0) {
-          socket.emit('countdown-' + color, {
-            'time': time_left
-          });
-        } else {
-          var opponent = getOpponent(token, socket);
-
-          socket.emit('countdown-gameover', {
+          io.sockets.in(token).emit('countdown', {
+            'time': time_left,
             'color': color
           });
-          opponent.socket.emit('countdown-gameover', {
+        } else {
+          io.sockets.in(token).emit('countdown-gameover', {
             'color': color
           });
           clearInterval(games[token].interval);
@@ -201,7 +198,7 @@ function getOpponent(token, socket) {
   for (var j in game.players) {
     player = game.players[j];
 
-    if (player.socket == socket) {
+    if (player.socket === socket) {
       var opponent = game.players[Math.abs(j - 1)];
 
       return opponent;
@@ -231,7 +228,7 @@ function cancelGame(event, token, socket) {
       for (var j in game.players) {
         player = game.players[j];
 
-        if (player.socket == socket) {
+        if (player.socket === socket) {
           opponent = game.players[Math.abs(j - 1)];
           removeGame(game, opponent);
         }

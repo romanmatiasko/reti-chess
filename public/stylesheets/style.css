@@ -114,20 +114,56 @@ h3 {
   .chat img {
     vertical-align: middle; }
   .chat .new-message {
-    color: #d12521; }
-
-.fork {
-  float: left;
-  width: 149px;
-  height: 149px;
-  background: url("../images/forkme.png") no-repeat;
-  position: absolute; }
+    color: #d12521;
+    padding-right: 1em; }
 
 header {
   margin: 0 auto;
   max-width: 800px;
   width: 100%;
   height: 50px; }
+
+#clock {
+  width: 148px;
+  height: 50px;
+  position: absolute;
+  text-align: center;
+  border: 4px solid #e6e3e0; }
+  #clock li {
+    width: 70px;
+    display: inline-block;
+    line-height: 42px;
+    opacity: .9;
+    position: absolute; }
+  #clock li.white {
+    left: 0;
+    color: #424242;
+    background: #fff; }
+  #clock li.black {
+    right: 0;
+    color: #fff;
+    background: #424242; }
+  #clock li.ticking {
+    z-index: 1;
+    font-size: 1.125rem;
+    opacity: 1;
+    box-shadow: 0 0 5px #e6e3e0;
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
+    -moz-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out; }
+
+span#game-type {
+  position: absolute;
+  line-height: 50px;
+  margin-left: 175px;
+  opacity: 0.9; }
 
 #container_wrapper {
   max-width: 960px;
@@ -163,6 +199,15 @@ header {
       color: #424242;
       border: 2px solid #2b222c;
       border-left: 4px solid #2eafc2; }
+    #form fieldset label {
+      position: relative; }
+      #form fieldset label:before {
+        position: absolute;
+        content: 'Up to 50';
+        top: 0;
+        right: 2em;
+        margin-top: -2.5em;
+        font-size: 0.75rem; }
 
 input, button {
   font-family: 'Open Sans'; }
@@ -342,7 +387,7 @@ ul#chat {
       content: '';
       top: 10px; }
   ul#chat li.black {
-    background: #444;
+    background: #424242;
     color: #fff; }
   ul#chat li.white {
     background: #fff;
@@ -353,7 +398,7 @@ ul#chat {
     border-bottom: 7px solid transparent;
     border-top: 7px solid transparent; }
   ul#chat li.black.left:before {
-    border-right: 7px solid #444; }
+    border-right: 7px solid #424242; }
   ul#chat li.white.left:before {
     border-right: 7px solid #fff; }
   ul#chat li.right:before {
@@ -362,7 +407,7 @@ ul#chat {
     border-bottom: 7px solid transparent;
     border-top: 7px solid transparent; }
   ul#chat li.black.right:before {
-    border-left: 7px solid #444; }
+    border-left: 7px solid #424242; }
   ul#chat li.white.right:before {
     border-left: 7px solid #fff; }
 
@@ -388,7 +433,7 @@ ul#chat {
   font-size: 2rem;
   line-height: 2rem;
   height: 517px;
-  overflow-y: scroll; }
+  overflow-y: auto; }
   #captured-pieces ul {
     width: 50px;
     min-height: 5px;
@@ -539,16 +584,23 @@ span.promotion {
   header, #board_moves_wrapper, #sounds_label {
     max-width: 530px; } }
 @media only screen and (max-width: 759px) {
+  html {
+    font-size: 14px; }
+
   #form fieldset {
     width: 100%;
     text-align: center; }
-  #form label {
-    display: block;
-    line-height: 45px;
-    padding-left: 0; }
+    #form fieldset label {
+      display: block;
+      line-height: 45px;
+      padding-left: 0; }
+      #form fieldset label:before {
+        margin-left: -7em;
+        margin-top: 0;
+        right: auto; }
 
-  html {
-    font-size: 14px; }
+  span#game-type {
+    display: none; }
 
   #container_wrapper {
     max-width: 759px;
@@ -568,6 +620,11 @@ span.promotion {
 
   input.game_link {
     font-size: 1rem; }
+
+  ul#clock {
+    width: 118px; }
+    ul#clock li {
+      width: 55px; }
 
   #container_wrapper {
     max-width: 529px;
