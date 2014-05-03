@@ -162,6 +162,7 @@ io.sockets.on('connection', function (socket) {
 });
 
 function runTimer(color, token, socket) {
+  var player, time_left, game = games[token];
 
   for (var i in game.players) {
     player = game.players[i];
