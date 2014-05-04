@@ -1,181 +1,182 @@
-var $side  = 'w';
-var $piece = null;
-var $chess = new Chess();
-var $gameOver = false;
+$(function() {
 
-function selectPiece(el) {
-  el.addClass('selected');
-}
+  var $side  = 'w';
+  var $piece = null;
+  var $chess = new Chess();
+  var $gameOver = false;
 
-function unselectPiece(el) {
-  el.removeClass('selected');
-}
+  function selectPiece(el) {
+    el.addClass('selected');
+  }
 
-function isSelected(el) {
-  return el ? el.hasClass('selected') : false;
-}
+  function unselectPiece(el) {
+    el.removeClass('selected');
+  }
 
-function movePiece(from, to, promotion, rcvd) {
-  var move = $chess.move({
-    'from': from,
-    'to': to,
-    promotion: promotion
-  });
+  function isSelected(el) {
+    return el ? el.hasClass('selected') : false;
+  }
 
-  if (move && !$gameOver) {
-    var tdFrom = $('td.' + from.toUpperCase());
-    var tdTo = $('td.' + to.toUpperCase());
+  function movePiece(from, to, promotion, rcvd) {
+    var move = $chess.move({
+      'from': from,
+      'to': to,
+      promotion: promotion
+    });
 
-    //highlight moves
-    if ($('td').hasClass('last-target')){
-      $('td').removeClass('last-target last-origin');
-    }
-    tdFrom.addClass('last-origin');
-    tdTo.addClass('last-target');
-    
-    var piece = tdFrom.find('a'); // piece being moved
-    var moveSnd = $("#moveSnd")[0];
-    unselectPiece(piece.parent());
-    
-    if (tdTo.html() !== '') { //place captured piece next to the chessboard
-      $('#captured-pieces')
-        .find($chess.turn() === 'b' ? '.b' : '.w')
-        .append('<li>' + tdTo.find('a').html() + '</li>');
-    }
-    
-    tdTo.html(piece);
+    if (move && !$gameOver) {
+      var tdFrom = $('td.' + from.toUpperCase());
+      var tdTo = $('td.' + to.toUpperCase());
 
-    $piece = null;
-
-    // en passant move
-    if (move.flags === 'e'){
-      var enpassant = move.to.charAt(0) + move.from.charAt(1);
-      $('td.' + enpassant.toUpperCase()).html('');
-    }
-    
-    //kingside castling
-    var rook;
-    if (move.flags === 'k'){
-      if (move.to === 'g1'){
-        rook = $('td.H1').find('a');
-        $('td.F1').html(rook);
+      //highlight moves
+      if ($('td').hasClass('last-target')){
+        $('td').removeClass('last-target last-origin');
       }
-      else if (move.to === 'g8'){
-        rook = $('td.H8').find('a');
-        $('td.F8').html(rook);
+      tdFrom.addClass('last-origin');
+      tdTo.addClass('last-target');
+      
+      var piece = tdFrom.find('a'); // piece being moved
+      var moveSnd = $("#moveSnd")[0];
+      unselectPiece(piece.parent());
+      
+      if (tdTo.html() !== '') { //place captured piece next to the chessboard
+        $('#captured-pieces')
+          .find($chess.turn() === 'b' ? '.b' : '.w')
+          .append('<li>' + tdTo.find('a').html() + '</li>');
       }
-    }
+      
+      tdTo.html(piece);
 
-    //queenside castling
-    if (move.flags === 'q'){
-      if (move.to === 'c1'){
-        rook = $('td.A1').find('a');
-        $('td.D1').html(rook);
+      $piece = null;
+
+      // en passant move
+      if (move.flags === 'e'){
+        var enpassant = move.to.charAt(0) + move.from.charAt(1);
+        $('td.' + enpassant.toUpperCase()).html('');
       }
-      else if (move.to === 'c8'){
-        rook = $('td.A8').find('a');
-        $('td.D8').html(rook);
+      
+      //kingside castling
+      var rook;
+      if (move.flags === 'k'){
+        if (move.to === 'g1'){
+          rook = $('td.H1').find('a');
+          $('td.F1').html(rook);
+        }
+        else if (move.to === 'g8'){
+          rook = $('td.H8').find('a');
+          $('td.F8').html(rook);
+        }
       }
-    }
 
-    //promotion
-    if (move.flags === 'np' || move.flags === 'cp'){
-      var square = $('td.' + move.to.toUpperCase()).find('a');
-      var option = move.promotion;
-      var promotion_w = {
-        'q': '&#9813;',
-        'r': '&#9814;',
-        'n': '&#9816;',
-        'b': '&#9815;'
-      };
-      var promotion_b = {
-        'q': '&#9819;',
-        'r': '&#9820;',
-        'n': '&#9822;',
-        'b': '&#9821;'
-      };
-      if (square.hasClass('white')){
-        square.html(promotion_w[option]);
-      } else {
-        square.html(promotion_b[option]);
+      //queenside castling
+      if (move.flags === 'q'){
+        if (move.to === 'c1'){
+          rook = $('td.A1').find('a');
+          $('td.D1').html(rook);
+        }
+        else if (move.to === 'c8'){
+          rook = $('td.A8').find('a');
+          $('td.D8').html(rook);
+        }
       }
-    }
-    
-    if ($('#sounds').is(':checked')) {
-      moveSnd.play();
-    }
-    
-    //feedback
-    var fm = $('.feedback-move');
-    var fs = $('.feedback-status');
 
-    $chess.turn() === 'b' ? fm.text('Black to move.') : fm.text('White to move.');
-    fm.parent().toggleClass('blackfeedback whitefeedback');
+      //promotion
+      if (move.flags === 'np' || move.flags === 'cp'){
+        var square = $('td.' + move.to.toUpperCase()).find('a');
+        var option = move.promotion;
+        var promotion_w = {
+          'q': '&#9813;',
+          'r': '&#9814;',
+          'n': '&#9816;',
+          'b': '&#9815;'
+        };
+        var promotion_b = {
+          'q': '&#9819;',
+          'r': '&#9820;',
+          'n': '&#9822;',
+          'b': '&#9821;'
+        };
+        if (square.hasClass('white')){
+          square.html(promotion_w[option]);
+        } else {
+          square.html(promotion_b[option]);
+        }
+      }
+      
+      if ($('#sounds').is(':checked')) {
+        moveSnd.play();
+      }
+      
+      //feedback
+      var fm = $('.feedback-move');
+      var fs = $('.feedback-status');
 
-    $chess.in_check() ? fs.text(' Check.') : fs.text('');
+      $chess.turn() === 'b' ? fm.text('Black to move.') : fm.text('White to move.');
+      fm.parent().toggleClass('blackfeedback whitefeedback');
 
-    //game over
-    if ($chess.game_over()) {
-      fm.text('');
-      var result = "";
+      $chess.in_check() ? fs.text(' Check.') : fs.text('');
 
-      if ($chess.in_checkmate())
-        result = $chess.turn() === 'b' ? 'Checkmate. White wins!' : 'Checkmate. Black wins!'
-      else if ($chess.in_draw())
-        result = "Draw.";
-      else if ($chess.in_stalemate())
-        result = "Stalemate.";
-      else if ($chess.in_threefold_repetition())
-        result = "Draw. (Threefold Repetition)";
-      else if ($chess.insufficient_material())
-        result = "Draw. (Insufficient Material)";
-      fs.text(result);
-    }
+      //game over
+      if ($chess.game_over()) {
+        fm.text('');
+        var result = "";
 
-    /* Add all moves to the table */
-    var pgn = $chess.pgn({ max_width: 5, newline_char: ',' });
-    var moves = pgn.split(',');
-    var last_move = moves.pop().split('.');
-    var move_number = last_move[0];
-    var move_pgn = $.trim(last_move[1]);
+        if ($chess.in_checkmate())
+          result = $chess.turn() === 'b' ? 'Checkmate. White wins!' : 'Checkmate. Black wins!'
+        else if ($chess.in_draw())
+          result = "Draw.";
+        else if ($chess.in_stalemate())
+          result = "Stalemate.";
+        else if ($chess.in_threefold_repetition())
+          result = "Draw. (Threefold Repetition)";
+        else if ($chess.insufficient_material())
+          result = "Draw. (Insufficient Material)";
+        fs.text(result);
+      }
 
-    if (move_pgn.indexOf(' ') != -1) {
-      var moves = move_pgn.split(' ');
-      move_pgn = moves[1];
-    }
+      /* Add all moves to the table */
+      var pgn = $chess.pgn({ max_width: 5, newline_char: ',' });
+      var moves = pgn.split(',');
+      var last_move = moves.pop().split('.');
+      var move_number = last_move[0];
+      var move_pgn = $.trim(last_move[1]);
 
-    $('#moves tbody tr').append('<td><strong>' + move_number + '</strong>. ' + move_pgn + '</td>');
+      if (move_pgn.indexOf(' ') != -1) {
+        var moves = move_pgn.split(' ');
+        move_pgn = moves[1];
+      }
 
-    if (rcvd === undefined) {
-      $socket.emit('new-move', {
-        'token': $token,
-        'move': move
-      });
-    }
+      $('#moves tbody tr').append('<td><strong>' + move_number + '</strong>. ' + move_pgn + '</td>');
 
-    if ($chess.game_over()) {
-      $socket.emit('timer-clear-interval', {
-        'token': $token
-      });
+      if (rcvd === undefined) {
+        $socket.emit('new-move', {
+          'token': $token,
+          'move': move
+        });
+      }
 
-      $('.resign').hide();
-      alert(result);
-    } else {
-      if ($chess.turn() === 'b') {
-        $socket.emit('timer-black', {
+      if ($chess.game_over()) {
+        $socket.emit('timer-clear-interval', {
           'token': $token
         });
+
+        $('.resign').hide();
+        alert(result);
       } else {
-        $socket.emit('timer-white', {
-          'token': $token
-        });
+        if ($chess.turn() === 'b') {
+          $socket.emit('timer-black', {
+            'token': $token
+          });
+        } else {
+          $socket.emit('timer-white', {
+            'token': $token
+          });
+        }
       }
     }
   }
-}
 
-/* socket.io */
-$(document).ready(function () {
+  /* socket.io */
 
   $socket.emit('join', {
     'token': $token,
@@ -270,10 +271,7 @@ $(document).ready(function () {
     $('.feedback-status').text(message);
   });
 
-});
-
-/* gameplay */
-$(document).ready(function () {
+  /* gameplay */
 
   $('#clock li').each(function() {
     $(this).text($time + ':00');

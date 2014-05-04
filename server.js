@@ -126,7 +126,9 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('timer-clear-interval', function (data) {
-    clearInterval(games[data.token].interval);
+    if (data.token in games) {
+      clearInterval(games[data.token].interval);
+    }
   });
 
   socket.on('new-move', function (data) {
@@ -152,10 +154,12 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('resign', function (data) {
-    clearInterval(games[data.token].interval);
-    io.sockets.in(data.token).emit('player-resigned', {
-      'color': data.color
-    });
+    if (data.token in games) {
+      clearInterval(games[data.token].interval);
+      io.sockets.in(data.token).emit('player-resigned', {
+        'color': data.color
+      });
+    }
   });
 
   socket.on('disconnect', function (data) {
@@ -177,15 +181,18 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('send-message', function (data) {
-    var opponent = getOpponent(data.token, socket);
-    opponent.socket.emit('receive-message', data);
+    if (data.token in games) {
+      var opponent = getOpponent(data.token, socket);
+      opponent.socket.emit('receive-message', data);
+    }
   });
 });
 
 function runTimer(color, token, socket) {
-  console.log(games);
   var player, time_left, game = games[token];
 
+  if (!game) return;
+  
   for (var i in game.players) {
     player = game.players[i];
 

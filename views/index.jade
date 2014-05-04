@@ -1,7 +1,6 @@
 extends layout
 
 block content
-  script(type='text/javascript', src='/javascripts/start.js')
   h1.knight
   h2 Reti Chess
   p.margin-fifty.center A lightweight real-time chess app built in Node.js, Express framework and Socket.IO
@@ -22,3 +21,6 @@ block content
 
   p.center
     a(href='/about', class='alpha') Read more about Reti Chess
+
+block scripts
+  script(type='text/javascript', src='/javascripts/start.js')

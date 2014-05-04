@@ -5,7 +5,6 @@ block head
     $token = '#{token}';
     $time = #{time};
     $increment = #{increment};
-  script(type='text/javascript', src='/javascripts/play.js')
 
 block content
   header.clearfix
@@ -269,3 +268,6 @@ block content
     span.feedback.whitefeedback
       span.feedback-move White to move.
       span.feedback-status
+
+block scripts
+  script(type='text/javascript', src='/javascripts/play.js')

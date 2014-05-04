@@ -1,10 +1,10 @@
-$(document).ready(function () {
+$(function () {
   var $token, $time, $increment;
 
   $socket.on('created', function (data) {
     $token = data.token;
     $('#waiting').text('Wating for opponent to connect.');
-    
+
     $('#game_link').val($URL + '/play/' + $token + '/' + $time + '/' + $increment); // create game link
     $('#game_link').click(function() {
       $(this).select(); // when clicked, link is automatically selected for convenience
