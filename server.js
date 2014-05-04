@@ -101,12 +101,12 @@ io.sockets.on('connection', function (socket) {
 
     //join room
     socket.join(data.token);
-    
+
     games[data.token].players.push({
       'id': socket.id,
       'socket': socket,
       'color': color,
-      'time': data.time - data.increment,
+      'time': data.time - data.increment + 1,
       'increment': data.increment
     });
 
@@ -162,6 +162,46 @@ io.sockets.on('connection', function (socket) {
     }
   });
 
+  socket.on('rematch-offer', function (data) {
+    var opponent;
+    
+    if (data.token in games) {
+      opponent = getOpponent(data.token, socket);
+      if (opponent) {
+        opponent.socket.emit('rematch-offered');
+      }
+    }
+  });
+
+  socket.on('rematch-decline', function (data) {
+    var opponent;
+
+    if (data.token in games) {
+      opponent = getOpponent(data.token, socket);
+      if (opponent) {
+        opponent.socket.emit('rematch-declined');
+      }
+    }
+  });
+
+  socket.on('rematch-confirm', function (data) {
+    var opponent;
+
+    if (data.token in games) {
+
+      for(var j in games[data.token].players) {
+        games[data.token].players[j].time = data.time - data.increment + 1;
+        games[data.token].players[j].increment = data.increment;
+        games[data.token].players[j].color = games[data.token].players[j].color === 'black' ? 'white' : 'black';
+      }
+
+      opponent = getOpponent(data.token, socket);
+      if (opponent) {
+        io.sockets.in(data.token).emit('rematch-confirmed');
+      }
+    }
+  })
+
   socket.on('disconnect', function (data) {
     var player, opponent, game;
     for (var token in games) {
@@ -199,7 +239,7 @@ function runTimer(color, token, socket) {
     if (player.socket === socket && player.color === color) {
 
       clearInterval(games[token].interval);
-      games[token].players[i].time += games[token].players[i].increment + 1;
+      games[token].players[i].time += games[token].players[i].increment;
 
       return games[token].interval = setInterval(function() {
         games[token].players[i].time -= 1;

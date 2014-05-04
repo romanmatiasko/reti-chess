@@ -110,7 +110,7 @@ h3 {
   background: lighten($blue, 20%) !important;
 }
 
-#modal-mask{
+#modal-mask, #offer-mask{
   display: none;
   cursor: pointer;
   position: fixed;
@@ -120,9 +120,17 @@ h3 {
   background: #444;
   background: rgba(0, 0, 0, .7);
   z-index: 10;
+
+  > p{
+    color: #eee;
+    margin: 2em;
+    strong{
+      color: #fff;
+    }
+  }
 }
 
-#modal-window{
+#modal-window, #offer-window{
   width: 420px;
   height: 180px;
   position: fixed;
@@ -140,16 +148,31 @@ h3 {
     text-align: center;
     padding: 1.5em;
   }
+  .button:active{
+    top: auto;
+    bottom: calc(1em + 1px);
+  }
+}
+
+#modal-window{
   .button{
     position: absolute;
     left: 50%;
     bottom: 1em;
     margin-left: -60px;
+  }
+}
 
-    &:active{
-      top: auto;
-      bottom: calc(1em + 1px);
-    }
+#offer-window{
+  .button{
+    position: absolute;
+    bottom: 1em;
+  }
+  #offer-accept{
+    right: 4em;
+  }
+  #offer-decline{
+    left: 4em;
   }
 }
 
@@ -351,17 +374,26 @@ a.button:hover{
   color: white;
 }
 
-.resign {
+.resign, .rematch {
+  margin-right: 10px;
+}
+
+.button--red{
   background: $red;
   border-color: darken($red, 5%);
   box-shadow: inset 0 -2px darken($red, 5%);
   margin-right: 10px;
+
+  &:hover{
+    background: lighten($red, 5%);
+    border-bottom: 2px solid darken($red, 2%);
+    box-shadow: inset 0 -2px darken($red, 2%);
+    @include all-transition;
+  }
 }
-.resign:hover {
-  background: lighten($red, 5%);
-  border-bottom: 2px solid darken($red, 2%);
-  box-shadow: inset 0 -2px darken($red, 2%);
-  @include all-transition;
+
+.rematch{
+  display: none;
 }
 
 p#waiting {

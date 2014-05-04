@@ -19,9 +19,27 @@ html
       script(src='http://html5shiv.googlecode.com/svn/trunk/html5.js')
   body
     #modal-mask
+      p
+        strong Esc: 
+        |  OK
+        br
+        strong Enter: 
+        |  OK
       #modal-window
         p#modal-message Message.
         a#modal-ok.button(href='#') OK
+    #offer-mask
+      p
+        strong Esc: 
+        |  Decline
+        br
+        strong Enter: 
+        |  Accept
+      #offer-window
+        p#offer-message Offer.
+        a#offer-accept.button(href='#') Accept
+        a#offer-decline.button.button--red(href='#') Decline
+
     #container_wrapper.clearfix
       #container.clearfix
         block content

@@ -1,26 +1,51 @@
 $(function() {
 
+  var from, to, promotion, rcvd;
   var $side  = 'w';
   var $piece = null;
   var $chess = new Chess();
   var $gameOver = false;
+  var $chessboardWhite = $('.chess_board.white').clone();
+  var $chessboardBlack = $('.chess_board.black').clone();
 
-  function modalKeydownHandler(e){
+  function modalKeydownHandler(e) {
+    e.preventDefault();
+    if (e.which === 13 || e.which === 27) {
+      hideModal();
+    }
+  }
+
+  function offerKeydownHandler(e) {
     e.preventDefault();
     if (e.which === 13) {
-      hideModal();
+      hideOffer();
+      e.data.accept();
+    } else if (e.which === 27) {
+      hideOffer();
+      e.data.decline(); 
     }
   }
 
   function showModal(message) {
     $('#modal-message').text(message);
     $('#modal-mask').fadeIn(200);
-    $(document).on('keydown', modalKeydownHandler);
+    $(document).on('keyup', modalKeydownHandler);
   }
 
   function hideModal() {
     $('#modal-mask').fadeOut(200);
-    $(document).off('keydown', modalKeydownHandler);
+    $(document).off('keyup', modalKeydownHandler);
+  }
+
+  function showOffer(offer, options) {
+    $('#offer-message').text(offer);
+    $('#offer-mask').fadeIn(200);
+    $(document).on('keyup', options, offerKeydownHandler);
+  }
+
+  function hideOffer() {
+    $('#offer-mask').fadeOut(200);
+    $(document).off('keyup', offerKeydownHandler);
   }
 
   function selectPiece(el) {
@@ -159,7 +184,7 @@ $(function() {
       var move_number = last_move[0];
       var move_pgn = $.trim(last_move[1]);
 
-      if (move_pgn.indexOf(' ') != -1) {
+      if (move_pgn.indexOf(' ') !== -1) {
         var moves = move_pgn.split(' ');
         move_pgn = moves[1];
       }
@@ -179,7 +204,8 @@ $(function() {
           'token': $token
         });
 
-        $('.resign').off().remove();
+        $('.resign').hide();
+        $('.rematch').show();
         showModal(result);
       } else {
         if ($chess.turn() === 'b') {
@@ -196,6 +222,20 @@ $(function() {
   }
 
   /* socket.io */
+
+  function rematchAccepted() {
+    $socket.emit('rematch-confirm', {
+      'token': $token,
+      'time': $time * 60,
+      'increment': $increment
+    });
+  }
+
+  function rematchDeclined() {
+    $socket.emit('rematch-decline', {
+      'token': $token
+    });
+  }
 
   $socket.emit('join', {
     'token': $token,
@@ -225,12 +265,19 @@ $(function() {
 
   $socket.on('opponent-disconnected', function (data) {
     $('.resign').off().remove();
-    $('.chess_board a').off();
+    $('.chess_board a').off('click', movePieceFromHandler);
+    $('.chess_board td').off('click', movePieceToHandler);
+
     $('#sendMessage').off();
-    $('#sendMessage').submit(function(e) {
+    $('#sendMessage').submit(function (e) {
       e.preventDefault();
-      showModal("Your opponent has diconnected. You can't send messages.");
+      showModal("Your opponent has disconnected. You can't send messages.");
     });
+    $('.rematch').off();
+    $('.rematch').click(function (e) {
+      e.preventDefault();
+      showModal('Your opponent has disconnected. You need to generate a new link.');
+    })
 
     if (!$gameOver) {
       showModal("Your opponent has disconnected.");
@@ -239,8 +286,10 @@ $(function() {
 
   $socket.on('player-resigned', function (data) {
     $gameOver = true;
-    $('.resign').off().remove();
-    $('.chess_board a').off();
+    $('.resign').hide();
+    $('.rematch').show();
+    $('.chess_board a').off('click', movePieceFromHandler);
+    $('.chess_board td').off('click', movePieceToHandler);
     var winner = data.color === 'w' ? 'Black' : 'White';
     var loser = data.color === 'w' ? 'White' : 'Black';
     var message = loser + ' resigned. ' + winner + ' wins.';
@@ -286,14 +335,65 @@ $(function() {
 
   $socket.on('countdown-gameover', function (data) {
     $gameOver = true;
-    $('.chess_board a').off();
+    $('.chess_board a').off('click', movePieceFromHandler);
+    $('.chess_board td').off('click', movePieceToHandler);
     var loser = data.color === 'black' ? 'Black' : 'White';
     var winner = data.color === 'black' ? 'White' : 'Black';
-    var message = loser + "'s time is out. " + winner + " won.";
-    $('.resign').off().remove();
+    var message = loser + "'s time is out. " + winner + " wins.";
+    $('.resign').hide();
+    $('.rematch').show();
     showModal(message);
     $('.feedback-move').text('');
     $('.feedback-status').text(message);
+  });
+
+  $socket.on('rematch-offered', function (data) {
+    hideModal();
+    showOffer('Your opponent sent you a rematch offer.', {
+      accept: rematchAccepted,
+      decline: rematchDeclined
+    });
+  });
+
+  $socket.on('rematch-declined', function (data) {
+    showModal('Rematch offer was declined.');
+  });
+
+  $socket.on('rematch-confirmed', function (data) {
+    hideModal();
+    $side = $side === 'w' ? 'b' : 'w'; //swap sides
+    $piece = null;
+    $chess = new Chess();
+    $gameOver = false;
+
+    $('#clock li').each(function () {
+    $(this).text($time + ':00');
+    });
+
+    $('#moves tbody tr').empty();
+    $('#captured-pieces ul').each(function () {
+      $(this).empty();
+    })
+
+    $('.rematch').hide();
+    $('.resign').show();
+
+    if ($side === 'w') {
+      $('.chess_board.black').remove();
+      $('#board_wrapper').append($chessboardWhite.clone());
+
+      $socket.emit('timer-white', {
+        'token': $token
+      });
+    } else {
+      $('.chess_board.white').remove();
+      $('#board_wrapper').append($chessboardBlack.clone());
+      $('.chess_board.black').show();
+    }
+
+    $('.chess_board a').on('click', movePieceFromHandler);
+    $('.chess_board td').on('click', movePieceToHandler);
+    $('#sendMessage').find('input').removeClass('white black').addClass($side === 'b' ? 'black' : 'white');
   });
 
   /* gameplay */
@@ -303,10 +403,10 @@ $(function() {
   });
   $('#game-type').text($time + '|' + $increment);
 
-  $('.chess_board a').click(function (e) {
+  function movePieceFromHandler(e) {
     var piece = $(this);
-    if ((piece.hasClass('white') && $side != 'w') ||
-        (piece.hasClass('black') && $side != 'b')) {
+    if ((piece.hasClass('white') && $side !== 'w') ||
+        (piece.hasClass('black') && $side !== 'b')) {
       if ($piece) {
         movePiece(
           from=$piece.parent().data('id').toLowerCase(),
@@ -315,7 +415,7 @@ $(function() {
         )
       }
     } else {
-      if ($chess.turn() != $side) {
+      if ($chess.turn() !== $side) {
         return false;
       }
 
@@ -334,9 +434,9 @@ $(function() {
 
     e.stopImmediatePropagation();
     e.preventDefault();
-  });
+  }
 
-  $('.chess_board td').click(function (e) {
+  function movePieceToHandler(e) {
     if ($piece) {
       movePiece(
         from=$piece.parent().data('id').toLowerCase(),
@@ -344,23 +444,49 @@ $(function() {
         promotion=$('#promotion option:selected').val()
       )
     }
-  });
+  }
+
+  $('.chess_board a').on('click', movePieceFromHandler);
+  $('.chess_board td').on('click', movePieceToHandler);
 
   $('#modal-mask, #modal-ok').click(function (e) {
     e.preventDefault();
     hideModal();
   });
 
-  $('#modal-window').click(function (e) {
+  $('#offer-accept').click(function (e) {
+    e.preventDefault();
+    hideOffer();
+    rematchAccepted();
+  });
+
+  $('#offer-decline').click(function (e) {
+    e.preventDefault();
+    hideOffer();
+    rematchDeclined();
+  });
+
+  $('#modal-window, #offer-window').click(function (e) {
     e.stopPropagation();
   });
 
   $('.resign').click(function (e) {
+    e.preventDefault();
+
     $socket.emit('resign', {
       'token': $token,
       'color': $side
     });
   });
+
+  $('.rematch').click(function (e) {
+    e.preventDefault();
+    showModal('Your offer has been sent.');
+
+    $socket.emit('rematch-offer', {
+      'token': $token
+    });
+  })
 
   $('a.chat').click(function (e) {
     $('#chat-wrapper').toggle();
