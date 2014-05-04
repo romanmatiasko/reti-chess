@@ -84,9 +84,6 @@ io.sockets.on('connection', function (socket) {
     }
     game = games[data.token];
 
-    //join room
-    socket.join(data.token);
-
     if (game.players.length >= 2) {
       socket.emit('full');
       return;
@@ -102,6 +99,9 @@ io.sockets.on('connection', function (socket) {
       color = colors[Math.floor(Math.random() * 2)];
     }
 
+    //join room
+    socket.join(data.token);
+    
     games[data.token].players.push({
       'id': socket.id,
       'socket': socket,
@@ -192,7 +192,7 @@ function runTimer(color, token, socket) {
   var player, time_left, game = games[token];
 
   if (!game) return;
-  
+
   for (var i in game.players) {
     player = game.players[i];
 

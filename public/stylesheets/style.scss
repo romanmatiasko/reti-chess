@@ -59,7 +59,11 @@ a {
 a:hover { 
   color: $blue;
   text-decoration: none; 
-  @include all-transition }
+  @include all-transition
+}
+a:focus{
+  outline: none;
+}
 
 p {
   text-align: left;
@@ -105,6 +109,50 @@ h3 {
 .last-target{
   background: lighten($blue, 20%) !important;
 }
+
+#modal-mask{
+  display: none;
+  cursor: pointer;
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: #444;
+  background: rgba(0, 0, 0, .7);
+  z-index: 10;
+}
+
+#modal-window{
+  width: 420px;
+  height: 180px;
+  position: fixed;
+  background: #fff;
+  top: 50%;
+  left: 50%;
+  margin-left: -210px;
+  margin-top: -90px;
+  border: 8px solid lighten($dark-purple, 10%);
+  box-shadow: 0 10px 30px #333;
+  cursor: auto;
+  z-index: 15;
+
+  p{
+    text-align: center;
+    padding: 1.5em;
+  }
+  .button{
+    position: absolute;
+    left: 50%;
+    bottom: 1em;
+    margin-left: -60px;
+
+    &:active{
+      top: auto;
+      bottom: calc(1em + 1px);
+    }
+  }
+}
+
 .chat{
   text-decoration: none;
   color: darken($blue, 10%);
@@ -291,9 +339,6 @@ input.game_link {
 }
 .button:active{
   top: 1px;
-}
-.button:focus{
-  outline: none;
 }
 
 a.button{

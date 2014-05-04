@@ -18,7 +18,10 @@ html
     //if IE
       script(src='http://html5shiv.googlecode.com/svn/trunk/html5.js')
   body
-    
+    #modal-mask
+      #modal-window
+        p#modal-message Message.
+        a#modal-ok.button(href='#') OK
     #container_wrapper.clearfix
       #container.clearfix
         block content

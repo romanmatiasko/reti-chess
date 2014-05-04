@@ -5,6 +5,24 @@ $(function() {
   var $chess = new Chess();
   var $gameOver = false;
 
+  function modalKeydownHandler(e){
+    e.preventDefault();
+    if (e.which === 13) {
+      hideModal();
+    }
+  }
+
+  function showModal(message) {
+    $('#modal-message').text(message);
+    $('#modal-mask').fadeIn(200);
+    $(document).on('keydown', modalKeydownHandler);
+  }
+
+  function hideModal() {
+    $('#modal-mask').fadeOut(200);
+    $(document).off('keydown', modalKeydownHandler);
+  }
+
   function selectPiece(el) {
     el.addClass('selected');
   }
@@ -156,12 +174,13 @@ $(function() {
       }
 
       if ($chess.game_over()) {
+        $gameOver = true;
         $socket.emit('timer-clear-interval', {
           'token': $token
         });
 
-        $('.resign').hide();
-        alert(result);
+        $('.resign').off().remove();
+        showModal(result);
       } else {
         if ($chess.turn() === 'b') {
           $socket.emit('timer-black', {
@@ -205,22 +224,27 @@ $(function() {
   });
 
   $socket.on('opponent-disconnected', function (data) {
-    $('.resign').remove();
+    $('.resign').off().remove();
     $('.chess_board a').off();
     $('#sendMessage').off();
     $('#sendMessage').submit(function(e) {
       e.preventDefault();
-      alert("Your opponent has diconnected. You can't send messages.");
+      showModal("Your opponent has diconnected. You can't send messages.");
     });
+
+    if (!$gameOver) {
+      showModal("Your opponent has disconnected.");
+    }
   });
 
   $socket.on('player-resigned', function (data) {
-    $('.resign').remove();
+    $gameOver = true;
+    $('.resign').off().remove();
     $('.chess_board a').off();
     var winner = data.color === 'w' ? 'Black' : 'White';
     var loser = data.color === 'w' ? 'White' : 'Black';
     var message = loser + ' resigned. ' + winner + ' wins.';
-    alert(message);
+    showModal(message);
     $('.feedback-move').text('');
     $('.feedback-status').text(message);
   });
@@ -261,12 +285,13 @@ $(function() {
   });
 
   $socket.on('countdown-gameover', function (data) {
+    $gameOver = true;
     $('.chess_board a').off();
     var loser = data.color === 'black' ? 'Black' : 'White';
     var winner = data.color === 'black' ? 'White' : 'Black';
     var message = loser + "'s time is out. " + winner + " won.";
-    $('.resign').hide();
-    alert(message);
+    $('.resign').off().remove();
+    showModal(message);
     $('.feedback-move').text('');
     $('.feedback-status').text(message);
   });
@@ -319,6 +344,15 @@ $(function() {
         promotion=$('#promotion option:selected').val()
       )
     }
+  });
+
+  $('#modal-mask, #modal-ok').click(function (e) {
+    e.preventDefault();
+    hideModal();
+  });
+
+  $('#modal-window').click(function (e) {
+    e.stopPropagation();
   });
 
   $('.resign').click(function (e) {
