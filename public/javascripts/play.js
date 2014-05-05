@@ -217,7 +217,43 @@ $(function() {
             'token': $token
           });
         }
+        $('#clock li').each(function() {
+          $(this).toggleClass('ticking');
+        });
       }
+    }
+  }
+
+  function unbindMoveHandlers() {
+    var moveFrom = $('.chess_board a');
+    var moveTo = $('.chess_board td');
+
+    moveFrom.off('click', movePieceFromHandler);
+    moveTo.off('click', movePieceToHandler);
+
+    moveFrom.attr('draggable', false).off('dragstart', dragstartHandler);
+    moveFrom.off('dragend');
+    moveTo.attr('draggable', false).off('drop', dropHandler);
+    moveTo.off('dragover');
+  }
+
+  function bindMoveHandlers() {
+    var moveFrom = $('.chess_board a');
+    var moveTo = $('.chess_board td');
+
+    moveFrom.on('click', movePieceFromHandler);
+    moveTo.on('click', movePieceToHandler);
+
+    if (dndSupported()) {
+      moveFrom.attr('draggable', true).on('dragstart', dragstartHandler);
+      moveTo.on('draggable', true).on('drop', dropHandler);
+      moveTo.on('dragover', function (e) {
+        e.preventDefault();
+        e.originalEvent.dataTransfer.dropEffect = 'move';
+      });
+      moveFrom.on('dragend', function (e) {
+        moveTo.removeClass('moving');
+      });
     }
   }
 
@@ -256,6 +292,7 @@ $(function() {
       $('.chess_board.black').show();
     }
 
+    $('#clock li.white').addClass('ticking');
     $('#sendMessage').find('input').addClass($side === 'b' ? 'black' : 'white');
   });
 
@@ -265,8 +302,7 @@ $(function() {
 
   $socket.on('opponent-disconnected', function (data) {
     $('.resign').off().remove();
-    $('.chess_board a').off('click', movePieceFromHandler);
-    $('.chess_board td').off('click', movePieceToHandler);
+    
 
     $('#sendMessage').off();
     $('#sendMessage').submit(function (e) {
@@ -288,8 +324,7 @@ $(function() {
     $gameOver = true;
     $('.resign').hide();
     $('.rematch').show();
-    $('.chess_board a').off('click', movePieceFromHandler);
-    $('.chess_board td').off('click', movePieceToHandler);
+    unbindMoveHandlers();
     var winner = data.color === 'w' ? 'Black' : 'White';
     var loser = data.color === 'w' ? 'White' : 'Black';
     var message = loser + ' resigned. ' + winner + ' wins.';
@@ -329,14 +364,13 @@ $(function() {
     if (sec.toString().length === 1) {
       sec = '0' + sec;
     }
-    $('#clock li.' + opp_color).removeClass('ticking');
-    $('#clock li.' + color).addClass('ticking').text(min + ':' + sec);
+    
+    $('#clock li.' + color).text(min + ':' + sec);
   });
 
   $socket.on('countdown-gameover', function (data) {
     $gameOver = true;
-    $('.chess_board a').off('click', movePieceFromHandler);
-    $('.chess_board td').off('click', movePieceToHandler);
+    unbindMoveHandlers();
     var loser = data.color === 'black' ? 'Black' : 'White';
     var winner = data.color === 'black' ? 'White' : 'Black';
     var message = loser + "'s time is out. " + winner + " wins.";
@@ -367,8 +401,13 @@ $(function() {
     $gameOver = false;
 
     $('#clock li').each(function () {
-    $(this).text($time + ':00');
+      $(this).text($time + ':00');
     });
+
+    if ($('#clock li.black').hasClass('ticking')) {
+      $('#clock li.black').removeClass('ticking');
+      $('#clock li.white').addClass('ticking');
+    }
 
     $('#moves tbody tr').empty();
     $('#captured-pieces ul').each(function () {
@@ -391,8 +430,7 @@ $(function() {
       $('.chess_board.black').show();
     }
 
-    $('.chess_board a').on('click', movePieceFromHandler);
-    $('.chess_board td').on('click', movePieceToHandler);
+    bindMoveHandlers();
     $('#sendMessage').find('input').removeClass('white black').addClass($side === 'b' ? 'black' : 'white');
   });
 
@@ -412,14 +450,14 @@ $(function() {
           from=$piece.parent().data('id').toLowerCase(),
           to=$(this).parent().data('id').toLowerCase(),
           promotion=$('#promotion option:selected').val()
-        )
+        );
       }
     } else {
       if ($chess.turn() !== $side) {
         return false;
       }
 
-      if ($piece && isSelected($(this).parent())) {
+      if (e && $piece && isSelected($(this).parent())) {
         unselectPiece($piece.parent());
         $piece = null;
       } else {
@@ -432,8 +470,10 @@ $(function() {
       }
     }
 
-    e.stopImmediatePropagation();
-    e.preventDefault();
+    if (e) { // only on click event, not drag and drop
+      e.stopImmediatePropagation();
+      e.preventDefault();
+    }
   }
 
   function movePieceToHandler(e) {
@@ -446,8 +486,26 @@ $(function() {
     }
   }
 
-  $('.chess_board a').on('click', movePieceFromHandler);
-  $('.chess_board td').on('click', movePieceToHandler);
+  bindMoveHandlers();
+
+  function dndSupported() {
+    return 'draggable' in document.createElement('span');
+  }
+
+  function dragstartHandler(e) {
+    var el = $(this);
+    $drgSrcEl = el;
+    $drgSrcEl.parent().addClass('moving');
+    e.originalEvent.dataTransfer.effectAllowed = 'move';
+    e.originalEvent.dataTransfer.setData('text/html', el.html());
+    movePieceFromHandler.call(this, undefined);
+  }
+
+  function dropHandler(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    movePieceToHandler.call(this, undefined);
+  }
 
   $('#modal-mask, #modal-ok').click(function (e) {
     e.preventDefault();

@@ -569,13 +569,16 @@ table#moves {
       background: #fefefe;
       display: block;
       float: left; }
+      .chess_board tr td.moving {
+        background: #ef9e9c !important; }
       .chess_board tr td a {
         width: 62.5px;
         height: 62.5px;
         font-size: 3.5rem;
         color: #424242;
         text-decoration: none;
-        display: block; }
+        display: block;
+        cursor: pointer; }
 
 .chess_board tr:nth-child(odd) td:nth-child(even),
 .chess_board tr:nth-child(even) td:nth-child(odd) {

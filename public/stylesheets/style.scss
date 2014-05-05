@@ -662,6 +662,10 @@ table#moves {
       display: block;
       float: left;
 
+      &.moving{
+        background: lighten($red, 30%) !important;
+      }
+
       a {
         width: 62.5px;
         height: 62.5px;
@@ -669,6 +673,7 @@ table#moves {
         color: #424242;
         text-decoration: none;
         display: block;
+        cursor: pointer;
       }
     }
   }
