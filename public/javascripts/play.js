@@ -29,23 +29,23 @@ $(function() {
   function showModal(message) {
     $('#modal-message').text(message);
     $('#modal-mask').fadeIn(200);
-    $(document).on('keyup', modalKeydownHandler);
+    $(document).on('keydown', modalKeydownHandler);
   }
 
   function hideModal() {
     $('#modal-mask').fadeOut(200);
-    $(document).off('keyup', modalKeydownHandler);
+    $(document).off('keydown', modalKeydownHandler);
   }
 
   function showOffer(offer, options) {
     $('#offer-message').text(offer);
     $('#offer-mask').fadeIn(200);
-    $(document).on('keyup', options, offerKeydownHandler);
+    $(document).on('keydown', options, offerKeydownHandler);
   }
 
   function hideOffer() {
     $('#offer-mask').fadeOut(200);
-    $(document).off('keyup', offerKeydownHandler);
+    $(document).off('keydown', offerKeydownHandler);
   }
 
   function selectPiece(el) {
