@@ -1,7 +1,8 @@
 var express = require('express')
   , path    = require('path')
   , crypto  = require('crypto')
-  , http    = require('http');
+  , http    = require('http')
+  , winston = require('winston');
 
 var app = express();
 
@@ -43,6 +44,12 @@ app.get('/play/:token/:time/:increment', function(req, res) {
 var server = http.createServer(app).listen(app.get('port'), app.get('ipaddress'), function() {
   console.log("Express server listening on port " + app.get('port'));
 });
+
+winston.add(winston.transports.File, { filename: 'logs/games.log', handleExceptions: true, exitOnError: false });
+winston.remove(winston.transports.Console);
+winston.handleExceptions(new winston.transports.Console());
+winston.exitOnError = false;
+
 
 var games = {};
 var timer;
@@ -115,6 +122,8 @@ io.sockets.on('connection', function (socket) {
     socket.emit('joined', {
       'color': color
     });
+
+    winston.log('info', 'Number of games', { '#': Object.keys(games).length });
   });
 
   socket.on('timer-white', function (data) {

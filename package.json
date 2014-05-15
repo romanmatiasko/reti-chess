@@ -1,15 +1,15 @@
 {
   "name": "retichess",
-  "version": "0.0.2-0",
+  "version": "0.2.1",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "express": "~3.3.0",
     "jade": "~0.28.2",
-    "socket.io": "~0.9.16"
+    "socket.io": "~0.9.16",
+    "winston": "~0.7.3"
   },
-  "subdomain": "retichess",
   "engines": {
     "node": ">=0.8.x"
   }
