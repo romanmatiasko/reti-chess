@@ -257,6 +257,10 @@ $(function() {
     }
   }
 
+  function escapeHTML(html) {
+    return $('<div/>').text(html).html();
+  }
+
   /* socket.io */
 
   function rematchAccepted() {
@@ -343,7 +347,7 @@ $(function() {
     var chat_node = $('ul#chat')[0];
     var messageSnd = $("#messageSnd")[0];
 
-    chat.append('<li class="' + data.color + ' left" >' + data.message + '</li>');
+    chat.append('<li class="' + data.color + ' left" >' + escapeHTML(data.message) + '</li>');
 
     if (chat.is(':visible') && chat_node.scrollHeight > 300) {
       setTimeout(function() { chat_node.scrollTop = chat_node.scrollHeight; }, 50);
@@ -567,7 +571,7 @@ $(function() {
 
     if (!/^\W*$/.test(message)) {
       input.val('');
-      $('ul#chat').append('<li class="' + color + ' right" >' + message + '</li>');
+      $('ul#chat').append('<li class="' + color + ' right" >' + escapeHTML(message) + '</li>');
 
       var chat_node = $('ul#chat')[0];
       if (chat_node.scrollHeight > 300) {

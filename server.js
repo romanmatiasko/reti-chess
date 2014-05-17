@@ -158,25 +158,16 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('new-move', function (data) {
-    var receiver, game;
+    var opponent;
 
-    if (!(data.token in games)) {
-      return;
+    if (data.token in games) {
+      opponent = getOpponent(data.token, socket);
+      if (opponent) {
+        opponent.socket.emit('move', {
+          'move': data.move
+        });
+      }
     }
-
-    game = games[data.token];
-
-    if (game.players[0].id == socket.id) {
-      receiver = game.players[1].socket;
-    } else if (game.players[1].id == socket.id) {
-      receiver = game.players[0].socket;
-    } else {
-      return;
-    }
-
-    receiver.emit('move', {
-      'move': data.move,
-    });
   });
 
   socket.on('resign', function (data) {
