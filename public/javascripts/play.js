@@ -283,6 +283,10 @@ $(function() {
     'increment': $increment
   });
 
+  $socket.on('token-invalid', function (data) {
+    showModal('Game link is invalid or has expired.');
+  });
+
   $socket.on('joined', function (data) {
     if (data.color === 'white') {
       $side = 'w';

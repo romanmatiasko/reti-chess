@@ -15,6 +15,10 @@ $(function () {
     document.location = $URL + '/play/' + $token + '/' + $time + '/' + $increment;
   });
 
+  $socket.on('token-expired', function (data) {
+    $('#waiting').text('Game link has expired, generate a new one.');
+  });
+
   $('#play').click(function (ev) {
     var min = parseInt($('#minutes').val());
     var sec = parseInt($('#seconds').val());
@@ -22,7 +26,7 @@ $(function () {
       $time = min;
       $increment = sec;
       $socket.emit('start');
-      $('#waiting').slideDown(400); // show waiting for opponent message
+      $('#waiting').text('Generating game link').slideDown(400);
       ev.preventDefault();
     }
   });

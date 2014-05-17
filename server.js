@@ -90,10 +90,19 @@ io.sockets.on('connection', function (socket) {
     var b = new Buffer(Math.random() + new Date().getTime() + socket.id);
     token = b.toString('base64').slice(12, 32);
 
+    //token is valid for 5 minutes
+    var timeout = setTimeout(function () {
+      if (games[token].players.length === 0) {
+        delete games[token];
+        socket.emit('token-expired');
+      }
+    }, 5 * 60 * 1000);
+
     games[token] = {
       'creator': socket,
       'players': [],
-      'interval': null
+      'interval': null,
+      'timeout': timeout
     };
 
     socket.emit('created', {
@@ -105,8 +114,11 @@ io.sockets.on('connection', function (socket) {
     var game, color, time = data.time;
 
     if (!(data.token in games)) {
+      socket.emit('token-invalid');
       return;
     }
+
+    clearTimeout(games[data.token].timeout);
     game = games[data.token];
 
     if (game.players.length >= 2) {
