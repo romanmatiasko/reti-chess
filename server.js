@@ -77,11 +77,10 @@ winston.exitOnError = false;
  */
 var io = require('socket.io').listen(server, {log: false});
 
-if (process.env.OPENSHIFT_NODEJS_IP) {
+
   io.configure(function(){
     io.set('transports', ['websocket']);
   });
-}
 
 io.sockets.on('connection', function (socket) {
   
@@ -96,7 +95,7 @@ io.sockets.on('connection', function (socket) {
         delete games[token];
         socket.emit('token-expired');
       }
-    }, 5 * 60 * 1000);
+    }, 4000);
 
     games[token] = {
       'creator': socket,
@@ -241,7 +240,9 @@ io.sockets.on('connection', function (socket) {
 
         if (player.socket === socket) {
           opponent = game.players[Math.abs(j - 1)];
-          opponent.socket.emit('opponent-disconnected');
+          if (opponent) {
+            opponent.socket.emit('opponent-disconnected');
+          }
           clearInterval(games[token].interval);
           delete games[token];
         }
@@ -252,7 +253,9 @@ io.sockets.on('connection', function (socket) {
   socket.on('send-message', function (data) {
     if (data.token in games) {
       var opponent = getOpponent(data.token, socket);
-      opponent.socket.emit('receive-message', data);
+      if (opponent) {
+        opponent.socket.emit('receive-message', data);
+      }
     }
   });
 });
