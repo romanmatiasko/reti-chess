@@ -77,10 +77,11 @@ winston.exitOnError = false;
  */
 var io = require('socket.io').listen(server, {log: false});
 
-
+if (process.env.OPENSHIFT_NODEJS_IP) {
   io.configure(function(){
     io.set('transports', ['websocket']);
   });
+}
 
 io.sockets.on('connection', function (socket) {
   
@@ -95,7 +96,7 @@ io.sockets.on('connection', function (socket) {
         delete games[token];
         socket.emit('token-expired');
       }
-    }, 4000);
+    }, 5 * 60 * 1000);
 
     games[token] = {
       'creator': socket,
