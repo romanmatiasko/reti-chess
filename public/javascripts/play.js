@@ -306,6 +306,19 @@ $(function() {
 
   $socket.on('move', function (data) {
     movePiece(from=data.move.from, to=data.move.to, promotion=data.move.promotion, rcvd=true);
+
+    if (typeof document.hidden === undefined) return;
+    if (document.hidden) {
+      var title = $('title').text();
+      $('title').text('* ' + title);
+
+      $(window).on('focus', removeAsterisk);
+
+      function removeAsterisk(e) {
+        $('title').text(title);
+        $(window).off('focus', removeAsterisk);
+      }
+    }
   });
 
   $socket.on('opponent-disconnected', function (data) {
