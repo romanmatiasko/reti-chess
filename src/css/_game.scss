@@ -1,0 +1,83 @@
+@import "chat";
+@import "chessboard";
+
+#clock {
+  width: 148px;
+  height: 50px;
+  position: absolute;
+  text-align: center;
+  border: 4px solid lighten($grey, 5%);
+
+  li {
+    width: 70px;
+    display: inline-block;
+    line-height: 42px;
+    opacity: .9;
+    position: absolute;
+
+    &.white {
+      left: 0;
+      color: #424242;
+      background: #fff;
+    }
+    &.black {
+      right: 0;
+      color: #fff;
+      background: #424242;
+    }
+    &.ticking {
+      z-index: 1;
+      font-size: 1.125rem;
+      opacity: 1;
+      box-shadow: 0 0 5px lighten($grey, 5%);
+      transform: scale(1.2);
+      transition: all 0.2s ease-in-out;
+    }
+  }
+}
+
+span#game-type {
+  position: absolute;
+  line-height: 50px;
+  margin-left: 175px;
+  opacity: 0.9;
+}
+
+.resign, .rematch {
+  margin-right: 10px;
+}
+
+.rematch {
+  display: none;
+}
+
+#sounds-label {
+  width: 800px;
+  height: 30px;
+  line-height: 30px;
+  display: block;
+  margin: 0px 0px 5px 0px;
+  float: left;
+}
+
+#captured-pieces {
+  position: absolute;
+  width: 100px;
+  margin-left: -100px;
+  font-size: 2rem;
+  line-height: 2rem;
+  height: 517px;
+  overflow-y: auto;
+
+  ul {
+    width: 50px;
+    min-height: 5px;
+    float: left;
+    display: block;
+    text-align: center;
+    
+    li {
+      list-style-type: none;
+    }
+  }
+}

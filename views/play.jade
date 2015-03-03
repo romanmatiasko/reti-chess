@@ -29,18 +29,18 @@ block content
     a.close x
     ul#chat
     span Write your message:
-    form#sendMessage
+    form#send-message
       input
 
-  #board_moves_wrapper.clearfix
-    label(id='sounds_label')
+  #board-moves-wrapper.clearfix
+    label(id='sounds-label')
       input(type='checkbox', id='sounds')
       |  Enable sounds
-    #board_wrapper
+    #board-wrapper
       #captured-pieces
         ul.w
         ul.b
-      table.chess_board.white
+      table.chessboard.white
         tr
           td.A8(data-id='A8', draggable='true')
             a.black.rook(draggable='true') &#9820;
@@ -145,7 +145,7 @@ block content
             a.white.knight(draggable='true') &#9816;
           td.H1(data-id='H1', draggable='true')
             a.white.rook(draggable='true') &#9814;
-      table.chess_board.black(style='display: none;')
+      table.chessboard.black(style='display: none;')
         tr
           td.H1(data-id='H1', draggable='true')
             a.white.rook(draggable='true') &#9814;

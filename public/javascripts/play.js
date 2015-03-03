@@ -5,8 +5,8 @@ $(function() {
   var $piece = null;
   var $chess = new Chess();
   var $gameOver = false;
-  var $chessboardWhite = $('.chess_board.white').clone();
-  var $chessboardBlack = $('.chess_board.black').clone();
+  var $chessboardWhite = $('.chessboard.white').clone();
+  var $chessboardBlack = $('.chessboard.black').clone();
 
   function modalKeydownHandler(e) {
     e.preventDefault();
@@ -225,8 +225,8 @@ $(function() {
   }
 
   function unbindMoveHandlers() {
-    var moveFrom = $('.chess_board a');
-    var moveTo = $('.chess_board td');
+    var moveFrom = $('.chessboard a');
+    var moveTo = $('.chessboard td');
 
     moveFrom.off('click', movePieceFromHandler);
     moveTo.off('click', movePieceToHandler);
@@ -238,8 +238,8 @@ $(function() {
   }
 
   function bindMoveHandlers() {
-    var moveFrom = $('.chess_board a');
-    var moveTo = $('.chess_board td');
+    var moveFrom = $('.chessboard a');
+    var moveTo = $('.chessboard td');
 
     moveFrom.on('click', movePieceFromHandler);
     moveTo.on('click', movePieceToHandler);
@@ -290,18 +290,18 @@ $(function() {
   $socket.on('joined', function (data) {
     if (data.color === 'white') {
       $side = 'w';
-      $('.chess_board.black').remove();
+      $('.chessboard.black').remove();
       $socket.emit('timer-white', {
         'token': $token
       });
     } else {
       $side = 'b';
-      $('.chess_board.white').remove();
-      $('.chess_board.black').show();
+      $('.chessboard.white').remove();
+      $('.chessboard.black').show();
     }
 
     $('#clock li.white').addClass('ticking');
-    $('#sendMessage').find('input').addClass($side === 'b' ? 'black' : 'white');
+    $('#send-message').find('input').addClass($side === 'b' ? 'black' : 'white');
   });
 
   $socket.on('move', function (data) {
@@ -325,8 +325,8 @@ $(function() {
     $('.resign').off().remove();
     
 
-    $('#sendMessage').off();
-    $('#sendMessage').submit(function (e) {
+    $('#send-message').off();
+    $('#send-message').submit(function (e) {
       e.preventDefault();
       showModal("Your opponent has disconnected. You can't send messages.");
     });
@@ -439,20 +439,20 @@ $(function() {
     $('.resign').show();
 
     if ($side === 'w') {
-      $('.chess_board.black').remove();
-      $('#board_wrapper').append($chessboardWhite.clone());
+      $('.chessboard.black').remove();
+      $('#board-wrapper').append($chessboardWhite.clone());
 
       $socket.emit('timer-white', {
         'token': $token
       });
     } else {
-      $('.chess_board.white').remove();
-      $('#board_wrapper').append($chessboardBlack.clone());
-      $('.chess_board.black').show();
+      $('.chessboard.white').remove();
+      $('#board-wrapper').append($chessboardBlack.clone());
+      $('.chessboard.black').show();
     }
 
     bindMoveHandlers();
-    $('#sendMessage').find('input').removeClass('white black').addClass($side === 'b' ? 'black' : 'white');
+    $('#send-message').find('input').removeClass('white black').addClass($side === 'b' ? 'black' : 'white');
   });
 
   /* gameplay */
@@ -580,7 +580,7 @@ $(function() {
     $('#chat-wrapper').hide();
   });
 
-  $('#sendMessage').submit(function (e) {
+  $('#send-message').submit(function (e) {
     e.preventDefault();
     var input = $(this).find('input');
     var message = input.val();

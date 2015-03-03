@@ -1,0 +1,124 @@
+$dark-purple: #423443;
+$blue: #2eafc2;
+$red: #d12521;
+$grey: #dad7d2;
+$dark-grey: #261e26;
+
+* { 
+  margin: 0;
+  padding: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+::-moz-selection {
+  background: darken($dark-purple, 10%);
+  color: #fefefe;
+  text-shadow: none;
+}
+::selection {
+  background: darken($dark-purple, 10%);
+  color: #fefefe;
+  text-shadow: none;
+}
+
+article, aside, figure, footer, header, nav, section {
+  display: block;
+}
+
+audio, canvas, video {
+  display: inline-block; *display: inline; *zoom: 1;
+}
+
+audio:not([controls]) {
+  display: none;
+}
+
+[hidden] { display: none; }
+
+img {
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+  vertical-align: middle;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+form {
+  margin: 0;
+}
+
+label {
+  cursor: pointer;
+}
+
+button, input, select, textarea {
+  font-size: 100%;
+  margin: 0;
+  vertical-align: baseline;
+  *vertical-align: middle;
+}
+
+body, html {
+  color: #424242;
+  font-family: 'Open Sans', sans-serif;
+  background: #fefefe;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+a { 
+  font-size: 1rem;
+  color: darken($blue, 5%);
+  text-decoration: underline;
+
+  &:hover { 
+    color: $blue;
+    text-decoration: none; 
+    transition: all 0.2s ease-in-out;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+p {
+  text-align: left;
+  margin-bottom: 1em;
+  font-size: 1rem;
+}
+
+h2 {
+  font-family: 'Cherry Swash';
+  font-weight: 400;
+  font-size: 2rem;
+  text-align: center;
+  color: $dark-purple;
+  margin-bottom: 0.5em;
+}
+
+h3 {
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin: 1em 0 0.5em 0;
+  color: lighten($dark-purple, 5%);
+}
+
+.clearfix { *zoom: 1;
+  &::before,
+  &:after { content: ""; display: table; }
+  &:after { clear: both; }
+}

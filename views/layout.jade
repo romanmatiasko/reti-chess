@@ -16,29 +16,29 @@ html(lang='en')
     link(href='http://fonts.googleapis.com/css?family=Cherry+Swash|Open+Sans:400,600', rel='stylesheet', type='text/css')
 
   body
-    #modal-mask
+    #modal-mask.modal-mask
       p
         strong Esc: 
         |  OK
         br
         strong Enter: 
         |  OK
-      #modal-window
+      #modal-window.modal
         p#modal-message Message.
-        a#modal-ok.button(href='#') OK
-    #offer-mask
+        a#modal-ok.button(href='#', style='left: 50%; margin-left: -60px;') OK
+    #offer-mask.modal-mask
       p
         strong Esc: 
         |  Decline
         br
         strong Enter: 
         |  Accept
-      #offer-window
+      #offer-window.modal
         p#offer-message Offer.
         a#offer-accept.button(href='#') Accept
         a#offer-decline.button.button--red(href='#') Decline
 
-    #container_wrapper.clearfix
+    #container-wrapper.clearfix
       #container.clearfix
         block content
         

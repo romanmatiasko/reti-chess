@@ -1,0 +1,76 @@
+#create-game {
+  width: 100%;
+  height: 200px;
+  margin: 0 auto;
+
+  fieldset {
+    border: 0;
+    text-align: right;
+    margin-bottom: 1em;
+    width: 80%;
+
+    input {
+      margin-left: 1em;
+      width: 100px;
+      outline: none;
+      height: 40px;
+      line-height: 30px;
+      padding-left: 1em;
+      font-size: 1.125rem;
+      color: #424242;
+      border: 2px solid #2b222c;
+      border-left: 4px solid #2eafc2;
+    }
+
+    label {
+      position: relative;
+
+      &::before {
+        position: absolute;
+        content: 'Up to 50';
+        top: 0;
+        right: 2em;
+        margin-top: -2.5em;
+        font-size: 0.75rem;
+      }
+    }
+  }
+}
+
+#game-link {
+  width: 80%;
+  height: 50px;
+  line-height: 50px;
+  font-size: 1.125rem;
+  color: #fff;
+  border: 0;
+  border-bottom: 2px solid darken($dark-purple, 8%);
+  border-left: 4px solid $blue;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  background: $dark-purple;
+  padding: 0 1em;
+  float: left;
+  border-radius: 2px;
+  box-shadow: inset 0 -2px darken($dark-purple, 8%);
+
+  &:hover {
+    background: lighten($dark-purple, 3%);
+    border-bottom: 2px solid darken($dark-purple, 3%);;
+    box-shadow: inset 0 -2px darken($dark-purple, 3%);
+    transition: all 0.2s ease-in-out;
+  }
+  &:focus {
+    color: #eee;
+  }
+}
+
+p#waiting {
+  font-family: 'Cherry Swash';
+  font-size: 1.275rem;
+  color: darken($red, 5%);
+  width: 100%;
+  text-align: center;
+  margin: 15px 0px 0px 0px;
+  display: none;
+  float: left;
+}

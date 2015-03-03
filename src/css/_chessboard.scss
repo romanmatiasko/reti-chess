@@ -1,0 +1,132 @@
+#board-moves-wrapper {
+  width: 100%;
+  max-width: 800px;
+  min-height: 600px;
+  margin: 0 auto;
+}
+
+table#moves {
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 270px;
+  height: 518px;
+  background: lighten($grey, 5%);
+  box-shadow: inset 0 -4px $grey;
+  margin-left: 10px;
+  border-radius: 2px;
+  border-bottom: 4px solid $grey;
+  display: block;
+  float: left;
+}
+
+#moves thead {
+  font-family: 'Cherry Swash';
+  width: 270px;
+  height: 3em;
+  line-height: 3em;
+  font-size: 1.225rem;
+  color: $dark-purple;
+  float: left;
+  text-align: center;
+}
+
+#moves thead th, #moves thead tr {
+  width: 100%;
+  text-align: center;
+  float: left;
+}
+
+#moves tbody tr {
+  width: 270px;
+  float: left;
+}
+
+#moves tbody tr td {
+  width: 105px;
+  text-align: left;
+  line-height: 20px;
+  margin: 0 15px;
+  float: left;
+}
+
+#board-wrapper {
+  float: left;
+}
+
+.chessboard {
+  border: 8px solid lighten($dark-purple, 10%);
+  border-radius: 2px;
+  width: 500px;
+  height: 500px;
+  float: left;
+  
+  tr {
+    width: 500px;
+    height: 62.5px;
+    float: left;
+    display: block;
+
+    td {
+      width: 62.5px;
+      height: 62.5px;
+      line-height: 62.5px;
+      text-align: center;
+      background: #fefefe;
+      display: block;
+      float: left;
+
+      &.moving {
+        background: lighten($red, 30%) !important;
+      }
+
+      a {
+        width: 6ch2.5px;
+        height: 62.5px;
+        font-size: 3.5rem;
+        color: #424242;
+        text-decoration: none;
+        display: block;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.chessboard tr:nth-child(odd) td:nth-child(even), 
+.chessboard tr:nth-child(even) td:nth-child(odd) { 
+  background: $grey;
+}
+
+span.feedback {
+  color: #424242;
+  line-height: 28px;
+  text-indent: 28px;
+  margin-top: 1em;
+  display: block;
+  clear: left;
+  float: left;
+}
+
+.feedback-status {
+  font-weight: bold;
+}
+
+span.whitefeedback {
+  background: url('../img/whiteking.png') 0% 50% no-repeat;
+}
+
+span.blackfeedback {
+  background: url('../img/blackking.png') 0% 50% no-repeat;
+}
+
+span.promotion {
+  line-height: 28px;
+  text-indent: 28px;
+  margin-top: 1em;
+  display: block;
+  float: right;
+}
+
+.chessboard td.selected {
+  background: lighten($red, 30%) !important;
+}

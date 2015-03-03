@@ -9,7 +9,6 @@ app.set('ip', ip);
 app.set('port', port);
 
 var server = app.listen(app.get('port'), function() {
-  console.log('fafa');
   debug('Express server listening on port ' + server.address().port);
 });
 
