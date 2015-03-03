@@ -1,5 +1,4 @@
 .DS_Store
-public/stylesheets/.sass-cache/
 node_modules/
 logs/
 build/

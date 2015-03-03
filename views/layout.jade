@@ -1,5 +1,5 @@
-doctype 5
-html
+doctype html
+html(lang='en')
   head
     - if (typeof(title) !== 'undefined')
       title #{title} | Reti Chess
@@ -10,13 +10,11 @@ html
     meta(itemprop='name=Reti Chess')
     meta(name='description', content='Reti Chess is a lightweight real-time chess app built in Node.js with use of Express framework and Socket.IO')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    link(rel='shortcut icon', href='/images/logo.png')
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    script(type='text/javascript', src='/socket.io/socket.io.js')
+    link(rel='shortcut icon', href='/img/logo.png')
+    link(rel='stylesheet', href='/css/main.css')
     block head
     link(href='http://fonts.googleapis.com/css?family=Cherry+Swash|Open+Sans:400,600', rel='stylesheet', type='text/css')
-    //if IE
-      script(src='http://html5shiv.googlecode.com/svn/trunk/html5.js')
+
   body
     #modal-mask
       p
@@ -47,13 +45,13 @@ html
     footer
       #footer.clearfix
         p.center 2013 - 2014. Reti Chess is available under 
-          a(href='http://opensource.org/licenses/MIT')  the MIT License (MIT)
-          . Fork me on 
-          a(href='http://github.com/romanmatiasko/reti-chess')  Github
-          .
+          a(href='http://opensource.org/licenses/MIT')  the MIT License (MIT)/. Fork me on 
+          a(href='http://github.com/romanmatiasko/reti-chess')  Github/.
 
-    script(type='text/javascript', src='/javascripts/jquery.js')
-    script(type='text/javascript', src='/javascripts/jquery.stickyFooter.js')
-    script(type='text/javascript', src='/javascripts/chess.js')
-    script(type='text/javascript', src='/javascripts/app.js')
+    script(type='text/javascript', src='/js/jquery.js')
+    script(type='text/javascript', src='/js/jquery.stickyFooter.js')
+    script(type='text/javascript', src='/js/chess.js')
+    script(type='text/javascript', src='/js/app.js')
+    - if (process.env.NODE_ENV === 'development')
+      script(src='/js/vendor.js')
     block scripts

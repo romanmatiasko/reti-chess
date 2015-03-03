@@ -1,87 +1,11 @@
-var express = require('express')
-  , path    = require('path')
-  , crypto  = require('crypto')
-  , http    = require('http')
-  , winston = require('winston')
-  , fs      = require('fs');
+/**
+ * Socket.IO
+ */
 
-var app = express();
-
-app.configure(function() {
-  app.set('ipaddress', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
-  app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 3000);
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(express.favicon());
-  app.use(express.logger('dev'));
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.cookieParser('45710b553b5b7293753d03bd3601f70a'));
-  app.use(express.session());
-  app.use(app.router);
-  app.use(express.static(path.join(__dirname, 'public')));
-});
-
-app.configure('development', function() {
-  app.use(express.errorHandler());
-});
-
-app.get('/', function(req, res) {
-  res.render('index');
-});
-
-app.get('/about', function(req, res) {
-  res.render('about');
-});
-
-app.get('/play/:token/:time/:increment', function(req, res) {
-  res.render('play', {
-    'token': req.params.token,
-    'time': req.params.time,
-    'increment': req.params.increment
-  });
-});
-
-app.get('/logs', function(req, res) {
-  fs.readFile(__dirname + '/logs/games.log', function (err, data) {
-    if (err) {
-      res.redirect('/');
-    }
-    res.set('Content-Type', 'text/plain');
-    res.send(data);
-  });
-});
-
-var server = http.createServer(app).listen(app.get('port'), app.get('ipaddress'), function() {
-  console.log("Express server listening on port " + app.get('port'));
-});
-
+var io = require('socket.io').listen();
+var winston = require('./winston');
 var games = {};
 var timer;
-
-/** 
- * Winston logger
- */
-winston.add(winston.transports.File, {
-  filename: __dirname + '/logs/games.log',
-  handleExceptions: true,
-  exitOnError: false,
-  json: false
-});
-winston.remove(winston.transports.Console);
-winston.handleExceptions(new winston.transports.Console());
-winston.exitOnError = false;
-
-/**
- * Sockets
- */
-var io = require('socket.io').listen(server, {log: false});
-
-if (process.env.OPENSHIFT_NODEJS_IP) {
-  io.configure(function(){
-    io.set('transports', ['websocket']);
-  });
-}
 
 io.sockets.on('connection', function (socket) {
   
@@ -90,7 +14,7 @@ io.sockets.on('connection', function (socket) {
     var b = new Buffer(Math.random() + new Date().getTime() + socket.id);
     token = b.toString('base64').slice(12, 32);
 
-    //token is valid for 5 minutes
+    // token is valid for 5 minutes
     var timeout = setTimeout(function () {
       if (games[token].players.length === 0) {
         delete games[token];
@@ -137,7 +61,7 @@ io.sockets.on('connection', function (socket) {
       color = colors[Math.floor(Math.random() * 2)];
     }
 
-    //join room
+    // join room
     socket.join(data.token);
 
     games[data.token].players.push({
@@ -229,7 +153,7 @@ io.sockets.on('connection', function (socket) {
         io.sockets.in(data.token).emit('rematch-confirmed');
       }
     }
-  })
+  });
 
   socket.on('disconnect', function (data) {
     var player, opponent, game;
@@ -307,3 +231,5 @@ function getOpponent(token, socket) {
     }
   }
 }
+
+module.exports = io;

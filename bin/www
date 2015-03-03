@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+
+var app = require('../app');
+var debug = require('debug')('reti-chess:server');
+var io = require('../io');
+var port = process.env.PORT || '3000';
+var ip = process.env.IP || '127.0.0.1';
+app.set('ip', ip);
+app.set('port', port);
+
+var server = app.listen(app.get('port'), function() {
+  console.log('fafa');
+  debug('Express server listening on port ' + server.address().port);
+});
+
+server.on('error', function(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+  var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+});
+
+io.attach(server);
