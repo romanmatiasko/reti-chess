@@ -1,15 +1,16 @@
-var express = require('express');
-var path = require('path');
-var winston = require('winston');
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var routes = require('./routes/index');
-var staticPath =  path.join(__dirname,
-  process.env.NODE_ENV === 'development' ? 'build' : 'dist');
+'use strict';
 
-var app = express();
+const express = require('express');
+const path = require('path');
+const winston = require('winston');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const routes = require('./routes/routes');
+const staticPath =  path.join(__dirname,
+  process.env.NODE_ENV === 'development' ? 'build' : 'dist');
+let app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -22,7 +23,7 @@ app.use(express.static(staticPath));
 app.use('/', routes);
 
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  let err = new Error('Not Found');
   err.status = 404;
   next(err);
 });

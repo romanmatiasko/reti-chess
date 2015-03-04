@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+require('babel/register');
 var app = require('../app');
 var debug = require('debug')('reti-chess:server');
 var io = require('../io');

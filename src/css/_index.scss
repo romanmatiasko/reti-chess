@@ -1,3 +1,8 @@
+.knight {
+  margin: 2em auto 0.5em;
+  display: block;
+}
+
 #create-game {
   width: 100%;
   height: 200px;
@@ -64,13 +69,12 @@
   }
 }
 
-p#waiting {
+#game-status {
   font-family: 'Cherry Swash';
   font-size: 1.275rem;
   color: darken($red, 5%);
   width: 100%;
   text-align: center;
-  margin: 15px 0px 0px 0px;
-  display: none;
+  margin: 1em 0;
   float: left;
 }

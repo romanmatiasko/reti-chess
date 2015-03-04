@@ -1,26 +1,7 @@
 extends layout
 
 block content
-  h1.knight
-  h2 Reti Chess
-  p.margin-fifty.center A lightweight real-time chess app built in Node.js, Express framework and Socket.IO
-
-  div#create-game
-    form(action='')
-      fieldset
-        label Minutes per side: 
-          input#minutes(type='number', value='30', min='1', max='50', required)
-        label(style='padding-left: 2em;') Increment in seconds:
-          input#seconds(type='number', value='0', min='0', max='50', required)
-      input#game-link(type='text', readonly, value='Game link will be generated here.')
-      button.button#play(type='submit') Play
-  
-    p#waiting Generating game link.
-  
-  p.center Click the button play to create a game. Send the link to your friend. Once the link is opened in your friend's browser, game should begin shortly. Colours are picked randomly by computer. 
-
-  p.center
-    a(href='/about', class='alpha') Read more about Reti Chess
+  #container.clearfix!=content
 
 block scripts
-  script(type='text/javascript', src='/js/start.js')
+  script(src='/js/index.js')

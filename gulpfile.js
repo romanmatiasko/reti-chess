@@ -10,7 +10,7 @@ var gulp = require('gulp');
 var source = require('vinyl-source-stream');
 var browserify = require('browserify');
 var watchify = require('watchify');
-var reactify = require('reactify');
+var babelify = require('babelify');
 var gulpif = require('gulp-if');
 var uglify = require('gulp-uglify');
 var streamify = require('gulp-streamify');
@@ -27,17 +27,14 @@ var imagemin = require('gulp-imagemin');
 var dependencies = [
   'react',
   'react/addons',
-  'react-router',
-  'flux',
-  'eventemitter2',
   'immutable'
 ];
 
 var browserifyTask = function() {
 
   var appBundler = browserify({
-    entries: './src/js/app.js',
-    transform: [[reactify, {harmony: true}]],
+    entries: './src/js/index.js',
+    transform: [babelify],
     debug: IS_DEVELOPMENT,
     // required by watchify
     cache: {}, packageCache: {}, fullPaths: IS_DEVELOPMENT
@@ -52,7 +49,7 @@ var browserifyTask = function() {
     console.log('Building BROWSERIFY bundle');
     appBundler.bundle()
       .on('error', gutil.log)
-      .pipe(source('app.js'))
+      .pipe(source('index.js'))
       .pipe(gulpif(!IS_DEVELOPMENT, streamify(uglify())))
       .pipe(gulp.dest(IS_DEVELOPMENT ? './build/js/' : './dist/js/'))
       .pipe(notify(function() {
@@ -137,7 +134,7 @@ var imageminTask = function() {
       progressive: true,
       svgoPlugins: [{removeViewBox: false}]
     }))
-    .pipe(gulp.dest('./dist/img/'))
+    .pipe(gulp.dest('./' + (IS_DEVELOPMENT ? 'build' : 'dist') + '/img/'))
     .pipe(notify({
       message: function() {
         gutil.log(gutil.colors.green('IMAGES/SVG optimized.'));

@@ -39,19 +39,15 @@ html(lang='en')
         a#offer-decline.button.button--red(href='#') Decline
 
     #container-wrapper.clearfix
-      #container.clearfix
         block content
         
     footer
       #footer.clearfix
-        p.center 2013 - 2014. Reti Chess is available under 
-          a(href='http://opensource.org/licenses/MIT')  the MIT License (MIT)/. Fork me on 
-          a(href='http://github.com/romanmatiasko/reti-chess')  Github/.
+        p.center Distributed under 
+          a(href='http://opensource.org/licenses/MIT') the MIT License
+          | &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+          a(href='http://github.com/romanmatiasko/reti-chess') Github repo
 
-    script(type='text/javascript', src='/js/jquery.js')
-    script(type='text/javascript', src='/js/jquery.stickyFooter.js')
-    script(type='text/javascript', src='/js/chess.js')
-    script(type='text/javascript', src='/js/app.js')
     - if (process.env.NODE_ENV === 'development')
       script(src='/js/vendor.js')
     block scripts
