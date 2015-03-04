@@ -377,30 +377,30 @@ $(function() {
     }
   });
 
-  $socket.on('countdown', function (data) {
-    var color = data.color;
-    var opp_color = color === 'black' ? 'white' : 'black';
-    var min = Math.floor(data.time / 60);
-    var sec = data.time % 60;
-    if (sec.toString().length === 1) {
-      sec = '0' + sec;
-    }
+  // $socket.on('countdown', function (data) {
+  //   var color = data.color;
+  //   var opp_color = color === 'black' ? 'white' : 'black';
+  //   var min = Math.floor(data.time / 60);
+  //   var sec = data.time % 60;
+  //   if (sec.toString().length === 1) {
+  //     sec = '0' + sec;
+  //   }
     
-    $('#clock li.' + color).text(min + ':' + sec);
-  });
+  //   $('#clock li.' + color).text(min + ':' + sec);
+  // });
 
-  $socket.on('countdown-gameover', function (data) {
-    $gameOver = true;
-    unbindMoveHandlers();
-    var loser = data.color === 'black' ? 'Black' : 'White';
-    var winner = data.color === 'black' ? 'White' : 'Black';
-    var message = loser + "'s time is out. " + winner + " wins.";
-    $('.resign').hide();
-    $('.rematch').show();
-    showModal(message);
-    $('.feedback-move').text('');
-    $('.feedback-status').text(message);
-  });
+  // $socket.on('countdown-gameover', function (data) {
+  //   $gameOver = true;
+  //   unbindMoveHandlers();
+  //   var loser = data.color === 'black' ? 'Black' : 'White';
+  //   var winner = data.color === 'black' ? 'White' : 'Black';
+  //   var message = loser + "'s time is out. " + winner + " wins.";
+  //   $('.resign').hide();
+  //   $('.rematch').show();
+  //   showModal(message);
+  //   $('.feedback-move').text('');
+  //   $('.feedback-status').text(message);
+  // });
 
   $socket.on('rematch-offered', function (data) {
     hideModal();
@@ -549,23 +549,23 @@ $(function() {
     e.stopPropagation();
   });
 
-  $('.resign').click(function (e) {
-    e.preventDefault();
+  // $('.resign').click(function (e) {
+  //   e.preventDefault();
 
-    $socket.emit('resign', {
-      'token': $token,
-      'color': $side
-    });
-  });
+  //   $socket.emit('resign', {
+  //     'token': $token,
+  //     'color': $side
+  //   });
+  // });
 
-  $('.rematch').click(function (e) {
-    e.preventDefault();
-    showModal('Your offer has been sent.');
+  // $('.rematch').click(function (e) {
+  //   e.preventDefault();
+  //   showModal('Your offer has been sent.');
 
-    $socket.emit('rematch-offer', {
-      'token': $token
-    });
-  })
+  //   $socket.emit('rematch-offer', {
+  //     'token': $token
+  //   });
+  // })
 
   $('a.chat').click(function (e) {
     $('#chat-wrapper').toggle();

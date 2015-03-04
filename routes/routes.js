@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const React = require('react');
 const Index = require('../src/js/components/Index');
+const GameInterface = require('../src/js/components/GameInterface');
 let router = express.Router();
 
 router.get('/', (req, res) => {
@@ -17,11 +18,11 @@ router.get('/about', (req, res) => {
   res.render('about');
 });
 
-router.get('/play/:token/:time/:increment', (req, res) => {
+router.get('/play/:token/:time/:inc', (req, res) => {
+  let params = [req.params.token, req.params.time, req.params.inc];
+
   res.render('play', {
-    'token': req.params.token,
-    'time': req.params.time,
-    'increment': req.params.increment
+    content: React.renderToString(<GameInterface params={params} />)
   });
 });
 

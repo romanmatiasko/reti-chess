@@ -12,7 +12,6 @@ html(lang='en')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='shortcut icon', href='/img/logo.png')
     link(rel='stylesheet', href='/css/main.css')
-    block head
     link(href='http://fonts.googleapis.com/css?family=Cherry+Swash|Open+Sans:400,600', rel='stylesheet', type='text/css')
 
   body
@@ -25,7 +24,7 @@ html(lang='en')
         |  OK
       #modal-window.modal
         p#modal-message Message.
-        a#modal-ok.button(href='#', style='left: 50%; margin-left: -60px;') OK
+        a#modal-ok.btn(href='#', style='left: 50%; margin-left: -60px;') OK
     #offer-mask.modal-mask
       p
         strong Esc: 
@@ -35,8 +34,8 @@ html(lang='en')
         |  Accept
       #offer-window.modal
         p#offer-message Offer.
-        a#offer-accept.button(href='#') Accept
-        a#offer-decline.button.button--red(href='#') Decline
+        a#offer-accept.btn(href='#') Accept
+        a#offer-decline.btn.btn--red(href='#') Decline
 
     #container-wrapper.clearfix
         block content

@@ -32,38 +32,40 @@ var dependencies = [
 
 var browserifyTask = function() {
 
-  var appBundler = browserify({
-    entries: './src/js/index.js',
-    transform: [babelify],
-    debug: IS_DEVELOPMENT,
-    // required by watchify
-    cache: {}, packageCache: {}, fullPaths: IS_DEVELOPMENT
-  });
+  ['index.js', 'play.js'].forEach(function(bundle) {
+    var appBundler = browserify({
+      entries: './src/js/' + bundle,
+      transform: [babelify],
+      debug: IS_DEVELOPMENT,
+      // required by watchify
+      cache: {}, packageCache: {}, fullPaths: IS_DEVELOPMENT
+    });
+      
+    (IS_DEVELOPMENT ? dependencies : []).forEach(function(dep) {
+      appBundler.external(dep);
+    });
+
+    var rebundle = function() {
+      var start = Date.now();
+      console.log('Building BROWSERIFY(' + bundle + ') bundle');
+      appBundler.bundle()
+        .on('error', gutil.log)
+        .pipe(source(bundle))
+        .pipe(gulpif(!IS_DEVELOPMENT, streamify(uglify())))
+        .pipe(gulp.dest(IS_DEVELOPMENT ? './build/js/' : './dist/js/'))
+        .pipe(notify(function() {
+          gutil.log(gutil.colors.green('BROWSERIFY(' + bundle +
+            ') bundle built in ' + (Date.now() - start) + 'ms'));
+        }));
+    };
+
+    if (IS_DEVELOPMENT) {
+      appBundler = watchify(appBundler);
+      appBundler.on('update', rebundle);
+    }
     
-  (IS_DEVELOPMENT ? dependencies : []).forEach(function(dep) {
-    appBundler.external(dep);
+    rebundle();
   });
-
-  var rebundle = function() {
-    var start = Date.now();
-    console.log('Building BROWSERIFY bundle');
-    appBundler.bundle()
-      .on('error', gutil.log)
-      .pipe(source('index.js'))
-      .pipe(gulpif(!IS_DEVELOPMENT, streamify(uglify())))
-      .pipe(gulp.dest(IS_DEVELOPMENT ? './build/js/' : './dist/js/'))
-      .pipe(notify(function() {
-        gutil.log(gutil.colors.green('BROWSERIFY bundle built in ' +
-          (Date.now() - start) + 'ms'));
-      }));
-  };
-
-  if (IS_DEVELOPMENT) {
-    appBundler = watchify(appBundler);
-    appBundler.on('update', rebundle);
-  }
-  
-  rebundle();
   
   if (IS_DEVELOPMENT) {
     var vendorBundler = browserify({

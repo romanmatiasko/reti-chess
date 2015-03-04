@@ -36,6 +36,10 @@ article, aside, figure, footer, header, nav, section {
   display: block;
 }
 
+pre {
+  font-size: 12px;
+}
+
 audio, canvas, video {
   display: inline-block; *display: inline; *zoom: 1;
 }

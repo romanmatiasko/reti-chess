@@ -46,7 +46,7 @@ const CreateGameForm = React.createClass({
           value={this.props.link || 'Game link will be generated here.'}
           onClick={e => e.target.select()}
           readOnly />
-        <button type="submit" className="button">Play</button>
+        <button type="submit" className="btn">Play</button>
       </form>
     );
   }
