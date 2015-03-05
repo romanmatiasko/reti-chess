@@ -2,6 +2,8 @@
 
 const React = require('react/addons');
 const Clock = require('./Clock');
+const ChatStore = require('../stores/ChatStore');
+const ChatActions = require('../actions/ChatActions');
 
 const GameHeader = React.createClass({
   
@@ -13,6 +15,25 @@ const GameHeader = React.createClass({
   },
   mixins: [React.addons.PureRenderMixin],
 
+  getInitialState() {
+    return {
+      isChatHidden: ChatStore.getState().isChatHidden,
+      newMessage: false
+    };
+  },
+  componentDidMount() {
+    let io = this.props.io;
+
+    io.on('receive-message', () => {
+      if (this.state.isChatHidden) {
+        this.setState({newMessage: true});
+      }
+    });
+    ChatStore.on('change', this._onChatStoreChange);
+  },
+  componentWillUnmount() {
+    ChatStore.off('change', this._onChatStoreChange);
+  },
   render() {
     let [_, time, inc] = this.props.params;
 
@@ -43,8 +64,10 @@ const GameHeader = React.createClass({
 
         <a id="chat-icon"
            onClick={this._toggleChat}>
-          <img id="bubble"
-               src="/img/chat.svg"
+          {this.state.newMessage ?
+            <span className="new-message">You have a new message!</span>
+          :null}
+          <img src="/img/chat.svg"
                width="50"
                height="50" />
           Chat
@@ -52,27 +75,33 @@ const GameHeader = React.createClass({
       </header>
     );
   },
+  _onChatStoreChange() {
+    this.setState({
+      isChatHidden: ChatStore.getState().isChatHidden
+    });
+  },
+  _toggleChat(e) {
+    e.preventDefault();
+    this.setState({newMessage: false});
+    ChatActions.toggleChat();
+  },
   _onResign(e) {
+    e.preventDefault();
     let {io, params, color} = this.props;
 
     io.emit('resign', {
       token: params[0],
       color: color
     });
-    e.preventDefault();
   },
   _onRematch(e) {
+    e.preventDefault();
     let {io, params, toggleModal} = this.props;
 
     io.emit('rematch-offer', {
       token: params[0]
     });
     toggleModal(true, 'Your offer has been sent.');
-    e.preventDefault();
-  },
-  _toggleChat(e) {
-    // ChatStore.toggleChat();
-    e.preventDefault();
   }
 });
 

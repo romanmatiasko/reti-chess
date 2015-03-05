@@ -359,23 +359,23 @@ $(function() {
     window.location = '/';
   });
 
-  $socket.on('receive-message', function (data) {
-    var chat = $('ul#chat');
-    var chat_node = $('ul#chat')[0];
-    var messageSnd = $("#messageSnd")[0];
+  // $socket.on('receive-message', function (data) {
+  //   var chat = $('ul#chat');
+  //   var chat_node = $('ul#chat')[0];
+  //   var messageSnd = $("#messageSnd")[0];
 
-    chat.append('<li class="' + data.color + ' left" >' + escapeHTML(data.message) + '</li>');
+  //   chat.append('<li class="' + data.color + ' left" >' + escapeHTML(data.message) + '</li>');
 
-    if (chat.is(':visible') && chat_node.scrollHeight > 300) {
-      setTimeout(function() { chat_node.scrollTop = chat_node.scrollHeight; }, 50);
-    } else if (!chat.is(':visible') && !$('.new-message').is(':visible')) {
-      $('#bubble').before('<span class="new-message">You have a new message!</span>');
-    }
+  //   if (chat.is(':visible') && chat_node.scrollHeight > 300) {
+  //     setTimeout(function() { chat_node.scrollTop = chat_node.scrollHeight; }, 50);
+  //   } else if (!chat.is(':visible') && !$('.new-message').is(':visible')) {
+  //     $('#bubble').before('<span class="new-message">You have a new message!</span>');
+  //   }
 
-    if ($('#sounds').is(':checked')) {
-      messageSnd.play();
-    }
-  });
+  //   if ($('#sounds').is(':checked')) {
+  //     messageSnd.play();
+  //   }
+  // });
 
   // $socket.on('countdown', function (data) {
   //   var color = data.color;

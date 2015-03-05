@@ -43,7 +43,7 @@
   }
 }
 
-ul#chat {
+#chat-list {
   position: relative;
   top: 0;
   max-height: 300px;
@@ -99,7 +99,7 @@ ul#chat {
   }
 }
 
-#send-message {
+#chat-form {
   input {
     width: 100%;
     padding: 15px 10px;

@@ -23,6 +23,8 @@
     "babelify": "^5.0.3",
     "browserify": "^9.0.3",
     "chess.js": "^0.1.0",
+    "es6-shim": "^0.27.1",
+    "flux": "^2.0.1",
     "gulp": "^3.8.11",
     "gulp-autoprefixer": "^2.1.0",
     "gulp-cssmin": "^0.1.6",
