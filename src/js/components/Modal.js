@@ -9,11 +9,13 @@ const Modal = React.createClass({
   },
   mixins: [React.addons.PureRenderMixin],
 
-  componentDidMount() {
-    document.addEventListener('keydown', this._onKeydown);
-  },
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this._onKeydown);
+  componentDidUpdate() {
+    let isOpen = this.props.data.get('open');
+
+    if (isOpen)
+      document.addEventListener('keydown', this._onKeydown);
+    else
+      document.removeEventListener('keydown', this._onKeydown);
   },
   render() {
     let data = this.props.data;
@@ -34,35 +36,23 @@ const Modal = React.createClass({
           <p>{data.get('message')}</p>
 
           {type === 'info' ? 
-            <button type="button"
-                    className="btn ok"
-                    onClick={e => {
-                      e.preventDefault();
-                      callbacks.hide();
-                    }}>
+            <a className="btn"
+               onClick={callbacks.hide}>
               OK
-            </button> : [
+            </a> : [
 
-            <button key="a"
-                    type="button"
-                    className="btn btn--red"
-                    style={{left: '4em'}}
-                    onClick={e => {
-                      e.preventDefault();
-                      callbacks.decline();
-                    }}>
-              Decline
-            </button>,
-            <button key="b"
-                    type="button"
-                    className="btn"
-                    style={{right: '4em'}}
-                    onClick={e => {
-                      e.preventDefault();
-                      callbacks.accept();
-                    }}>
+            <a key="a"
+               className="btn"
+               style={{left: '4em'}}
+               onClick={callbacks.accept}>
               Accept
-            </button>
+            </a>,
+            <a key="b"
+               className="btn btn--red"
+               style={{right: '4em'}}
+               onClick={callbacks.decline}>
+              Decline
+            </a>
           ]}
         </div>
       </div>

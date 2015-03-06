@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require('react/addons');
+const GameActions = require('../actions/GameActions');
 const PureRenderMixin = React.addons.PureRenderMixin;
 
 const Clock = React.createClass({
@@ -31,10 +32,10 @@ const Clock = React.createClass({
 
     io.on('countdown-gameover', data => {
       this.setState({countdown: null});
-      // GameStore.gameOver({
-      //   timeout: true,
-      //   winner: data.color === 'black' ? 'White' : 'Black'
-      // });
+      GameActions.gameOver({
+        type: 'timeout',
+        winner: data.color === 'black' ? 'White' : 'Black'
+      });
     });
   },
   render() {

@@ -1,7 +1,7 @@
 const ChatConstants = require('../constants/ChatConstants');
-let AppDispatcher = require('../dispatcher/AppDispatcher');
+const AppDispatcher = require('../dispatcher/AppDispatcher');
 
-let ChatActions = {
+const ChatActions = {
   toggleChat() {
     AppDispatcher.handleViewAction({
       actionType: ChatConstants.TOGGLE_CHAT

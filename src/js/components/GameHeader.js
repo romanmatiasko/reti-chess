@@ -11,7 +11,8 @@ const GameHeader = React.createClass({
     io: React.PropTypes.object,
     params: React.PropTypes.array.isRequired,
     color: React.PropTypes.string,
-    openModal: React.PropTypes.func.isRequired
+    openModal: React.PropTypes.func.isRequired,
+    gameOver: React.PropTypes.bool.isRequired
   },
   mixins: [React.addons.PureRenderMixin],
 
@@ -50,17 +51,17 @@ const GameHeader = React.createClass({
 
         <a className="btn" href="/">New game</a>
 
-        <button type="button"
-                className="btn btn--red resign"
-                onClick={this._onResign}>
-          Resign
-        </button>
+        {!this.props.gameOver ?
+          <a className="btn btn--red resign"
+              onClick={this._onResign}>
+            Resign
+          </a> :
 
-        <button type="button"
-                className="btn btn--red rematch"
-                onClick={this._onRematch}>
-          Rematch
-        </button>
+          <a className="btn btn--red rematch"
+             onClick={this._onRematch}>
+            Rematch
+          </a>
+        }
 
         <a id="chat-icon"
            onClick={this._toggleChat}>
@@ -80,13 +81,11 @@ const GameHeader = React.createClass({
       isChatHidden: ChatStore.getState().isChatHidden
     });
   },
-  _toggleChat(e) {
-    e.preventDefault();
+  _toggleChat() {
     this.setState({newMessage: false});
     ChatActions.toggleChat();
   },
-  _onResign(e) {
-    e.preventDefault();
+  _onResign() {
     let {io, params, color} = this.props;
 
     io.emit('resign', {
@@ -94,8 +93,7 @@ const GameHeader = React.createClass({
       color: color
     });
   },
-  _onRematch(e) {
-    e.preventDefault();
+  _onRematch() {
     let {io, params, openModal} = this.props;
 
     io.emit('rematch-offer', {
