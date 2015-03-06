@@ -19,7 +19,11 @@ router.get('/about', (req, res) => {
 });
 
 router.get('/play/:token/:time/:inc', (req, res) => {
-  let params = [req.params.token, req.params.time, req.params.inc];
+  let params = [
+    req.params.token,
+    req.params.time,
+    req.params.inc
+  ];
 
   res.render('play', {
     content: React.renderToString(<GameInterface params={params} />)

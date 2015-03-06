@@ -3,6 +3,7 @@
 const React = require('react/addons');
 const GameHeader = require('./GameHeader');
 const Chat = require('./Chat');
+const Modal = require('./Modal');
 const Immutable = require('immutable');
 const {Map} = Immutable;
 
@@ -16,7 +17,16 @@ const GameInterface = React.createClass({
   getInitialState() {
     return {
       color: 'white',
-      modal: Map({open: false, message: ''}),
+      modal: Map({
+        open: false,
+        message: '',
+        type: 'info',
+        callbacks: {
+          hide: this._hideModal,
+          accept: this._acceptRematch,
+          decline: this._declineRematch
+        }
+      }),
       soundsEnabled: false
     };
   },
@@ -33,6 +43,7 @@ const GameInterface = React.createClass({
       modal: this.state.modal
         .set('open', true)
         .set('message', 'Game link is invalid or has expired')
+        .set('type', 'info')
     }));
 
     io.on('joined', data => {
@@ -55,7 +66,7 @@ const GameInterface = React.createClass({
           io={io}
           params={params}
           color={color}
-          toggleModal={this._toggleModal} />
+          openModal={this._openModal} />
 
         <audio preload="auto" ref="moveSnd">
           <source src="/snd/move.mp3" />
@@ -73,19 +84,43 @@ const GameInterface = React.createClass({
           token={params[0]}
           color={color}
           soundsEnabled={soundsEnabled} />
+
+        <Modal data={this.state.modal} />
       </div>
     );
   },
-  _toggleModal(open, message) {
+  _openModal(type, message) {
     this.setState({
-      modal: Map({open: open, message: message})
+      modal: this.state.modal
+        .set('open', true)
+        .set('message', message)
+        .set('type', type)
+    });
+  },
+  _hideModal() {
+    this.setState({modal: this.state.modal.set('open', false)});
+  },
+  _acceptRematch() {
+    let {io, params} = this.props;
+
+    io.emit('rematch-confirm', {
+      token: params[0],
+      time: params[1] * 60,
+      inc: params[2]
+    });
+  },
+  _declineRematch() {
+    let {io, params} = this.props;
+
+    io.emit('rematch-decline', {
+      token: params[0]
     });
   },
   _toggleSounds() {
     this.setState({
       soundsEnabled: !this.state.soundsEnabled
     });
-  }
+  },
 });
 
 module.exports = GameInterface;

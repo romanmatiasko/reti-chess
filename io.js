@@ -70,8 +70,8 @@ io.sockets.on('connection', function (socket) {
       'id': socket.id,
       'socket': socket,
       'color': color,
-      'time': data.time - data.increment + 1,
-      'increment': data.increment
+      'time': data.time - data.inc + 1,
+      'inc': data.inc
     });
 
     game.creator.emit('ready', {});
@@ -145,8 +145,8 @@ io.sockets.on('connection', function (socket) {
     if (data.token in games) {
 
       for(var j in games[data.token].players) {
-        games[data.token].players[j].time = data.time - data.increment + 1;
-        games[data.token].players[j].increment = data.increment;
+        games[data.token].players[j].time = data.time - data.inc + 1;
+        games[data.token].players[j].inc = data.inc;
         games[data.token].players[j].color = games[data.token].players[j].color === 'black' ? 'white' : 'black';
       }
 
@@ -198,7 +198,7 @@ function runTimer(color, token, socket) {
     if (player.socket === socket && player.color === color) {
 
       clearInterval(games[token].interval);
-      games[token].players[i].time += games[token].players[i].increment;
+      games[token].players[i].time += games[token].players[i].inc;
 
       return games[token].interval = setInterval(function() {
         games[token].players[i].time -= 1;

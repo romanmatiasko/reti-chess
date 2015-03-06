@@ -17,17 +17,20 @@ const Clock = React.createClass({
     return {
       white: time * 60,
       black: time * 60,
-      inc: inc
+      inc: inc,
+      countdown: null
     };
   },
   componentDidMount() {
     let io = this.props.io;
 
     io.on('countdown', data => this.setState({
-      [data.color]: data.time
+      [data.color]: data.time,
+      countdown: data.color
     }));
 
     io.on('countdown-gameover', data => {
+      this.setState({countdown: null});
       // GameStore.gameOver({
       //   timeout: true,
       //   winner: data.color === 'black' ? 'White' : 'Black'
@@ -37,8 +40,14 @@ const Clock = React.createClass({
   render() {
     return (
       <ul id="clock">
-        <Timer color="white" time={this.state.white} />
-        <Timer color="black" time={this.state.black} />
+        <Timer
+          color="white"
+          time={this.state.white}
+          countdown={this.state.countdown} />
+        <Timer
+          color="black"
+          time={this.state.black}
+          countdown={this.state.countdown} />
       </ul>
     );
   }
@@ -49,11 +58,16 @@ const Timer = React.createClass({
   mixins: [PureRenderMixin],
 
   render() {
-    let min = Math.floor(this.props.time / 60);
-    let sec = this.props.time % 60;
+    let {time, color, countdown} = this.props;
+    let min = Math.floor(time / 60);
+    let sec = time % 60;
     let timeLeft = `${min}:${sec < 10 ? '0' + sec : sec}`;
 
-    return <li className={this.props.color}>{timeLeft}</li>;
+    return (
+      <li className={color + (color === countdown ? ' ticking' : '')}>
+        {timeLeft}
+      </li>
+    );
   }
 });
 

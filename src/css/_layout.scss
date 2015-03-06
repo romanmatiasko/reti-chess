@@ -52,7 +52,7 @@ input, button {
   }
 }
 
-a.btn {
+a.btn, .btn.ok {
   width: 120px;
   line-height: 46px;
   text-align: center;
@@ -100,15 +100,22 @@ footer {
 }
 
 .modal-mask {
-  display: none;
+  opacity: 1;
+  visibility: visible;
   cursor: pointer;
   position: fixed;
   top: 0;
+  left: 0;
   height: 100%;
   width: 100%;
-  background: #444;
   background: rgba(0, 0, 0, .7);
   z-index: 10;
+  transition: all 0.2s ease-in-out;
+
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
 
   > p {
     color: #eee;
@@ -142,17 +149,14 @@ footer {
     position: absolute;
     bottom: 1em;
 
+    &.ok {
+      left: 50%;
+      margin-left: -60px;
+    }
+
     &:active {
       top: auto;
       bottom: calc(1em + 1px);
     }
   }
-}
-
-#offer-accept {
-  right: 4em;
-}
-
-#offer-decline {
-  left: 4em;
 }

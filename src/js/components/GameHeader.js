@@ -11,7 +11,7 @@ const GameHeader = React.createClass({
     io: React.PropTypes.object,
     params: React.PropTypes.array.isRequired,
     color: React.PropTypes.string,
-    toggleModal: React.PropTypes.func.isRequired
+    openModal: React.PropTypes.func.isRequired
   },
   mixins: [React.addons.PureRenderMixin],
 
@@ -96,12 +96,12 @@ const GameHeader = React.createClass({
   },
   _onRematch(e) {
     e.preventDefault();
-    let {io, params, toggleModal} = this.props;
+    let {io, params, openModal} = this.props;
 
     io.emit('rematch-offer', {
       token: params[0]
     });
-    toggleModal(true, 'Your offer has been sent.');
+    openModal('info', 'Your offer has been sent.');
   }
 });
 
