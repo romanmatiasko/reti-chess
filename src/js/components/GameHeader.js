@@ -8,7 +8,7 @@ const ChatActions = require('../actions/ChatActions');
 const GameHeader = React.createClass({
   
   propTypes: {
-    io: React.PropTypes.object,
+    io: React.PropTypes.object.isRequired,
     params: React.PropTypes.array.isRequired,
     color: React.PropTypes.string,
     openModal: React.PropTypes.func.isRequired,
@@ -23,7 +23,7 @@ const GameHeader = React.createClass({
     };
   },
   componentDidMount() {
-    let io = this.props.io;
+    const io = this.props.io;
 
     io.on('receive-message', () => {
       if (this.state.isChatHidden) {
@@ -36,7 +36,7 @@ const GameHeader = React.createClass({
     ChatStore.off('change', this._onChatStoreChange);
   },
   render() {
-    let [_, time, inc] = this.props.params;
+    const [_, time, inc] = this.props.params;
 
     return (
       <header className="clearfix">
@@ -86,7 +86,7 @@ const GameHeader = React.createClass({
     ChatActions.toggleChat();
   },
   _onResign() {
-    let {io, params, color} = this.props;
+    const {io, params, color} = this.props;
 
     io.emit('resign', {
       token: params[0],
@@ -94,7 +94,7 @@ const GameHeader = React.createClass({
     });
   },
   _onRematch() {
-    let {io, params, openModal} = this.props;
+    const {io, params, openModal} = this.props;
 
     io.emit('rematch-offer', {
       token: params[0]

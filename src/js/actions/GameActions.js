@@ -12,6 +12,12 @@ const GameActions = {
       actionType: GameConstants.GAME_OVER,
       options: options
     });
+  },
+  changePromotion(promotion) {
+    AppDispatcher.handleViewAction({
+      actionType: GameConstants.CHANGE_PROMOTION,
+      promotion: promotion
+    });
   }
 };
 

@@ -7,7 +7,7 @@ const ChatActions = require('../actions/ChatActions');
 const Chat = React.createClass({
   
   propTypes: {
-    io: React.PropTypes.object,
+    io: React.PropTypes.object.isRequired,
     token: React.PropTypes.string,
     color: React.PropTypes.string,
     soundsEnabled: React.PropTypes.bool.isRequired
@@ -15,7 +15,7 @@ const Chat = React.createClass({
   mixins: [React.addons.PureRenderMixin],
 
   getInitialState() {
-    let state = ChatStore.getState();
+    const state = ChatStore.getState();
     return {
       isChatHidden: state.isChatHidden,
       messages: state.messages,
@@ -23,7 +23,7 @@ const Chat = React.createClass({
     };
   },
   componentDidMount() {
-    let {io, soundsEnabled} = this.props;
+    const {io, soundsEnabled} = this.props;
 
     io.on('receive-message', data => {
       ChatActions.submitMessage(data.message, data.color + ' left');
@@ -84,8 +84,8 @@ const Chat = React.createClass({
   },
   _submitMessage(e) {
     e.preventDefault();
-    let {io, token, color} = this.props;
-    let message = this.state.message;
+    const {io, token, color} = this.props;
+    const message = this.state.message;
 
     ChatActions.submitMessage(message, color + ' right');
     this.setState({message: ''});
@@ -97,7 +97,7 @@ const Chat = React.createClass({
     });
   },
   _scrollChat() {
-    let chatNode = this.refs.chat.getDOMNode();
+    const chatNode = this.refs.chat.getDOMNode();
     chatNode.scrollTop = chatNode.scrollHeight;
   }
 });

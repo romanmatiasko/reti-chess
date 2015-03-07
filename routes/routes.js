@@ -10,7 +10,7 @@ let router = express.Router();
 
 router.get('/', (req, res) => {
   res.render('index', {
-    content: React.renderToString(<Index />)
+    content: React.renderToString(<Index io={{}} />)
   });
 });
 
@@ -26,7 +26,7 @@ router.get('/play/:token/:time/:inc', (req, res) => {
   ];
 
   res.render('play', {
-    content: React.renderToString(<GameInterface params={params} />)
+    content: React.renderToString(<GameInterface params={params} io={{}} />)
   });
 });
 

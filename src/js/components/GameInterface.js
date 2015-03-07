@@ -6,13 +6,14 @@ const Chat = require('./Chat');
 const Modal = require('./Modal');
 const GameActions = require('../actions/GameActions');
 const GameStore = require('../stores/GameStore');
+const ChessboardInterface = require('./ChessboardInterface');
 const Immutable = require('immutable');
 const {Map} = Immutable;
 
 const GameInterface = React.createClass({
   
   propTypes: {
-    io: React.PropTypes.object,
+    io: React.PropTypes.object.isRequired,
     params: React.PropTypes.array.isRequired
   },
 
@@ -34,7 +35,7 @@ const GameInterface = React.createClass({
     };
   },
   componentDidMount() {
-    let {io, params} = this.props;
+    const {io, params} = this.props;
 
     io.emit('join', {
       token: params[0],
@@ -66,8 +67,8 @@ const GameInterface = React.createClass({
     });
 
     io.on('player-resigned', data => {
-      let winner = data.color === 'black' ? 'White' : 'Black';
-      let loser = winner === 'Black' ? 'White' : 'Black';
+      const winner = data.color === 'black' ? 'White' : 'Black';
+      const loser = winner === 'Black' ? 'White' : 'Black';
 
       GameActions.gameOver({
         type: 'resign',
@@ -103,8 +104,8 @@ const GameInterface = React.createClass({
     GameStore.off('change', this._onGameChange);
   },
   render() {
-    let {io, params} = this.props;
-    let {color, soundsEnabled, gameOver} = this.state;
+    const {io, params} = this.props;
+    const {color, soundsEnabled, gameOver} = this.state;
 
     return (
       <div>
@@ -132,6 +133,7 @@ const GameInterface = React.createClass({
           color={color}
           soundsEnabled={soundsEnabled} />
 
+        <ChessboardInterface io={io} />
         <Modal data={this.state.modal} />
       </div>
     );
@@ -151,7 +153,7 @@ const GameInterface = React.createClass({
     this.setState({modal: this.state.modal.set('open', false)});
   },
   _acceptRematch() {
-    let {io, params} = this.props;
+    const {io, params} = this.props;
 
     io.emit('rematch-confirm', {
       token: params[0],
@@ -161,7 +163,7 @@ const GameInterface = React.createClass({
     this._hideModal();
   },
   _declineRematch() {
-    let {io, params} = this.props;
+    const {io, params} = this.props;
 
     io.emit('rematch-decline', {
       token: params[0]

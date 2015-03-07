@@ -7,13 +7,13 @@ const PureRenderMixin = React.addons.PureRenderMixin;
 const Clock = React.createClass({
   
   propTypes: {
-    io: React.PropTypes.object,
+    io: React.PropTypes.object.isRequired,
     params: React.PropTypes.array.isRequired
   },
   mixins: [PureRenderMixin],
 
   getInitialState() {
-    let [_, time, inc] = this.props.params;
+    const [_, time, inc] = this.props.params;
     
     return {
       white: time * 60,
@@ -23,7 +23,7 @@ const Clock = React.createClass({
     };
   },
   componentDidMount() {
-    let io = this.props.io;
+    const io = this.props.io;
 
     io.on('countdown', data => this.setState({
       [data.color]: data.time,
@@ -59,10 +59,10 @@ const Timer = React.createClass({
   mixins: [PureRenderMixin],
 
   render() {
-    let {time, color, countdown} = this.props;
-    let min = Math.floor(time / 60);
-    let sec = time % 60;
-    let timeLeft = `${min}:${sec < 10 ? '0' + sec : sec}`;
+    const {time, color, countdown} = this.props;
+    const min = Math.floor(time / 60);
+    const sec = time % 60;
+    const timeLeft = `${min}:${sec < 10 ? '0' + sec : sec}`;
 
     return (
       <li className={color + (color === countdown ? ' ticking' : '')}>

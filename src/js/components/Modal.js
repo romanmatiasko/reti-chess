@@ -10,7 +10,7 @@ const Modal = React.createClass({
   mixins: [React.addons.PureRenderMixin],
 
   componentDidUpdate() {
-    let isOpen = this.props.data.get('open');
+    const isOpen = this.props.data.get('open');
 
     if (isOpen)
       document.addEventListener('keydown', this._onKeydown);
@@ -18,9 +18,9 @@ const Modal = React.createClass({
       document.removeEventListener('keydown', this._onKeydown);
   },
   render() {
-    let data = this.props.data;
-    let type = data.get('type');
-    let callbacks = data.get('callbacks');
+    const data = this.props.data;
+    const type = data.get('type');
+    const callbacks = data.get('callbacks');
 
     return (
       <div className={'modal-mask' + (data.get('open') ? '' : ' hidden')}>
@@ -36,7 +36,7 @@ const Modal = React.createClass({
           <p>{data.get('message')}</p>
 
           {type === 'info' ? 
-            <a className="btn"
+            <a className="btn ok"
                onClick={callbacks.hide}>
               OK
             </a> : [
@@ -59,8 +59,8 @@ const Modal = React.createClass({
     );
   },
   _onKeydown(e) {
-    let type = this.props.data.get('type');
-    let callbacks = this.props.data.get('callbacks');
+    const type = this.props.data.get('type');
+    const callbacks = this.props.data.get('callbacks');
 
     if (type === 'info') {
       if (e.which === 13 || e.which === 27) {

@@ -4,7 +4,7 @@ const AppDispatcher = require('../dispatcher/AppDispatcher');
 const EventEmitter = require('eventemitter2').EventEmitter2; 
 const GameConstants = require('../constants/GameConstants');
 const Immutable = require('immutable');
-const {List, Map, Set} = Immutable;
+const {List, Map, OrderedMap, Set} = Immutable;
 const CHANGE_EVENT = 'change';
   
 var _gameOver = Map({
@@ -12,14 +12,31 @@ var _gameOver = Map({
   type: null,
   winner: null
 });
+var _capturedPieces = OrderedMap([
+  ['white', List()],
+  ['black', List()]
+]);
 var _moves = List();
+var _promotion = 'q';
+var _turn = 'w';
+var _fen = null;
 
-var GameStore = Object.assign({}, EventEmitter.prototype, {
+const GameStore = Object.assign({}, EventEmitter.prototype, {
   getState() {
     return {
       gameOver: _gameOver,
-      moves: _moves
+      promotion: _promotion,
+      turn: _turn
     };
+  },
+  getCapturedPieces() {
+    return _capturedPieces;
+  },
+  getMoves() {
+    return _moves;
+  },
+  getFEN() {
+    return _fen;
   }
 });
 
@@ -48,6 +65,10 @@ AppDispatcher.register(payload => {
 
     case GameConstants.GAME_OVER:
       gameOver(action.options);
+      break;
+
+    case GameConstants.CHANGE_PROMOTION:
+      _promotion = action.promotion;
       break;
 
     default:

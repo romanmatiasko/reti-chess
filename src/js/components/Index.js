@@ -19,13 +19,13 @@ const Index = React.createClass({
     };
   },
   componentDidMount() {
-    let io = this.props.io;
+    const io = this.props.io;
 
     /**
      * Socket.IO events
      */
     io.on('created', data => {
-      let {time, inc} = this.state;
+      const {time, inc} = this.state;
 
       this.setState({
         link: `${document.location.origin}/play/${data.token}/${time}/${inc}`
@@ -82,8 +82,8 @@ const Index = React.createClass({
   },
   _createGame(e) {
     e.preventDefault();
-    let {time, inc} = this.state;
-    let isInvalid = [time, inc].some(val => {
+    const {time, inc} = this.state;
+    const isInvalid = [time, inc].some(val => {
       val = parseInt(val, 10);
       return isNaN(val) || val < 0 || val > 50;
     });
