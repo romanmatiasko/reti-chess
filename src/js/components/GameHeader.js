@@ -10,7 +10,7 @@ const GameHeader = React.createClass({
   propTypes: {
     io: React.PropTypes.object.isRequired,
     params: React.PropTypes.array.isRequired,
-    color: React.PropTypes.string,
+    color: React.PropTypes.oneOf(['white', 'black']).isRequired,
     openModal: React.PropTypes.func.isRequired,
     gameOver: React.PropTypes.bool.isRequired
   },

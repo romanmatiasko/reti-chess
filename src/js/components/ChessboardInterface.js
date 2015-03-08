@@ -12,7 +12,9 @@ const cx = require('classnames');
 const ChessboardInterface = React.createClass({
   
   propTypes: {
-    io: React.PropTypes.object.isRequired
+    io: React.PropTypes.object.isRequired,
+    soundsEnabled: React.PropTypes.bool.isRequired,
+    color: React.PropTypes.oneOf(['white', 'black']).isRequired
   },
   mixins: [React.addons.PureRenderMixin, onGameChange],
 
@@ -40,7 +42,8 @@ const ChessboardInterface = React.createClass({
           <CapturedPieces />
           <Chessboard
             io={this.props.io}
-            maybePlaySound={this._maybePlaySound} />
+            maybePlaySound={this._maybePlaySound}
+            color={this.props.color} />
         </div>
 
         <TableOfMoves />

@@ -29,7 +29,8 @@ var dependencies = [
   'react/addons',
   'immutable',
   'flux',
-  'eventemitter2'
+  'eventemitter2',
+  'chess.js'
 ];
 
 var browserifyTask = function() {

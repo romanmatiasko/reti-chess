@@ -8,8 +8,8 @@ const Chat = React.createClass({
   
   propTypes: {
     io: React.PropTypes.object.isRequired,
-    token: React.PropTypes.string,
-    color: React.PropTypes.string,
+    token: React.PropTypes.string.isRequired,
+    color: React.PropTypes.oneOf(['white', 'black']).isRequired,
     soundsEnabled: React.PropTypes.bool.isRequired
   },
   mixins: [React.addons.PureRenderMixin],

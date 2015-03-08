@@ -131,7 +131,8 @@ const GameInterface = React.createClass({
 
         <ChessboardInterface
           io={io}
-          soundsEnabled={soundsEnabled} />
+          soundsEnabled={soundsEnabled}
+          color={color} />
 
         <Modal data={this.state.modal} />
       </div>

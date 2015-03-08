@@ -3,6 +3,7 @@
 const AppDispatcher = require('../dispatcher/AppDispatcher');
 const EventEmitter = require('eventemitter2').EventEmitter2; 
 const GameConstants = require('../constants/GameConstants');
+const Chess = require('chess.js').Chess;
 const Immutable = require('immutable');
 const {List, Map, OrderedMap, Set} = Immutable;
 const CHANGE_EVENT = 'change';
@@ -19,7 +20,7 @@ var _capturedPieces = OrderedMap([
 var _moves = List();
 var _promotion = 'q';
 var _turn = 'w';
-var _fen = null;
+var _chess = new Chess();
 
 const GameStore = Object.assign({}, EventEmitter.prototype, {
   getState() {
@@ -36,7 +37,7 @@ const GameStore = Object.assign({}, EventEmitter.prototype, {
     return _moves;
   },
   getFEN() {
-    return _fen;
+    return _chess.fen();
   }
 });
 
