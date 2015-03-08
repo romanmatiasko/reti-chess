@@ -116,10 +116,6 @@ const GameInterface = React.createClass({
           openModal={this._openModal}
           gameOver={gameOver.get('status')} />
 
-        <audio preload="auto" ref="moveSnd">
-          <source src="/snd/move.mp3" />
-          <source src="/snd/move.ogg" />
-        </audio>
         <label id="sounds-label">
           <input type="checkbox"
                  checked={soundsEnabled}
@@ -133,7 +129,10 @@ const GameInterface = React.createClass({
           color={color}
           soundsEnabled={soundsEnabled} />
 
-        <ChessboardInterface io={io} />
+        <ChessboardInterface
+          io={io}
+          soundsEnabled={soundsEnabled} />
+
         <Modal data={this.state.modal} />
       </div>
     );
@@ -170,7 +169,7 @@ const GameInterface = React.createClass({
     });
     this._hideModal();
   },
-  _toggleSounds() {
+  _toggleSounds(e) {
     this.setState({
       soundsEnabled: !this.state.soundsEnabled
     });

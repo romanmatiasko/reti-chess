@@ -8,7 +8,8 @@ const onGameChange = require('../mixins/onGameChange');
 const Chessboard = React.createClass({
   
   propTypes: {
-    io: React.PropTypes.object.isRequired
+    io: React.PropTypes.object.isRequired,
+    maybePlaySound: React.PropTypes.func.isRequired
   },
   mixins: [React.addons.PureRenderMixin, onGameChange],
 

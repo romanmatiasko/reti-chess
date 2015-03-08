@@ -26,17 +26,21 @@ const ChessboardInterface = React.createClass({
       whitefeedback: turn === 'w',
       blackfeedback: turn === 'b'
     });
-    console.log(turn);
-    console.log(cxFeedback);
     const goType = gameOver.get('type');
     const loser = gameOver.get('winner') === 'White' ? 'Black' : 'White';
 
     return (
       <div id="board-moves-wrapper" className="clearfix">
         
+        <audio preload="auto" ref="moveSnd">
+          <source src="/snd/move.mp3" />
+        </audio>
+
         <div id="board-wrapper">
           <CapturedPieces />
-          <Chessboard io={this.props.io} />
+          <Chessboard
+            io={this.props.io}
+            maybePlaySound={this._maybePlaySound} />
         </div>
 
         <TableOfMoves />
@@ -87,6 +91,11 @@ const ChessboardInterface = React.createClass({
   },
   _onPromotionChange(e) {
     GameActions.changePromotion(e.target.value);
+  },
+  _maybePlaySound() {
+    if (this.props.soundsEnabled) {
+      this.refs.moveSnd.getDOMNode().play();
+    }
   }
 });
 

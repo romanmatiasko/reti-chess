@@ -23,19 +23,10 @@ const Chat = React.createClass({
     };
   },
   componentDidMount() {
-    const {io, soundsEnabled} = this.props;
-
-    io.on('receive-message', data => {
+    this.props.io.on('receive-message', data => {
       ChatActions.submitMessage(data.message, data.color + ' left');
-
-      if (!this.state.isChatHidden) {
-        this._scrollChat();
-      }
-      if (soundsEnabled) {
-        this.refs.msgSnd.getDOMNode().play();
-      }
+      this._maybePlaySound();
     });
-    
     ChatStore.on('change', this._onChatStoreChange);
   },
   componentWillUnmount() {
@@ -99,6 +90,11 @@ const Chat = React.createClass({
   _scrollChat() {
     const chatNode = this.refs.chat.getDOMNode();
     chatNode.scrollTop = chatNode.scrollHeight;
+  },
+  _maybePlaySound() {
+    if (this.props.soundsEnabled) {
+      this.refs.msgSnd.getDOMNode().play();
+    }
   }
 });
 

@@ -1,0 +1,8 @@
+{
+  "esnext": true,
+  "newcap": false,
+  "validthis": true,
+  "node": true,
+  "browser": true,
+  "browserify": true
+}

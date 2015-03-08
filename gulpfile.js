@@ -27,7 +27,9 @@ var imagemin = require('gulp-imagemin');
 var dependencies = [
   'react',
   'react/addons',
-  'immutable'
+  'immutable',
+  'flux',
+  'eventemitter2'
 ];
 
 var browserifyTask = function() {
@@ -131,6 +133,7 @@ var cssTask = function() {
 };
 
 var imageminTask = function() {
+  console.log('Optimizing images');
   gulp.src('./src/img/*')
     .pipe(imagemin({
       progressive: true,
@@ -145,8 +148,21 @@ var imageminTask = function() {
     }));
 };
 
+var copyTask = function() {
+  console.log('Copying sound files');
+  gulp.src('./src/snd/*')
+    .pipe(gulp.dest(IS_DEVELOPMENT ? './build/snd/' : './dist/snd/'))
+    .pipe(notify({
+      message: function() {
+        gutil.log(gutil.colors.green('SOUND FILES copied.'));
+      },
+      onLast: true
+    }));
+};
+
 gulp.task('default', function() {
   browserifyTask();
   cssTask();
   imageminTask();
+  copyTask();
 });
