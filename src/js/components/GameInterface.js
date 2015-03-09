@@ -52,8 +52,9 @@ const GameInterface = React.createClass({
 
     io.on('joined', data => {
       if (data.color === 'white') {
-        io.emit('timer-white', {
-          token: params[0]
+        io.emit('clock-run', {
+          token: params[0],
+          color: 'white'
         });
       } else {
         this.setState({color: 'black'});
@@ -92,8 +93,9 @@ const GameInterface = React.createClass({
         modal: this.state.modal.set('open', false)
       }, () => {
         if (this.state.color === 'white') {
-          io.emit('timer-white', {
-            token: this.props.params[0]
+          io.emit('clock-run', {
+            token: this.props.params[0],
+            clock: 'white'
           });
         }
       });

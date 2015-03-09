@@ -24,10 +24,12 @@ const TableOfMoves = React.createClass({
         <tbody>
           {this.state.moves.map((row, i) => (
             <tr key={i}>
+              <td>
+                <strong>{`${i + 1}.`}</strong>
+              </td>
               {row.map((move, j) => (
                 <td key={j}>
-                  <strong>{i + 1}</strong>
-                  <span>{`. ${move}`}</span>
+                  <span>{move}</span>
                 </td>
               )).toArray()}
             </tr>

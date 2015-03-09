@@ -3,6 +3,7 @@
 const AppDispatcher = require('../dispatcher/AppDispatcher');
 const EventEmitter = require('eventemitter2').EventEmitter2; 
 const GameConstants = require('../constants/GameConstants');
+const ChessPieces = require('../constants/ChessPieces');
 const Chess = require('chess.js').Chess;
 const Immutable = require('immutable');
 const {List, Map, OrderedMap, Set} = Immutable;
@@ -25,7 +26,8 @@ const GameStore = Object.assign({}, EventEmitter.prototype, {
     return {
       gameOver: _gameOver,
       promotion: _promotion,
-      turn: _turn
+      turn: _turn,
+      check: _check
     };
   },
   getCapturedPieces() {
@@ -52,7 +54,7 @@ function setInitialState() {
     ['w', List()],
     ['b', List()]
   ]);
-  _moves = List([List()]);
+  _moves = List();
   _promotion = 'q';
   _turn = 'w';
   _check = false;
@@ -75,12 +77,13 @@ function makeMove(from, to, capture, emitMove) {
   _turn = _chess.turn();
   _check = _chess.in_check();
   _lastMove = _lastMove.set('from', from).set('to', to);
-  _moves = _moves.last().size === 2 ?
+  _moves = _moves.isEmpty() || _moves.last().size === 2 ?
     _moves.push(List([move.san])) :
     _moves.update(_moves.size - 1, list => list.push(move.san));
 
   if (capture || move.flags === 'e') {
-    const capturedPiece = capture || _turn === 'w' ? 'P' : 'p';
+    const capturedPiece = capture ||
+      (_turn === 'w' ? '\u2659' : '\u265f'); // en passant
 
     _capturedPieces = _capturedPieces
       .update(_turn, list => list.push(capturedPiece));
@@ -104,8 +107,7 @@ function makeMove(from, to, capture, emitMove) {
       from: from,
       to: to,
       capture: capture,
-      gameOver: _chess.game_over(),
-      turn: _turn
+      gameOver: _chess.game_over()
     });
   }
 

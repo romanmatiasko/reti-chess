@@ -5,7 +5,7 @@
   margin: 0 auto;
 }
 
-table#moves {
+#moves {
   overflow-x: hidden;
   overflow-y: auto;
   width: 270px;
@@ -16,37 +16,42 @@ table#moves {
   border-radius: 2px;
   border-bottom: 4px solid $grey;
   display: block;
-  float: left;
-}
+  float: left; 
 
-#moves thead {
-  font-family: 'Cherry Swash';
-  width: 270px;
-  height: 3em;
-  line-height: 3em;
-  font-size: 1.225rem;
-  color: $dark-purple;
-  float: left;
-  text-align: center;
-}
+  thead {
+    font-family: 'Cherry Swash';
+    width: 270px;
+    height: 3em;
+    line-height: 3em;
+    font-size: 1.225rem;
+    color: $dark-purple;
+    float: left;
+    text-align: center;
 
-#moves thead th, #moves thead tr {
-  width: 100%;
-  text-align: center;
-  float: left;
-}
+    th, tr {
+      width: 100%;
+      text-align: center;
+      float: left;
+    }
+  }
 
-#moves tbody tr {
-  width: 270px;
-  float: left;
-}
+  tbody tr {
+    width: 270px;
+    float: left;
+  }
 
-#moves tbody tr td {
-  width: 105px;
-  text-align: left;
-  line-height: 20px;
-  margin: 0 15px;
-  float: left;
+  tbody tr td {
+    width: 85px;
+    text-align: left;
+    line-height: 20px;
+    margin: 0 10px;
+    float: left;
+
+    &:first-child {
+      width: 40px;
+      margin-right: 0;
+    }
+  }
 }
 
 #board-wrapper {
@@ -98,7 +103,7 @@ table#moves {
   background: $grey;
 }
 
-span.feedback {
+.feedback {
   color: #424242;
   line-height: 28px;
   text-indent: 28px;
@@ -106,21 +111,16 @@ span.feedback {
   display: block;
   clear: left;
   float: left;
+
+  &.white {
+    background: url('../img/whiteking.png') 0% 50% no-repeat;
+  }
+  &.black {
+    background: url('../img/whiteking.png') 0% 50% no-repeat;
+  }
 }
 
-.feedback-status {
-  font-weight: bold;
-}
-
-span.whitefeedback {
-  background: url('../img/whiteking.png') 0% 50% no-repeat;
-}
-
-span.blackfeedback {
-  background: url('../img/blackking.png') 0% 50% no-repeat;
-}
-
-span.promotion {
+.promotion {
   line-height: 28px;
   text-indent: 28px;
   margin-top: 1em;

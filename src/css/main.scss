@@ -17,17 +17,22 @@
     max-width: 900px;
     padding: 1em 10px;
   }
-  table#moves {
+  #moves {
     margin-left: 0;
     float: right;
     height: 516px;
   }
-  table#moves, #moves thead, #moves tbody tr {
+  #moves, #moves thead, #moves tbody tr {
     width: 200px;
   }
   #moves tbody tr td {
-    width: 90px;
+    width: 70px;
     margin: 0 5px;
+
+    &:first-child {
+      width: 30px;
+      margin-right: 5px;
+    }
   }
 }
 
@@ -82,7 +87,7 @@
     float: right;
     clear: none;
   }
-  table#moves {
+  #moves {
     margin-left: 0;
     margin-top: 0.5em;
     height: 258px;

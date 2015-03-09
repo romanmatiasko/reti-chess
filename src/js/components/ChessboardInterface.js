@@ -23,11 +23,11 @@ const ChessboardInterface = React.createClass({
     return GameStore.getState();
   },
   render() {
-    const {promotion, turn, gameOver} = this.state;
+    const {promotion, turn, gameOver, check} = this.state;
     const cxFeedback = cx({
       feedback: true,
-      whitefeedback: turn === 'w',
-      blackfeedback: turn === 'b'
+      white: turn === 'w',
+      black: turn === 'b'
     });
     const goType = gameOver.get('type');
     const loser = gameOver.get('winner') === 'White' ? 'Black' : 'White';
@@ -37,6 +37,9 @@ const ChessboardInterface = React.createClass({
         
         <audio preload="auto" ref="moveSnd">
           <source src="/snd/move.mp3" />
+        </audio>
+        <audio preload="auto" ref="checkSnd">
+          <source src="/snd/check.mp3" />
         </audio>
 
         <div id="board-wrapper">
@@ -65,11 +68,12 @@ const ChessboardInterface = React.createClass({
 
         <span className={cxFeedback}>
           {!gameOver.get('status') ? 
-            <span className="feedback-move">
+            <span>
               {`${turn === 'w' ? 'White' : 'Black'} to move.`}
+              {check ? <strong> Check.</strong> : null}
             </span> :
 
-            <span className="feedback-status">
+            <strong>
               {goType === 'checkmate' ?
                 `Checkmate. ${gameOver.get('winner')} wins!`
               :goType === 'timeout' ?
@@ -85,7 +89,7 @@ const ChessboardInterface = React.createClass({
               :goType === 'insufficientMaterial' ?
                 'Draw (Insufficient Material)'
               :null}
-            </span>
+            </strong>
           }
         </span>
       </div>
@@ -99,7 +103,7 @@ const ChessboardInterface = React.createClass({
   },
   _maybePlaySound() {
     if (this.props.soundsEnabled) {
-      this.refs.moveSnd.getDOMNode().play();
+      this.refs[this.state.check ? 'checkSnd' : 'moveSnd'].getDOMNode().play();
     }
   }
 });

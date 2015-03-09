@@ -10,7 +10,7 @@ const CHANGE_EVENT = 'change';
 var _messages = List();
 var _isChatHidden = false;
 
-var ChatStore = Object.assign({}, EventEmitter.prototype, {
+const ChatStore = Object.assign({}, EventEmitter.prototype, {
   getState() {
     return {
       messages: _messages,
@@ -20,7 +20,7 @@ var ChatStore = Object.assign({}, EventEmitter.prototype, {
 });
 
 AppDispatcher.register(payload => {
-  var action = payload.action;
+  let action = payload.action;
 
   switch (action.actionType) {
 

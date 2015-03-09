@@ -81,12 +81,8 @@ io.sockets.on('connection', function (socket) {
     });
   });
 
-  socket.on('timer-white', function (data) {
-    runTimer('white', data.token, socket);
-  });
-
-  socket.on('timer-black', function (data) {
-    runTimer('black', data.token, socket);
+  socket.on('clock-run', function (data) {
+    runClock(data.color, data.token, socket);
   });
 
   socket.on('new-move', function (data) {
@@ -182,16 +178,14 @@ io.sockets.on('connection', function (socket) {
   });
 });
 
-function runTimer(color, token, socket) {
+function runClock(color, token, socket) {
   var player, time_left, game = games[token];
 
   if (!game) return;
 
   for (var i in game.players) {
     player = game.players[i];
-
     if (player.socket === socket && player.color === color) {
-
       clearInterval(games[token].interval);
       games[token].players[i].time += games[token].players[i].inc;
 

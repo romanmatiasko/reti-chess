@@ -33,12 +33,17 @@ const Chessboard = React.createClass({
     };
   },
   componentDidMount() {
+    const {io, token} = this.props;
     GameStore.on('change', this._onGameChange);
     GameStore.on('new-move', this._onNewMove);
 
-    this.props.io.on('move', data => {
-      console.log(data);
+    io.on('move', data => {
       GameActions.makeMove(data.from, data.to, data.capture, false);
+      this.props.maybePlaySound();
+
+      if (!data.gameOver) {
+        this._runClock();
+      }
     });
   },
   componentWillUnmount() {
@@ -67,12 +72,12 @@ const Chessboard = React.createClass({
       </table>
     );
   },
-  _onGameChange() {
+  _onGameChange(cb) {
     const state = GameStore.getChessboardState();
     this.setState({
       fen: state.fen,
       lastMove: state.lastMove
-    });
+    }, cb);
   },
   _setMoveFrom(square) {
     this.setState({
@@ -84,13 +89,17 @@ const Chessboard = React.createClass({
 
     io.emit('new-move', {
       token: token,
-      move: omit(move, 'turn')
+      move: move
     });
 
-    if (move.gameOver) return;
+    setTimeout(this.props.maybePlaySound, 0);
+  },
+  _runClock() {
+    const {io, token, color} = this.props;
 
-    io.emit(move.turn === 'b' ? 'timer-black' : 'timer-white', {
-      token: token
+    io.emit('clock-run', {
+      token: token,
+      color: color
     });
   }
 });
