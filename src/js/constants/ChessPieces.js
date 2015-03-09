@@ -14,5 +14,5 @@ module.exports = {
   'n': '\u265e',
   'p': '\u265f',
   // empty square
-  '-': ''
+  '-': undefined
 };

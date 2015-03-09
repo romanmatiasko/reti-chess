@@ -2,6 +2,15 @@ const GameConstants = require('../constants/GameConstants');
 const AppDispatcher = require('../dispatcher/AppDispatcher');
 
 const GameActions = {
+  makeMove(from, to, capture, emitMove) {
+    AppDispatcher.handleViewAction({
+      actionType: GameConstants.MAKE_MOVE,
+      from: from,
+      to: to,
+      capture: capture,
+      emitMove: emitMove
+    });
+  },
   rematch() {
     AppDispatcher.handleViewAction({
       actionType: GameConstants.REMATCH

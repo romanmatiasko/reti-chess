@@ -75,9 +75,10 @@ table#moves {
       display: block;
       float: left;
 
-      &.moving {
-        background: lighten($red, 30%) !important;
-      }
+      &.moving { background: lighten($red, 30%) !important; }
+      &.selected { background: lighten($red, 30%) !important; }
+      &.from { background: lighten($blue, 25%) !important; }
+      &.to { background: lighten($blue, 20%) !important; }
 
       a {
         width: 6ch2.5px;
@@ -125,8 +126,4 @@ span.promotion {
   margin-top: 1em;
   display: block;
   float: right;
-}
-
-.chessboard td.selected {
-  background: lighten($red, 30%) !important;
 }

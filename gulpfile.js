@@ -30,7 +30,8 @@ var dependencies = [
   'immutable',
   'flux',
   'eventemitter2',
-  'chess.js'
+  'chess.js',
+  'lodash.omit'
 ];
 
 var browserifyTask = function() {

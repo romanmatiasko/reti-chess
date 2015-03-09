@@ -89,21 +89,16 @@ io.sockets.on('connection', function (socket) {
     runTimer('black', data.token, socket);
   });
 
-  socket.on('timer-clear-interval', function (data) {
-    if (data.token in games) {
-      clearInterval(games[data.token].interval);
-    }
-  });
-
   socket.on('new-move', function (data) {
     var opponent;
 
     if (data.token in games) {
       opponent = getOpponent(data.token, socket);
       if (opponent) {
-        opponent.socket.emit('move', {
-          'move': data.move
-        });
+        opponent.socket.emit('move', data.move);
+      }
+      if (data.move.gameOver) {
+        clearInterval(games[data.token].interval);
       }
     }
   });

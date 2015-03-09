@@ -131,6 +131,7 @@ const GameInterface = React.createClass({
 
         <ChessboardInterface
           io={io}
+          token={params[0]}
           soundsEnabled={soundsEnabled}
           color={color} />
 

@@ -1,5 +1,6 @@
 module.exports = {
-  _maybeReverse(iterable) {
-    return this.props.color === 'black' ? iterable.reverse() : iterable;
+  _maybeReverse(iterable, color) {
+    return this.props.color === (color || 'black') ?
+      iterable.reverse() : iterable;
   }
 };

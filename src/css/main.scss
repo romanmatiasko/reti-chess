@@ -5,8 +5,6 @@
 
 .alpha { font-size: 1.125rem; }
 .center { text-align: center !important; }
-.last-origin { background: lighten($blue, 25%) !important; }
-.last-target { background: lighten($blue, 20%) !important; }
 
 @media only screen and (min-width: 760px) and (max-width: 900px) {
   header, #board-moves-wrapper {

@@ -13,6 +13,7 @@ const ChessboardInterface = React.createClass({
   
   propTypes: {
     io: React.PropTypes.object.isRequired,
+    token: React.PropTypes.string.isRequired,
     soundsEnabled: React.PropTypes.bool.isRequired,
     color: React.PropTypes.oneOf(['white', 'black']).isRequired
   },
@@ -42,6 +43,7 @@ const ChessboardInterface = React.createClass({
           <CapturedPieces />
           <Chessboard
             io={this.props.io}
+            token={this.props.token}
             maybePlaySound={this._maybePlaySound}
             color={this.props.color} />
         </div>
@@ -55,8 +57,8 @@ const ChessboardInterface = React.createClass({
                     onChange={this._onPromotionChange}>
               <option value="q">Queen</option>
               <option value="r">Rook</option>
-              <option value="n">Knight</option>
               <option value="b">Bishop</option>
+              <option value="n">Knight</option>
             </select>
           </label>
         </span>
