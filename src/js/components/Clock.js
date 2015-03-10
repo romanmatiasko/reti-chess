@@ -37,6 +37,13 @@ const Clock = React.createClass({
         winner: data.color === 'black' ? 'White' : 'Black'
       });
     });
+
+    io.on('rematch-confirmed', () => {
+      this.setState({
+        white: this.props.params[1] * 60,
+        black: this.props.params[1] * 60
+      });
+    });
   },
   render() {
     return (

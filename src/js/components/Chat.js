@@ -10,7 +10,9 @@ const Chat = React.createClass({
     io: React.PropTypes.object.isRequired,
     token: React.PropTypes.string.isRequired,
     color: React.PropTypes.oneOf(['white', 'black']).isRequired,
-    soundsEnabled: React.PropTypes.bool.isRequired
+    soundsEnabled: React.PropTypes.bool.isRequired,
+    isOpponentAvailable: React.PropTypes.bool.isRequired,
+    openModal: React.PropTypes.func.isRequired
   },
   mixins: [React.addons.PureRenderMixin],
 
@@ -28,6 +30,8 @@ const Chat = React.createClass({
       this._maybePlaySound();
     });
     ChatStore.on('change', this._onChatStoreChange);
+    
+    if (window.innerWidth > 1399) ChatActions.toggleChat();
   },
   componentWillUnmount() {
     ChatStore.off('change', this._onChatStoreChange);
@@ -38,7 +42,7 @@ const Chat = React.createClass({
            style={this.state.isChatHidden ? {display: 'none'} : null}>
         <h4>Chat</h4>
         <a className="close"
-           onClick={this._toggleChat}>
+           onClick={ChatActions.toggleChat}>
           x
         </a>
         <audio preload="auto" ref="msgSnd">
@@ -66,17 +70,19 @@ const Chat = React.createClass({
   _onChatStoreChange() {
     this.setState(ChatStore.getState(), this._scrollChat);
   },
-  _toggleChat(e) {
-    e.preventDefault();
-    ChatActions.toggleChat();
-  },
   _onChangeMessage(e) {
     this.setState({message: e.target.value});
   },
   _submitMessage(e) {
     e.preventDefault();
-    const {io, token, color} = this.props;
+    const {io, token, color, isOpponentAvailable} = this.props;
     const message = this.state.message;
+
+    if (!isOpponentAvailable) {
+      this.props.openModal('info', 'Sorry, your opponent is not connected. ' +
+        'You can‘t send messages.');
+      return;
+    }
 
     ChatActions.submitMessage(message, color + ' right');
     this.setState({message: ''});

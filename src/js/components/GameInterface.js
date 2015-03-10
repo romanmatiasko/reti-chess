@@ -19,6 +19,7 @@ const GameInterface = React.createClass({
 
   getInitialState() {
     return {
+      isOpponentAvailable: false,
       color: 'white',
       modal: Map({
         open: false,
@@ -59,6 +60,8 @@ const GameInterface = React.createClass({
       } else {
         this.setState({color: 'black'});
       }
+
+      this.setState({isOpponentAvailable: true});
     });
 
     io.on('full', () => {
@@ -68,25 +71,19 @@ const GameInterface = React.createClass({
     });
 
     io.on('player-resigned', data => {
-      const winner = data.color === 'black' ? 'White' : 'Black';
-      const loser = winner === 'Black' ? 'White' : 'Black';
-
       GameActions.gameOver({
         type: 'resign',
-        winner: winner
+        winner: data.color === 'black' ? 'White' : 'Black'
       });
-      this._openModal('info', `${loser} has resigned. ${winner} wins!`);
     });
 
-    io.on('rematch-offered', () => {
-      this._openModal('offer', 'Your opponent has sent you a rematch offer.');
-    });
+    io.on('rematch-offered', () =>
+      this._openModal('offer', 'Your opponent has sent you a rematch offer.'));
 
-    io.on('rematch-declined', () => {
-      this._openModal('info', 'Rematch offer has been declined.');
-    });
+    io.on('rematch-declined', () =>
+      this._openModal('info', 'Rematch offer has been declined.'));
 
-    io.on('rematch-confirmed', data => {
+    io.on('rematch-confirmed', () => {
       GameActions.rematch();
       this.setState({
         color: this.state.color === 'white' ? 'black' : 'white',
@@ -95,11 +92,20 @@ const GameInterface = React.createClass({
         if (this.state.color === 'white') {
           io.emit('clock-run', {
             token: this.props.params[0],
-            clock: 'white'
+            color: 'white'
           });
         }
       });
     });
+
+    io.on('opponent-disconnected', () =>  {
+      if (!this.state.gameOver.get('status')) {
+        this._openModal('info', 'Your opponent has disconnected.');
+      }
+
+      this.setState({isOpponentAvailable: false});
+    });
+
     GameStore.on('change', this._onGameChange);
   },
   componentWillUnmount() {
@@ -107,15 +113,19 @@ const GameInterface = React.createClass({
   },
   render() {
     const {io, params} = this.props;
-    const {color, soundsEnabled, gameOver} = this.state;
+    const {color, soundsEnabled, gameOver, isOpponentAvailable} = this.state;
+    const commonProps = {
+      io: io,
+      color: color,
+      openModal: this._openModal,
+      isOpponentAvailable: isOpponentAvailable
+    };
 
     return (
       <div>
         <GameHeader
-          io={io}
+          {...commonProps}
           params={params}
-          color={color}
-          openModal={this._openModal}
           gameOver={gameOver.get('status')} />
 
         <label id="sounds-label">
@@ -126,16 +136,15 @@ const GameInterface = React.createClass({
         </label>
 
         <Chat
-          io={io}
+          {...commonProps}
           token={params[0]}
-          color={color}
           soundsEnabled={soundsEnabled} />
 
         <ChessboardInterface
-          io={io}
+          {...commonProps}
           token={params[0]}
           soundsEnabled={soundsEnabled}
-          color={color} />
+          gameOver={gameOver} />
 
         <Modal data={this.state.modal} />
       </div>

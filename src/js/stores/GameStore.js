@@ -91,15 +91,15 @@ function makeMove(from, to, capture, emitMove) {
 
   if (_chess.game_over()) {
     const type = _chess.in_checkmate() ? 'checkmate' :
-      _chess.in_draw() ? 'draw' :
       _chess.in_stalemate() ? 'stalemate' :
       _chess.in_threefold_repetition() ? 'threefoldRepetition' :
-      _chess.insufficient_material() ? 'insufficientMaterial' : null;
+      _chess.insufficient_material() ? 'insufficientMaterial' :
+      _chess.in_draw() ? 'draw' : null;
 
-    _gameOver = _gameOver
-      .set('status', true)
-      .set('winner', _turn === 'w' ? 'White' : 'Black')
-      .set('type', type);
+    gameOver({
+      winner: _turn === 'b' ? 'White' : 'Black',
+      type: type
+    });
   }
 
   if (emitMove) {

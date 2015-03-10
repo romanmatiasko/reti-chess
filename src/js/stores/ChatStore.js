@@ -8,7 +8,7 @@ const {List, Map} = Immutable;
 const CHANGE_EVENT = 'change';
   
 var _messages = List();
-var _isChatHidden = false;
+var _isChatHidden = true;
 
 const ChatStore = Object.assign({}, EventEmitter.prototype, {
   getState() {

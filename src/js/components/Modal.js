@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require('react/addons');
+const cx = require('classnames');
 
 const Modal = React.createClass({
   
@@ -23,7 +24,11 @@ const Modal = React.createClass({
     const callbacks = data.get('callbacks');
 
     return (
-      <div className={'modal-mask' + (data.get('open') ? '' : ' hidden')}>
+      <div className={cx({
+             'modal-mask': true,
+             'hidden': !data.get('open')
+           })}
+           onClick={this._hideModal}>
         <p>
           <strong>Esc: </strong>
           <span>{type === 'info' ? 'OK' : 'Decline'}</span>
@@ -32,7 +37,8 @@ const Modal = React.createClass({
           <span>{type === 'info' ? 'OK' : 'Accept'}</span>
         </p>
 
-        <div className="modal">
+        <div className="modal"
+             onClick={e => e.stopPropagation()}>
           <p>{data.get('message')}</p>
 
           {type === 'info' ? 
@@ -73,6 +79,9 @@ const Modal = React.createClass({
         callbacks.decline();
       }
     }
+  },
+  _hideModal() {
+    this.props.data.get('callbacks').hide();
   }
 });
 

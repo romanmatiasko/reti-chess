@@ -12,7 +12,8 @@ const GameHeader = React.createClass({
     params: React.PropTypes.array.isRequired,
     color: React.PropTypes.oneOf(['white', 'black']).isRequired,
     openModal: React.PropTypes.func.isRequired,
-    gameOver: React.PropTypes.bool.isRequired
+    gameOver: React.PropTypes.bool.isRequired,
+    isOpponentAvailable: React.PropTypes.bool.isRequired
   },
   mixins: [React.addons.PureRenderMixin],
 
@@ -36,32 +37,32 @@ const GameHeader = React.createClass({
     ChatStore.off('change', this._onChatStoreChange);
   },
   render() {
-    const [_, time, inc] = this.props.params;
+    const {io, params, gameOver, isOpponentAvailable} = this.props;
 
     return (
       <header className="clearfix">
 
         <Clock
-          io={this.props.io}
-          params={this.props.params} />
+          io={io}
+          params={params} />
 
         <span id="game-type">
-          {`${time}|${inc}`}
+          {`${params[1]}|${params[2]}`}
         </span>
 
         <a className="btn" href="/">New game</a>
 
-        {!this.props.gameOver ?
+        {!gameOver && isOpponentAvailable ?
           <a className="btn btn--red resign"
               onClick={this._onResign}>
             Resign
-          </a> :
-
+          </a>
+        :gameOver ?
           <a className="btn btn--red rematch"
              onClick={this._onRematch}>
             Rematch
           </a>
-        }
+        :null}
 
         <a id="chat-icon"
            onClick={this._toggleChat}>
@@ -94,7 +95,13 @@ const GameHeader = React.createClass({
     });
   },
   _onRematch() {
-    const {io, params, openModal} = this.props;
+    const {io, params, openModal, isOpponentAvailable} = this.props;
+
+    if (!isOpponentAvailable) {
+      openModal('info', 'Your opponent has disconnected. You need to ' +
+        'generate a new link.');
+      return;
+    }
 
     io.emit('rematch-offer', {
       token: params[0]

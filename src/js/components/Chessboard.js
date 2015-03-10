@@ -19,7 +19,9 @@ const Chessboard = React.createClass({
     io: React.PropTypes.object.isRequired,
     token: React.PropTypes.string.isRequired,
     maybePlaySound: React.PropTypes.func.isRequired,
-    color: React.PropTypes.oneOf(['white', 'black']).isRequired
+    color: React.PropTypes.oneOf(['white', 'black']).isRequired,
+    gameOver: React.PropTypes.bool.isRequired,
+    isOpponentAvailable: React.PropTypes.bool.isRequired
   },
   mixins: [React.addons.PureRenderMixin, maybeReverse],
 
@@ -45,15 +47,18 @@ const Chessboard = React.createClass({
         this._runClock();
       }
     });
+
+    io.on('rematch-confirmed', () => this.setState({moveFrom: null}));
   },
   componentWillUnmount() {
     GameStore.off('change', this._onGameChange);
     GameStore.on('new-move', this._onNewMove);
   },
   render() {
+    const {color, isOpponentAvailable, gameOver} = this.props;
     const fenArray = this.state.fen.split(' ');
     const placement = fenArray[0];
-    const isItMyTurn = fenArray[1] === this.props.color.charAt(0);
+    const isItMyTurn = fenArray[1] === color.charAt(0);
     const rows = this._maybeReverse(placement.split('/'));
     const ranks = this._maybeReverse(RANKS, 'white');
 
@@ -64,8 +69,8 @@ const Chessboard = React.createClass({
             key={i}
             rank={ranks.get(i)}
             placement={placement}
-            color={this.props.color}
-            isItMyTurn={isItMyTurn}
+            color={color}
+            isMoveable={isItMyTurn && isOpponentAvailable && !gameOver}
             moveFrom={this.state.moveFrom}
             lastMove={this.state.lastMove}
             setMoveFrom={this._setMoveFrom} />)}
@@ -110,7 +115,7 @@ const Row = React.createClass({
     rank: React.PropTypes.oneOf(['1','2','3','4','5','6','7','8']).isRequired,
     placement: React.PropTypes.string.isRequired,
     color: React.PropTypes.oneOf(['white', 'black']).isRequired,
-    isItMyTurn: React.PropTypes.bool.isRequired,
+    isMoveable: React.PropTypes.bool.isRequired,
     moveFrom: React.PropTypes.string,
     lastMove: React.PropTypes.object,
     setMoveFrom: React.PropTypes.func.isRequired
@@ -147,7 +152,7 @@ const Column = React.createClass({
     square: React.PropTypes.string.isRequired,
     piece: React.PropTypes.string.isRequired,
     color: React.PropTypes.oneOf(['white', 'black']).isRequired,
-    isItMyTurn: React.PropTypes.bool.isRequired,
+    isMoveable: React.PropTypes.bool.isRequired,
     moveFrom: React.PropTypes.string,
     lastMove: React.PropTypes.object,
     setMoveFrom: React.PropTypes.func.isRequired
@@ -170,10 +175,10 @@ const Column = React.createClass({
           onClick={this._onClickSquare} />;
   },
   _onClickSquare() {
-    const {isItMyTurn, color, moveFrom, square, piece} = this.props;
+    const {isMoveable, color, moveFrom, square, piece} = this.props;
     const rgx = color === 'white' ? /^[KQRBNP]$/ : /^[kqrbnp]$/;
 
-    if (!isItMyTurn || (!moveFrom && !rgx.test(piece)))
+    if (!isMoveable || (!moveFrom && !rgx.test(piece)))
       return;
     else if (moveFrom && moveFrom === square)
       this.props.setMoveFrom(null);

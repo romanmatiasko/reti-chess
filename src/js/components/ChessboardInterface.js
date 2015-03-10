@@ -8,6 +8,7 @@ const Chessboard = require('./Chessboard');
 const CapturedPieces = require('./CapturedPieces');
 const TableOfMoves = require('./TableOfMoves');
 const cx = require('classnames');
+const omit = require('lodash.omit');
 
 const ChessboardInterface = React.createClass({
   
@@ -15,12 +16,20 @@ const ChessboardInterface = React.createClass({
     io: React.PropTypes.object.isRequired,
     token: React.PropTypes.string.isRequired,
     soundsEnabled: React.PropTypes.bool.isRequired,
-    color: React.PropTypes.oneOf(['white', 'black']).isRequired
+    color: React.PropTypes.oneOf(['white', 'black']).isRequired,
+    gameOver: React.PropTypes.object.isRequired,
+    isOpponentAvailable: React.PropTypes.bool.isRequired
   },
   mixins: [React.addons.PureRenderMixin, onGameChange],
 
   getInitialState() {
     return GameStore.getState();
+  },
+  componentDidUpdate(prevProps) {
+    if (this.props.gameOver.get('status') &&
+        !prevProps.gameOver.get('status')) {
+      this.props.openModal('info', this._getGameOverMessage());
+    }
   },
   render() {
     const {promotion, turn, gameOver, check} = this.state;
@@ -29,8 +38,6 @@ const ChessboardInterface = React.createClass({
       white: turn === 'w',
       black: turn === 'b'
     });
-    const goType = gameOver.get('type');
-    const loser = gameOver.get('winner') === 'White' ? 'Black' : 'White';
 
     return (
       <div id="board-moves-wrapper" className="clearfix">
@@ -45,10 +52,9 @@ const ChessboardInterface = React.createClass({
         <div id="board-wrapper">
           <CapturedPieces />
           <Chessboard
-            io={this.props.io}
-            token={this.props.token}
-            maybePlaySound={this._maybePlaySound}
-            color={this.props.color} />
+            {...omit(this.props, 'soundsEnabled', 'gameOver')}
+            gameOver={gameOver.get('status')}
+            maybePlaySound={this._maybePlaySound} />
         </div>
 
         <TableOfMoves />
@@ -74,21 +80,7 @@ const ChessboardInterface = React.createClass({
             </span> :
 
             <strong>
-              {goType === 'checkmate' ?
-                `Checkmate. ${gameOver.get('winner')} wins!`
-              :goType === 'timeout' ?
-                `${loser}‘s time is out. ${gameOver.get('winner')} wins!`
-              :goType === 'resign' ?
-                `${loser} has resigned. ${gameOver.get('winner')} wins!`
-              :goType === 'draw' ?
-                'Draw.'
-              :goType === 'stalemate' ?
-                'Draw (Stalemate).'
-              :goType === 'threefoldRepetition' ?
-                'Draw (Threefold Repetition).'
-              :goType === 'insufficientMaterial' ?
-                'Draw (Insufficient Material)'
-              :null}
+              {this._getGameOverMessage()}
             </strong>
           }
         </span>
@@ -105,6 +97,19 @@ const ChessboardInterface = React.createClass({
     if (this.props.soundsEnabled) {
       this.refs[this.state.check ? 'checkSnd' : 'moveSnd'].getDOMNode().play();
     }
+  },
+  _getGameOverMessage() {
+    const type = this.props.gameOver.get('type');
+    const winner = this.props.gameOver.get('winner');
+    const loser = winner === 'White' ? 'Black' : 'White';
+
+    return type === 'checkmate' ? `Checkmate. ${winner} wins!` :
+      type === 'timeout' ? `${loser}‘s time is out. ${winner} wins!` :
+      type === 'resign' ? `${loser} has resigned. ${winner} wins!` :
+      type === 'draw' ? 'Draw.' :
+      type === 'stalemate' ? 'Draw (Stalemate).' :
+      type === 'threefoldRepetition' ? 'Draw (Threefold Repetition).' :
+      type === 'insufficientMaterial' ? 'Draw (Insufficient Material)' : '';
   }
 });
 

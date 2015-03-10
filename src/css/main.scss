@@ -36,12 +36,6 @@
   }
 }
 
-@media only screen and (min-width: 1400px) {
-  #chat-wrapper {
-    display: block;
-  }
-}
-
 @media only screen and (max-width: 999px) {
   #captured-pieces {
     display: none;
@@ -76,7 +70,7 @@
       }
     }
   }
-  span#game-type{
+  #game-type{
     display: none;
   }
   #container-wrapper {
