@@ -46,6 +46,13 @@ const Chessboard = React.createClass({
       if (!data.gameOver) {
         this._runClock();
       }
+
+      if (document.hidden) {
+        let title = document.getElementsByTagName('title')[0];
+        title.text = '* ' + title.text;
+
+        window.addEventListener('focus', this._removeAsteriskFromTitle);
+      }
     });
 
     io.on('rematch-confirmed', () => this.setState({moveFrom: null}));
@@ -106,6 +113,11 @@ const Chessboard = React.createClass({
       token: token,
       color: color
     });
+  },
+  _removeAsteriskFromTitle() {
+    let title = document.getElementsByTagName('title')[0];
+    title.text = title.text.replace('* ', '');
+    window.removeEventListener('focus', this._removeAsteriskFromTitle);
   }
 });
 
