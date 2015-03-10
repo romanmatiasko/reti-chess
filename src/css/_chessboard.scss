@@ -86,13 +86,17 @@
       &.to { background: lighten($blue, 20%) !important; }
 
       a {
-        width: 6ch2.5px;
+        width: 62.5px;
         height: 62.5px;
         font-size: 3.5rem;
         color: #424242;
         text-decoration: none;
         display: block;
-        cursor: pointer;
+        cursor: default;
+        
+        &[draggable="true"] {
+          cursor: pointer;
+        }
       }
     }
   }

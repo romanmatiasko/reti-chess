@@ -171,20 +171,29 @@ const Column = React.createClass({
   },
 
   render() {
-    const {moveFrom, lastMove, square} = this.props;
+    const {moveFrom, lastMove, square, color, isMoveable} = this.props;
     const piece = ChessPieces[this.props.piece];
+    const rgx = color === 'white' ? /^[KQRBNP]$/ : /^[kqrbnp]$/;
+    const isDraggable = rgx.test(this.props.piece);
 
     return piece ? 
       <td className={cx({
             selected: moveFrom === square,
             to: lastMove.get('to') === square
-          })}>
-        <a onClick={this._onClickSquare}>
+          })}
+          onDragOver={!isDraggable ? this._onDragOver : null}
+          onDrop={!isDraggable ? this._onDrop : null}>
+
+        <a onClick={this._onClickSquare}
+           onDragStart={this._onDragStart}
+           draggable={isDraggable && isMoveable}>
           {piece}
         </a>
       </td> :
       <td className={lastMove.get('from') === square ? 'from' : null}
-          onClick={this._onClickSquare} />;
+          onClick={this._onClickSquare}
+          onDragOver={this._onDragOver}
+          onDrop={this._onDrop} />;
   },
   _onClickSquare() {
     const {isMoveable, color, moveFrom, square, piece} = this.props;
@@ -198,6 +207,19 @@ const Column = React.createClass({
       this.props.setMoveFrom(square);
     else
       GameActions.makeMove(moveFrom, square, ChessPieces[piece], true);
+  },
+  _onDragStart(e) {
+    e.dataTransfer.effectAllowed = 'move';
+    this.props.setMoveFrom(this.props.square);
+  },
+  _onDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  },
+  _onDrop(e) {
+    e.preventDefault();
+    const {moveFrom, square, piece} = this.props;
+    GameActions.makeMove(moveFrom, square, ChessPieces[piece], true);
   }
 });
 

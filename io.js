@@ -33,14 +33,15 @@ io.sockets.on('connection', socket => {
 
   socket.on('join', data => {
     const game = _games.get(data.token);
-    const nOfPlayers = game.get('players').size;
-    const colors = ['black', 'white'];
-    let color;
 
     if (!game) {
       socket.emit('token-invalid');
       return;
     }
+
+    const nOfPlayers = game.get('players').size;
+    const colors = ['black', 'white'];
+    let color;
 
     clearTimeout(game.get('timeout'));
 
