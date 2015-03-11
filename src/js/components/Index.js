@@ -21,9 +21,6 @@ const Index = React.createClass({
   componentDidMount() {
     const io = this.props.io;
 
-    /**
-     * Socket.IO events
-     */
     io.on('created', data => {
       const {time, inc} = this.state;
 
@@ -44,9 +41,10 @@ const Index = React.createClass({
              height="122"
              className="knight" />
         <h1>Reti Chess</h1>
+
         <p style={{margin: '50px 0'}} className="center">
           A lightweight real-time chess app build in Node, Express, 
-          Socket.IO and React.
+          Socket.IO, React, Flux and Immutable.
         </p>
 
         <div id="create-game">
@@ -56,6 +54,7 @@ const Index = React.createClass({
             inc={this.state.inc}
             onChangeForm={this._onChangeForm}
             createGame={this._createGame} />
+            
           <p id="game-status">
             {this.state.link ?
               'Waiting for opponent to connect'
@@ -68,7 +67,7 @@ const Index = React.createClass({
         <p>
           Click the button to create a game. Send the link to your friend.
           Once the link is opened your friend‘s browser, game should begin 
-          shortly. Colours are picked randomly by computer.
+          shortly. Colors are picked randomly by computer.
         </p>
         <p>
           <a href="/about" className="alpha">Read more about Reti Chess</a>
@@ -82,6 +81,7 @@ const Index = React.createClass({
   },
   _createGame(e) {
     e.preventDefault();
+
     const {time, inc} = this.state;
     const isInvalid = [time, inc].some(val => {
       val = parseInt(val, 10);

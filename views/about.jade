@@ -1,35 +1,32 @@
 extends layout
 
 block content
-  h1.knight
-  h2 About Reti Chess
-  p.margin-fifty Reti Chess is opensource chess app built in 
-    a(href='http://nodejs.org/') Node.js 
-    |  with use of 
-    a(href='http://expressjs.com/') Express framework 
-    |  and 
+  img(src='/img/knight.png', width='122', height='122', class='knight')
+  h1 About Reti Chess
+  p(style='margin: 50px 0;') Reti Chess is open source chess app built in 
+    a(href='http://nodejs.org/') Node.js
+    | ,  
+    a(href='http://expressjs.com/') Express
+    | , 
     a(href='http://socket.io/') Socket.IO
-    |  . Reti Chess also uses 
-    a(href='https://github.com/jhlywa/chess.js') chess.js
+    | , 
+    a(href='http://facebook.github.io/react/') React
+    | , 
+    a(href='http://facebook.github.io/flux/') Flux
+    | , and 
+    a(href='http://facebook.github.io/immutable-js/') Immutable
+    | . Reti Chess also uses 
+    a(href='http://github.com/jhlywa/chess.js') chess.js
     |  for move validation and check/mate/draw detection.
 
-  h3 Why Reti?
+  h2 Why Reti?
   p The project is named after famous Czechoslovakian chess player Richard Réti. 
     | After him is also named a chess opening which begins with the moves: 1. Nf3 d5, 2. d4.
 
-  h3 What features chess supports?
+  h2 What features are supported?
   p This is a lightweight version of chess. You can only play real-time against the human, an AI is not available. 
     | Reti Chess supports simple chat and also timer. You can set timer up to 50 minutes with increment of max 50 seconds per side. 
     | If you reload the window or disconnect from the game, the game will be cancelled.
 
-  h3 People behind this project
-  p
-    a(href='https://github.com/romanmatiasko/') Roman Matiasko
-    | , 
-    a(href='https://github.com/stepanbujnak') Stepan Bujnak 
-    | and 
-    a(href='https://github.com/lukasmatiasko') Lukas Matiasko
-    | .
-
-  p
-    a(href='/', class='button') Home
+  p(style='margin-top: 50px')
+    a(href='/', class='btn', style='float: none;') Home

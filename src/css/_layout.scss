@@ -78,12 +78,19 @@ a.btn {
 }
 
 footer {
-  font-size: 1rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
   width: 100%;
+  height: 100px;
   line-height: 2em;
   text-align: center;
-  border-bottom: 4px solid darken($grey, 10%);
-  box-shadow: inset 0 -4px darken($grey, 10%);
+  border-bottom: 8px solid darken($grey, 10%);
+
+  p, a {
+    font-size: .85rem;
+    margin-bottom: 0;
+  }
 
   a {
     color: darken($grey, 45%);
