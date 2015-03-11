@@ -42,11 +42,6 @@ const Index = React.createClass({
              className="knight" />
         <h1>Reti Chess</h1>
 
-        <p style={{margin: '50px 0'}} className="center">
-          A lightweight real-time chess app build in Node, Express, 
-          Socket.IO, React, Flux and Immutable.
-        </p>
-
         <div id="create-game">
           <CreateGameForm
             link={this.state.link}
