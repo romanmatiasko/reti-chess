@@ -40,7 +40,7 @@ const GameInterface = React.createClass({
     io.on('token-invalid', () => this.setState({
       modal: this.state.modal
         .set('open', true)
-        .set('message', 'Game link is invalid or has expired')
+        .set('message', 'Game link is invalid or has expired.')
         .set('type', 'info')
     }));
 

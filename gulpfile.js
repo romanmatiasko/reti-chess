@@ -31,7 +31,9 @@ var dependencies = [
   'flux',
   'eventemitter2',
   'chess.js',
-  'lodash.omit'
+  'lodash.omit',
+  'socket.io-client',
+  'es6-shim'
 ];
 
 var browserifyTask = function() {

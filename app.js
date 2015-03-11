@@ -4,7 +4,6 @@ import express from 'express';
 import path from 'path';
 import winston from './winston';
 import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
 import favicon from 'serve-favicon';
 import logger from 'morgan';
 import routes from './routes/routes';
@@ -19,7 +18,6 @@ app.use(favicon(path.join(__dirname, 'dist/img/favicon.png')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cookieParser());
 app.use(express.static(staticPath));
 app.use('/', routes);
 

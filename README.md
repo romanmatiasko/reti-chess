@@ -8,6 +8,4 @@ You can play the game on [www.retichess.com](http://wwww.retichess.com/).
 License
 -------
 
-(c) 2015 Roman Matiasko
-
-Available under [the MIT License (MIT)](http://opensource.org/licenses/MIT).
+Available under [the MIT License (MIT)](./LICENSE.md).
