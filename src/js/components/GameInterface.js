@@ -37,12 +37,6 @@ const GameInterface = React.createClass({
   componentDidMount() {
     const {io, params} = this.props;
 
-    io.emit('join', {
-      token: params[0],
-      time: params[1] * 60,
-      inc: params[2]
-    });
-
     io.on('token-invalid', () => this.setState({
       modal: this.state.modal
         .set('open', true)
@@ -50,18 +44,27 @@ const GameInterface = React.createClass({
         .set('type', 'info')
     }));
 
+    io.emit('join', {
+      token: params[0],
+      time: params[1] * 60,
+      inc: params[2]
+    });
+
     io.on('joined', data => {
-      if (data.color === 'white') {
-        io.emit('clock-run', {
-          token: params[0],
-          color: 'white'
-        });
-      } else {
+      if (data.color === 'black') {
         this.setState({color: 'black'});
       }
-
-      this.setState({isOpponentAvailable: true});
     });
+
+    io.on('both-joined', () =>
+      this.setState({isOpponentAvailable: true}, () => {
+        if (this.state.color === 'white') {
+          io.emit('clock-run', {
+            token: params[0],
+            color: 'white'
+          });
+        }
+      }));
 
     io.on('full', () => {
       window.alert(

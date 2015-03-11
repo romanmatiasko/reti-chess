@@ -76,6 +76,10 @@ io.sockets.on('connection', socket => {
 
     game.get('creator').emit('ready');
     socket.emit('joined', {color: color});
+
+    if (nOfPlayers === 1) {
+      io.sockets.in(data.token).emit('both-joined');
+    }
   });
 
   socket.on('clock-run', data => runClock(data.color, data.token, socket));
