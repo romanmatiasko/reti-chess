@@ -1,5 +1,5 @@
-const GameConstants = require('../constants/GameConstants');
-const AppDispatcher = require('../dispatcher/AppDispatcher');
+import GameConstants from '../constants/GameConstants';
+import AppDispatcher from '../dispatcher/AppDispatcher';
 
 const GameActions = {
   makeMove(from, to, capture, emitMove) {
@@ -30,4 +30,4 @@ const GameActions = {
   }
 };
 
-module.exports = GameActions;
+export default GameActions;

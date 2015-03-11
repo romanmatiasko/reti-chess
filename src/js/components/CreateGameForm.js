@@ -1,6 +1,6 @@
 'use strict';
 
-const React = require('react/addons');
+import React from 'react/addons';
 
 const CreateGameForm = React.createClass({
 
@@ -52,4 +52,4 @@ const CreateGameForm = React.createClass({
   }
 });
 
-module.exports = CreateGameForm;
+export default CreateGameForm;

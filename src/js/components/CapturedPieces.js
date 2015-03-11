@@ -1,8 +1,8 @@
 'use strict';
 
-const React = require('react/addons');
-const GameStore = require('../stores/GameStore');
-const onGameChange = require('../mixins/onGameChange');
+import React from 'react/addons';
+import GameStore from '../stores/GameStore';
+import onGameChange from '../mixins/onGameChange';
 
 const CapturedPieces = React.createClass({
   
@@ -33,4 +33,4 @@ const CapturedPieces = React.createClass({
   }
 });
 
-module.exports = CapturedPieces;
+export default CapturedPieces;

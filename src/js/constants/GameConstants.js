@@ -1,6 +1,6 @@
-const keyMirror = require('react/lib/keyMirror');
+import keyMirror from 'react/lib/keyMirror';
 
-module.exports = keyMirror({
+export default keyMirror({
   MAKE_MOVE: null,
   REMATCH: null,
   GAME_OVER: null,

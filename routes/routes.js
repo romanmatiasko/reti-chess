@@ -1,12 +1,13 @@
 'use strict';
 
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const React = require('react');
-const Index = require('../src/js/components/Index');
-const GameInterface = require('../src/js/components/GameInterface');
-let router = express.Router();
+import express from 'express';
+import path from 'path';
+import fs from 'fs';
+import React from 'react';
+import Index from '../src/js/components/Index';
+import GameInterface from '../src/js/components/GameInterface';
+
+const router = express.Router();
 
 router.get('/', (req, res) => {
   res.render('index', {
@@ -40,4 +41,4 @@ router.get('/logs', (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

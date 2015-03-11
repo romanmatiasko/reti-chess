@@ -1,9 +1,10 @@
 'use strict';
 
-const io = require('socket.io').listen();
-const winston = require('./winston');
-const Immutable = require('immutable');
-const {Map, List} = Immutable;
+import IO from 'socket.io';
+import winston from './winston';
+import {Map, List} from 'immutable';
+
+const io = IO.listen();
 var _games = Map();
 
 io.sockets.on('connection', socket => {
@@ -197,4 +198,4 @@ function getOpponent(token, socket) {
   }
 }
 
-module.exports = io;
+export default io;

@@ -1,7 +1,7 @@
 'use strict';
 
-const io = require('socket.io-client');
-const URL = 'http://localhost:3000';
-const WS = URL;
+import io from 'socket.io-client';
+const ORIGIN = 'http://localhost:3000';
+const WS = ORIGIN;
 
-module.exports = io.connect(WS);
+export default io.connect(WS);

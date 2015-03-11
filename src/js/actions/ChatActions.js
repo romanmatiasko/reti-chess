@@ -1,5 +1,5 @@
-const ChatConstants = require('../constants/ChatConstants');
-const AppDispatcher = require('../dispatcher/AppDispatcher');
+import ChatConstants from '../constants/ChatConstants';
+import AppDispatcher from '../dispatcher/AppDispatcher';
 
 const ChatActions = {
   toggleVisibility() {
@@ -17,4 +17,4 @@ const ChatActions = {
   }
 };
 
-module.exports = ChatActions;
+export default ChatActions;

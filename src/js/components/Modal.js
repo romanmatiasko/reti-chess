@@ -1,7 +1,7 @@
 'use strict';
 
-const React = require('react/addons');
-const cx = require('classnames');
+import React from 'react/addons';
+import cx from 'classnames';
 
 const Modal = React.createClass({
   
@@ -85,4 +85,4 @@ const Modal = React.createClass({
   }
 });
 
-module.exports = Modal;
+export default Modal;

@@ -1,4 +1,4 @@
-module.exports = {
+const ChessPieces = {
   // white pieces
   'K': '\u2654',
   'Q': '\u2655',
@@ -16,3 +16,5 @@ module.exports = {
   // empty square
   '-': undefined
 };
+
+export default ChessPieces;

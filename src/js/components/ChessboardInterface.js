@@ -1,14 +1,14 @@
 'use strict';
 
-const React = require('react/addons');
-const GameStore = require('../stores/GameStore');
-const GameActions = require('../actions/GameActions');
-const onGameChange = require('../mixins/onGameChange');
-const Chessboard = require('./Chessboard');
-const CapturedPieces = require('./CapturedPieces');
-const TableOfMoves = require('./TableOfMoves');
-const cx = require('classnames');
-const omit = require('lodash.omit');
+import React from 'react/addons';
+import GameStore from '../stores/GameStore';
+import GameActions from '../actions/GameActions';
+import onGameChange from '../mixins/onGameChange';
+import Chessboard from './Chessboard';
+import CapturedPieces from './CapturedPieces';
+import TableOfMoves from './TableOfMoves';
+import cx from 'classnames';
+import omit from 'lodash.omit';
 
 const ChessboardInterface = React.createClass({
   
@@ -113,4 +113,4 @@ const ChessboardInterface = React.createClass({
   }
 });
 
-module.exports = ChessboardInterface;
+export default ChessboardInterface;

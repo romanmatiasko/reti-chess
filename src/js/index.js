@@ -1,8 +1,8 @@
 'use strict';
 
-const React = require('react');
-const io = require('./io');
-const Index = require('./components/Index');
+import React from 'react';
+import io from './io';
+import Index from './components/Index';
 
 React.render(
   <Index io={io} />,

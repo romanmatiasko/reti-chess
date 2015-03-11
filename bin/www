@@ -1,23 +1,27 @@
 #!/usr/bin/env node
 
+'use strict';
+
 require('babel/register');
-var app = require('../app');
-var debug = require('debug')('reti-chess:server');
-var io = require('../io');
-var port = process.env.PORT || '3000';
-var ip = process.env.IP || '127.0.0.1';
+const app = require('../app');
+const io = require('../io');
+const debug = require('debug')('reti-chess:server');
+const port = process.env.PORT || '3000';
+const ip = process.env.IP || '127.0.0.1';
+
 app.set('ip', ip);
 app.set('port', port);
 
-var server = app.listen(app.get('port'), function() {
+const server = app.listen(app.get('port'), () => {
   debug('Express server listening on port ' + server.address().port);
 });
 
-server.on('error', function(error) {
+server.on('error', error => {
   if (error.syscall !== 'listen') {
     throw error;
   }
-  var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+  
+  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 
   switch (error.code) {
     case 'EACCES':

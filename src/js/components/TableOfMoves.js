@@ -1,8 +1,8 @@
 'use strict';
 
-const React = require('react/addons');
-const GameStore = require('../stores/GameStore');
-const onGameChange = require('../mixins/onGameChange');
+import React from 'react/addons';
+import GameStore from '../stores/GameStore';
+import onGameChange from '../mixins/onGameChange';
 
 const TableOfMoves = React.createClass({
   
@@ -45,4 +45,4 @@ const TableOfMoves = React.createClass({
   }
 });
 
-module.exports = TableOfMoves;
+export default TableOfMoves;

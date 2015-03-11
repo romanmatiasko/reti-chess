@@ -1,8 +1,8 @@
 'use strict';
 
-const React = require('react');
-const CreateGameForm = require('./CreateGameForm');
-const io = require('../io');
+import React from 'react';
+import CreateGameForm from './CreateGameForm';
+import io from '../io';
 
 const Index = React.createClass({
   
@@ -97,4 +97,4 @@ const Index = React.createClass({
   }
 });
 
-module.exports = Index;
+export default Index;

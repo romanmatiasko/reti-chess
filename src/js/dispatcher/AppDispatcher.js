@@ -1,6 +1,6 @@
-const Dispatcher = require('flux').Dispatcher;
+import {Dispatcher} from 'flux';
 
-module.exports = Object.assign(new Dispatcher(), {
+export default Object.assign(new Dispatcher(), {
   // @param {object} action The data coming from the view.
   handleViewAction: function(action) {
     this.dispatch({

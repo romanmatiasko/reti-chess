@@ -1,14 +1,13 @@
 'use strict';
 
-const React = require('react/addons');
-const GameHeader = require('./GameHeader');
-const Chat = require('./Chat');
-const Modal = require('./Modal');
-const GameActions = require('../actions/GameActions');
-const GameStore = require('../stores/GameStore');
-const ChessboardInterface = require('./ChessboardInterface');
-const Immutable = require('immutable');
-const {Map} = Immutable;
+import React from 'react/addons';
+import GameHeader from './GameHeader';
+import Chat from './Chat';
+import Modal from './Modal';
+import GameActions from '../actions/GameActions';
+import GameStore from '../stores/GameStore';
+import ChessboardInterface from './ChessboardInterface';
+import {Map} from 'immutable';
 
 const GameInterface = React.createClass({
   
@@ -189,4 +188,4 @@ const GameInterface = React.createClass({
   },
 });
 
-module.exports = GameInterface;
+export default GameInterface;

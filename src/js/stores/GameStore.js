@@ -1,12 +1,12 @@
 'use strict';
 
-const AppDispatcher = require('../dispatcher/AppDispatcher');
-const EventEmitter = require('eventemitter2').EventEmitter2; 
-const GameConstants = require('../constants/GameConstants');
-const ChessPieces = require('../constants/ChessPieces');
-const Chess = require('chess.js').Chess;
-const Immutable = require('immutable');
-const {List, Map, OrderedMap, Set} = Immutable;
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import {EventEmitter2 as EventEmitter} from 'eventemitter2';
+import GameConstants from '../constants/GameConstants';
+import ChessPieces from '../constants/ChessPieces';
+import {Chess} from 'chess.js';
+import {List, Map, OrderedMap} from 'immutable';
+
 const CHANGE_EVENT = 'change';
 const MOVE_EVENT = 'new-move';
   
@@ -153,4 +153,4 @@ AppDispatcher.register(payload => {
   return true;
 });
 
-module.exports = GameStore;
+export default GameStore;

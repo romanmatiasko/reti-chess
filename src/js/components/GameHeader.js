@@ -1,10 +1,10 @@
 'use strict';
 
-const React = require('react/addons');
-const Clock = require('./Clock');
-const ChatStore = require('../stores/ChatStore');
-const ChatActions = require('../actions/ChatActions');
-const omit = require('lodash.omit');
+import React from 'react/addons';
+import Clock from './Clock';
+import ChatStore from '../stores/ChatStore';
+import ChatActions from '../actions/ChatActions';
+import omit from 'lodash.omit';
 
 const GameHeader = React.createClass({
   
@@ -98,4 +98,4 @@ const GameHeader = React.createClass({
   }
 });
 
-module.exports = GameHeader;
+export default GameHeader;

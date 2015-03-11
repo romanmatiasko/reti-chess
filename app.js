@@ -1,16 +1,17 @@
 'use strict';
 
-const express = require('express');
-const path = require('path');
-const winston = require('winston');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const favicon = require('serve-favicon');
-const logger = require('morgan');
-const routes = require('./routes/routes');
+import express from 'express';
+import path from 'path';
+import winston from './winston';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import favicon from 'serve-favicon';
+import logger from 'morgan';
+import routes from './routes/routes';
+
 const staticPath =  path.join(__dirname,
   process.env.NODE_ENV === 'development' ? 'build' : 'dist');
-let app = express();
+const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -22,19 +23,20 @@ app.use(cookieParser());
 app.use(express.static(staticPath));
 app.use('/', routes);
 
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   let err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   res.status(err.status || 500);
-  console.log(err);
+  winston.log('error', err.message);
+
   res.render('error', {
     message: err.message,
     error: app.get('env') === 'development' ? err : {}
   });
 });
   
-module.exports = app;
+export default app;

@@ -1,8 +1,8 @@
 'use strict';
 
-const React = require('react/addons');
-const ChatStore = require('../stores/ChatStore');
-const ChatActions = require('../actions/ChatActions');
+import React from 'react/addons';
+import ChatStore from '../stores/ChatStore';
+import ChatActions from '../actions/ChatActions';
 
 const Chat = React.createClass({
   
@@ -111,4 +111,4 @@ const Chat = React.createClass({
   }
 });
 
-module.exports = Chat;
+export default Chat;

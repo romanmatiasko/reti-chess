@@ -1,6 +1,6 @@
-const keyMirror = require('react/lib/keyMirror');
+import keyMirror from 'react/lib/keyMirror';
 
-module.exports = keyMirror({
+export default keyMirror({
   TOGGLE_VISIBILITY: null,
   SUBMIT_MESSAGE: null
 });

@@ -1,6 +1,6 @@
-const GameStore = require('../stores/GameStore');
+import GameStore from '../stores/GameStore';
 
-module.exports = {
+const onGameChange = {
   componentDidMount() {
     GameStore.on('change', this._onGameChange);
   },
@@ -8,3 +8,5 @@ module.exports = {
     GameStore.off('change', this._onGameChange);
   }
 };
+
+export default onGameChange;

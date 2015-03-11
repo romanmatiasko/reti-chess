@@ -1,15 +1,15 @@
 'use strict';
 
-const React = require('react');
-const GameStore = require('../stores/GameStore');
-const GameActions = require('../actions/GameActions');
-const ChessPieces = require('../constants/ChessPieces');
-const onGameChange = require('../mixins/onGameChange');
-const maybeReverse = require('../mixins/maybeReverse');
-const omit = require('lodash.omit');
-const cx = require('classnames');
-const Immutable = require('immutable');
-const {Seq, Repeat, List} = Immutable;
+import React from 'react/addons';
+import GameStore from '../stores/GameStore';
+import GameActions from '../actions/GameActions';
+import ChessPieces from '../constants/ChessPieces';
+import onGameChange from '../mixins/onGameChange';
+import maybeReverse from '../mixins/maybeReverse';
+import omit from 'lodash.omit';
+import cx from 'classnames';
+import {Seq, Repeat, List} from 'immutable';
+
 const FILES = Seq.Indexed('abcdefgh');
 const RANKS = Seq.Indexed('12345678');
 
@@ -223,4 +223,4 @@ const Column = React.createClass({
   }
 });
 
-module.exports = Chessboard;
+export default Chessboard;

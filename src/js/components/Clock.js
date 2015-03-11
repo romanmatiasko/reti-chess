@@ -1,7 +1,8 @@
 'use strict';
 
-const React = require('react/addons');
-const GameActions = require('../actions/GameActions');
+import React from 'react/addons';
+import GameActions from '../actions/GameActions';
+
 const PureRenderMixin = React.addons.PureRenderMixin;
 
 const Clock = React.createClass({
@@ -79,4 +80,4 @@ const Timer = React.createClass({
   }
 });
 
-module.exports = Clock;
+export default Clock;

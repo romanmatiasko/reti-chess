@@ -1,10 +1,10 @@
 'use strict';
 
-const AppDispatcher = require('../dispatcher/AppDispatcher');
-const EventEmitter = require('eventemitter2').EventEmitter2; 
-const ChatConstants = require('../constants/ChatConstants');
-const Immutable = require('immutable');
-const {List, Map} = Immutable;
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import {EventEmitter2 as EventEmitter} from 'eventemitter2';
+import ChatConstants from '../constants/ChatConstants';
+import {List, Map} from 'immutable';
+
 const CHANGE_EVENT = 'change';
   
 var _messages = List();
@@ -57,4 +57,4 @@ AppDispatcher.register(payload => {
   return true;
 });
 
-module.exports = ChatStore;
+export default ChatStore;
