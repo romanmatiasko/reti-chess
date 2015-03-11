@@ -8,31 +8,45 @@ const {List, Map} = Immutable;
 const CHANGE_EVENT = 'change';
   
 var _messages = List();
+var _unseenCount = 0;
 var _isChatHidden = true;
 
 const ChatStore = Object.assign({}, EventEmitter.prototype, {
   getState() {
     return {
       messages: _messages,
+      unseenCount: _unseenCount,
       isChatHidden: _isChatHidden
     };
   }
 });
 
+function toggleVisibility() {
+  _isChatHidden = !_isChatHidden;
+  _unseenCount = 0;
+}
+
+function submitMessage(message, className, received) {
+  _messages = _messages.push(Map({
+    message: message,
+    className: className
+  }));
+
+  if (received && _isChatHidden) {
+    _unseenCount += 1;
+  }
+}
+
 AppDispatcher.register(payload => {
-  let action = payload.action;
+  const action = payload.action;
 
   switch (action.actionType) {
-
-    case ChatConstants.TOGGLE_CHAT:
-      _isChatHidden = !_isChatHidden;
+    case ChatConstants.TOGGLE_VISIBILITY:
+      toggleVisibility();
       break;
 
     case ChatConstants.SUBMIT_MESSAGE:
-      _messages = _messages.push(Map({
-        message: action.message,
-        className: action.className
-      }));
+      submitMessage(action.message, action.className, action.received);
       break;
 
     default:

@@ -7,11 +7,8 @@
 .center { text-align: center !important; }
 
 @media only screen and (min-width: 760px) and (max-width: 900px) {
-  header, #board-moves-wrapper {
+  header, #board-moves-wrapper, #sounds-label {
     max-width: 760px;
-  }
-  #sounds-label {
-    max-width: 530px;
   }
   #container-wrapper {
     max-width: 900px;

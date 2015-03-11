@@ -26,12 +26,12 @@ const Chat = React.createClass({
   },
   componentDidMount() {
     this.props.io.on('receive-message', data => {
-      ChatActions.submitMessage(data.message, data.color + ' left');
+      ChatActions.submitMessage(data.message, data.color + ' left', true);
       this._maybePlaySound();
     });
     ChatStore.on('change', this._onChatStoreChange);
     
-    if (window.innerWidth > 1399) ChatActions.toggleChat();
+    if (window.innerWidth > 1399) ChatActions.toggleVisibility();
   },
   componentWillUnmount() {
     ChatStore.off('change', this._onChatStoreChange);
@@ -40,14 +40,17 @@ const Chat = React.createClass({
     return (
       <div id="chat-wrapper"
            style={this.state.isChatHidden ? {display: 'none'} : null}>
+        
         <h4>Chat</h4>
         <a className="close"
-           onClick={ChatActions.toggleChat}>
+           onClick={ChatActions.toggleVisibility}>
           x
         </a>
+        
         <audio preload="auto" ref="msgSnd">
           <source src="/snd/message.mp3" />
         </audio>
+        
         <ul id="chat-list" ref="chat">
           {this.state.messages.map((message, i) => (
             <li key={i} className={message.get('className')}>
@@ -55,10 +58,13 @@ const Chat = React.createClass({
             </li>
           )).toArray()}
         </ul>
+        
         <span>Write your message:</span>
+        
         <form id="chat-form"
               onSubmit={this._submitMessage}>
           <input type="text"
+                 ref="message"
                  className={this.props.color}
                  required
                  value={this.state.message}
@@ -79,12 +85,13 @@ const Chat = React.createClass({
     const message = this.state.message;
 
     if (!isOpponentAvailable) {
+      this.refs.message.getDOMNode().blur();
       this.props.openModal('info', 'Sorry, your opponent is not connected. ' +
         'You can‘t send messages.');
       return;
     }
 
-    ChatActions.submitMessage(message, color + ' right');
+    ChatActions.submitMessage(message, color + ' right', false);
     this.setState({message: ''});
 
     io.emit('send-message', {

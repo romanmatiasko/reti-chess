@@ -4,6 +4,7 @@ const React = require('react/addons');
 const Clock = require('./Clock');
 const ChatStore = require('../stores/ChatStore');
 const ChatActions = require('../actions/ChatActions');
+const omit = require('lodash.omit');
 
 const GameHeader = React.createClass({
   
@@ -18,26 +19,17 @@ const GameHeader = React.createClass({
   mixins: [React.addons.PureRenderMixin],
 
   getInitialState() {
-    return {
-      isChatHidden: ChatStore.getState().isChatHidden,
-      newMessage: false
-    };
+    return omit(ChatStore.getState(), 'messages');
   },
   componentDidMount() {
-    const io = this.props.io;
-
-    io.on('receive-message', () => {
-      if (this.state.isChatHidden) {
-        this.setState({newMessage: true});
-      }
-    });
-    ChatStore.on('change', this._onChatStoreChange);
+    ChatStore.on('change', this._onChatChange);
   },
   componentWillUnmount() {
-    ChatStore.off('change', this._onChatStoreChange);
+    ChatStore.off('change', this._onChatChange);
   },
   render() {
     const {io, params, gameOver, isOpponentAvailable} = this.props;
+    const unseenCount = this.state.unseenCount;
 
     return (
       <header className="clearfix">
@@ -65,9 +57,11 @@ const GameHeader = React.createClass({
         :null}
 
         <a id="chat-icon"
-           onClick={this._toggleChat}>
-          {this.state.newMessage ?
-            <span className="new-message">You have a new message!</span>
+           onClick={ChatActions.toggleVisibility}>
+          {unseenCount ?
+            <span id="chat-counter">
+              {unseenCount < 9 ? unseenCount : '9+'}
+            </span>
           :null}
           <img src="/img/chat.svg"
                width="50"
@@ -77,14 +71,8 @@ const GameHeader = React.createClass({
       </header>
     );
   },
-  _onChatStoreChange() {
-    this.setState({
-      isChatHidden: ChatStore.getState().isChatHidden
-    });
-  },
-  _toggleChat() {
-    this.setState({newMessage: false});
-    ChatActions.toggleChat();
+  _onChatChange() {
+    this.setState(omit(ChatStore.getState(), 'messages'));
   },
   _onResign() {
     const {io, params, color} = this.props;

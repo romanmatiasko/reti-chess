@@ -122,8 +122,8 @@ function gameOver(options) {
 }
 
 AppDispatcher.register(payload => {
-  var action = payload.action;
-  var emitEvent = true;
+  const action = payload.action;
+  let emitEvent = true;
 
   switch (action.actionType) {
     case GameConstants.MAKE_MOVE:
@@ -131,16 +131,16 @@ AppDispatcher.register(payload => {
         action.from, action.to, action.capture, action.emitMove);
       break;
 
-    case GameConstants.REMATCH:
-      setInitialState();
+    case GameConstants.CHANGE_PROMOTION:
+      _promotion = action.promotion;
       break;
 
     case GameConstants.GAME_OVER:
       gameOver(action.options);
       break;
 
-    case GameConstants.CHANGE_PROMOTION:
-      _promotion = action.promotion;
+    case GameConstants.REMATCH:
+      setInitialState();
       break;
 
     default:

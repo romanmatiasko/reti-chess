@@ -1,6 +1,6 @@
 const keyMirror = require('react/lib/keyMirror');
 
 module.exports = keyMirror({
-  TOGGLE_CHAT: null,
+  TOGGLE_VISIBILITY: null,
   SUBMIT_MESSAGE: null
 });
