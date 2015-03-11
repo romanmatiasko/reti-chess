@@ -45,5 +45,14 @@
   },
   "engines": {
     "node": "^0.12.0"
+  },
+  "jest": {
+    "scriptPreprocessor": "./jest-preprocessor.js",
+    "unmockedModulePathPatterns": [
+      "eventemmiter2",
+      "immutable",
+      "react",
+      "es6-shim"
+    ]
   }
 }
