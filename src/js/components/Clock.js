@@ -39,7 +39,7 @@ const Clock = React.createClass({
       });
     });
 
-    io.on('rematch-confirmed', () => {
+    io.on('rematch-accepted', () => {
       this.setState({
         white: this.props.params[1] * 60,
         black: this.props.params[1] * 60

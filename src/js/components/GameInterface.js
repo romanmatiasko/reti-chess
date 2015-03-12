@@ -85,7 +85,7 @@ const GameInterface = React.createClass({
     io.on('rematch-declined', () =>
       this._openModal('info', 'Rematch offer has been declined.'));
 
-    io.on('rematch-confirmed', () => {
+    io.on('rematch-accepted', () => {
       GameActions.rematch();
       this.setState({
         color: this.state.color === 'white' ? 'black' : 'white',
@@ -169,7 +169,7 @@ const GameInterface = React.createClass({
   _acceptRematch() {
     const {io, params} = this.props;
 
-    io.emit('rematch-confirm', {
+    io.emit('rematch-accept', {
       token: params[0],
       time: params[1] * 60,
       inc: params[2]

@@ -1,10 +1,11 @@
 'use strict';
 
-import IO from 'socket.io';
-import winston from './winston';
-import {Map, List} from 'immutable';
+const io = require('socket.io').listen();
+const winston = require('./winston');
+const Immutable = require('immutable');
+const Map = Immutable.Map;
+const List = Immutable.List;
 
-const io = IO.listen();
 var _games = Map();
 
 io.sockets.on('connection', socket => {
@@ -14,13 +15,13 @@ io.sockets.on('connection', socket => {
     const b = new Buffer(Math.random() + new Date().getTime() + socket.id);
     token = b.toString('base64').slice(12, 32);
 
-    // token is valid for 5 minutes
+    // token is valid for 3 minutes
     const timeout = setTimeout(() => {
       if (_games.getIn([token, 'players']).isEmpty()) {
         _games = _games.delete(token);
         socket.emit('token-expired');
       }
-    }, 5 * 60 * 1000);
+    }, 3 * 60 * 1000);
 
     _games = _games.set(token, Map({
       creator: socket,
@@ -91,6 +92,9 @@ io.sockets.on('connection', socket => {
     }
   });
 
+  socket.on('send-message', data =>
+    maybeEmit('receive-message', data, data.token, socket));
+
   socket.on('resign', data => {
     if (!_games.has(data.token)) return;
     clearInterval(_games.getIn([data.token, 'interval']));
@@ -106,7 +110,7 @@ io.sockets.on('connection', socket => {
   socket.on('rematch-decline', data =>
     maybeEmit('rematch-declined', {}, data.token, socket));
 
-  socket.on('rematch-confirm', data => {
+  socket.on('rematch-accept', data => {
     if (!_games.has(data.token)) return;
 
     _games = _games.updateIn([data.token, 'players'], players =>
@@ -115,7 +119,7 @@ io.sockets.on('connection', socket => {
         .set('inc', data.inc)
         .update('color', color => color === 'black' ? 'white' : 'black')));
 
-    io.sockets.in(data.token).emit('rematch-confirmed');
+    io.sockets.in(data.token).emit('rematch-accepted');
   });
 
   socket.on('disconnect', data => {
@@ -138,8 +142,6 @@ io.sockets.on('connection', socket => {
     }
   });
 
-  socket.on('send-message', data =>
-    maybeEmit('receive-message', data, data.token, socket));
 });
 
 function maybeEmit(event, data, token, socket) {
@@ -202,4 +204,8 @@ function getOpponent(token, socket) {
   }
 }
 
-export default io;
+module.exports = {
+  io: io,
+  // used for jasmine tests
+  getGames: () => _games
+};

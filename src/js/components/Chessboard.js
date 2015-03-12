@@ -55,7 +55,7 @@ const Chessboard = React.createClass({
       }
     });
 
-    io.on('rematch-confirmed', () => this.setState({moveFrom: null}));
+    io.on('rematch-accepted', () => this.setState({moveFrom: null}));
   },
   componentWillUnmount() {
     GameStore.off('change', this._onGameChange);
