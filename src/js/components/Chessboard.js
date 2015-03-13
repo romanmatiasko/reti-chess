@@ -210,6 +210,8 @@ const Column = React.createClass({
   },
   _onDragStart(e) {
     e.dataTransfer.effectAllowed = 'move';
+    // setData is required by firefox
+    e.dataTransfer.setData('text/plain', '');
     this.props.setMoveFrom(this.props.square);
   },
   _onDragOver(e) {

@@ -23,6 +23,11 @@ header {
 
 input, button {
   font-family: 'Open Sans';
+  outline: none;
+}
+
+input:required {
+  box-shadow: none;
 }
 
 .btn {
