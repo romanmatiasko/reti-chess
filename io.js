@@ -13,7 +13,7 @@ io.sockets.on('connection', socket => {
   socket.on('start', data => {
     let token;
     const b = new Buffer(Math.random() + new Date().getTime() + socket.id);
-    token = b.toString('base64').slice(12, 32);
+    token = b.toString('base64').slice(12, 28);
 
     // token is valid for 3 minutes
     const timeout = setTimeout(() => {

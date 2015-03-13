@@ -103,7 +103,11 @@ footer {
 #footer {
   margin: 0 auto;
   max-width: 960px;
-  padding: 3em 2em 1em 2em; 
+  padding: 3em 1em 0; 
+}
+
+#container-wrapper, footer {
+  min-width: 480px;
 }
 
 .modal-mask {

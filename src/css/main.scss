@@ -58,9 +58,10 @@
         display: block;
         line-height: 45px;
         padding-left: 0;
+        font-size: 1rem;
 
         &::before {
-          margin-left: -7em;
+          margin-left: -6em;
           margin-top: 0;
           right: auto;
         }
@@ -89,8 +90,8 @@
   header, #board-moves-wrapper, #sounds-label {
     max-width: 470px;
   }
-  #game-link {
-    font-size: 1rem;
+  #game-link, footer p, footer a {
+    font-size: .75rem;
   }
   ul#clock {
     width: 118px;

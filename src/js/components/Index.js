@@ -7,7 +7,7 @@ import io from '../io';
 const Index = React.createClass({
   
   propTypes: {
-    io: React.PropTypes.object
+    io: React.PropTypes.object.isRequired
   },
 
   getInitialState() {
@@ -25,7 +25,8 @@ const Index = React.createClass({
       const {time, inc} = this.state;
 
       this.setState({
-        link: `${document.location.origin}/play/${data.token}/${time}/${inc}`
+        link: `${document.location.origin}/play/${data.token}/${time}/${inc}`,
+        hasExpired: false
       });
     });
     io.on('ready', () => {
@@ -85,7 +86,7 @@ const Index = React.createClass({
 
     if (isInvalid) {
       // fallback for old browsers
-      return window.alert('Form is invalid.');
+      return window.alert('Form is invalid. Enter numbers between 0 and 50.');
     } else {
       this.props.io.emit('start');
     }
