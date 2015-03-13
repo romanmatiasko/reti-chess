@@ -39,7 +39,7 @@ const Chat = React.createClass({
   render() {
     return (
       <div id="chat-wrapper"
-           style={this.state.isChatHidden ? {display: 'none'} : null}>
+           className={this.state.isChatHidden ? 'hidden' : null}>
         
         <h4>Chat</h4>
         <a className="close"

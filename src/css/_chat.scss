@@ -6,6 +6,10 @@
   border: 4px solid #fff;
   background: lighten($grey, 5%);
 
+  &.hidden {
+    display: none;
+  }
+
   h4 {
     font-family: 'Cherry Swash', cursive;
     font-size: 1.225rem;

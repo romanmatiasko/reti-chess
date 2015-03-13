@@ -51,10 +51,10 @@ const Index = React.createClass({
             createGame={this._createGame} />
             
           <p id="game-status">
-            {this.state.link ?
-              'Waiting for opponent to connect'
-            :this.state.hasExpired ?
+            {this.state.hasExpired ?
               'Game link has expired, generate a new one'
+            :this.state.link ?
+              'Waiting for opponent to connect'
             :null}
           </p>
         </div>
