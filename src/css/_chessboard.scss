@@ -95,9 +95,8 @@
         display: inline-block;
         cursor: default;
 
-        &[draggable="true"] {
-          cursor: pointer;
-        }
+        &.in-check { text-shadow: 0 0 1rem $red; }
+        &[draggable="true"] { cursor: pointer; }
       }
     }
   }

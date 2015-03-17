@@ -39,7 +39,8 @@ const GameStore = Object.assign({}, EventEmitter.prototype, {
   getChessboardState() {
     return {
       fen: _chess.fen(),
-      lastMove: _lastMove
+      lastMove: _lastMove,
+      check: _check
     };
   }
 });

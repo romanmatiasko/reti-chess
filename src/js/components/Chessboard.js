@@ -31,7 +31,8 @@ const Chessboard = React.createClass({
     return {
       fen: state.fen,
       moveFrom: null,
-      lastMove: state.lastMove
+      lastMove: state.lastMove,
+      kingInCheck: false
     };
   },
   componentDidMount() {
@@ -80,7 +81,8 @@ const Chessboard = React.createClass({
             isMoveable={isItMyTurn && isOpponentAvailable && !gameOver}
             moveFrom={this.state.moveFrom}
             lastMove={this.state.lastMove}
-            setMoveFrom={this._setMoveFrom} />)}
+            setMoveFrom={this._setMoveFrom}
+            kingInCheck={this.state.kingInCheck} />)}
       </table>
     );
   },
@@ -88,7 +90,8 @@ const Chessboard = React.createClass({
     const state = GameStore.getChessboardState();
     this.setState({
       fen: state.fen,
-      lastMove: state.lastMove
+      lastMove: state.lastMove,
+      kingInCheck: state.check && (state.fen.split(' ')[1] === 'w' ? 'K' : 'k')
     }, cb);
   },
   _setMoveFrom(square) {
@@ -130,7 +133,8 @@ const Row = React.createClass({
     isMoveable: React.PropTypes.bool.isRequired,
     moveFrom: React.PropTypes.string,
     lastMove: React.PropTypes.object,
-    setMoveFrom: React.PropTypes.func.isRequired
+    setMoveFrom: React.PropTypes.func.isRequired,
+    kingInCheck: React.PropTypes.oneOf([false, 'K', 'k']).isRequired
   },
   mixins: [maybeReverse],
 
@@ -167,11 +171,13 @@ const Column = React.createClass({
     isMoveable: React.PropTypes.bool.isRequired,
     moveFrom: React.PropTypes.string,
     lastMove: React.PropTypes.object,
-    setMoveFrom: React.PropTypes.func.isRequired
+    setMoveFrom: React.PropTypes.func.isRequired,
+    kingInCheck: React.PropTypes.oneOf([false, 'K', 'k']).isRequired
   },
 
   render() {
-    const {moveFrom, lastMove, square, color, isMoveable} = this.props;
+    const {moveFrom, lastMove, square, color,
+           isMoveable, kingInCheck} = this.props;
     const piece = ChessPieces[this.props.piece];
     const rgx = color === 'white' ? /^[KQRBNP]$/ : /^[kqrbnp]$/;
     const isDraggable = rgx.test(this.props.piece);
@@ -184,7 +190,8 @@ const Column = React.createClass({
           onDragOver={!isDraggable ? this._onDragOver : null}
           onDrop={!isDraggable ? this._onDrop : null}>
 
-        <a onClick={this._onClickSquare}
+        <a className={kingInCheck === this.props.piece ? 'in-check' : null}
+           onClick={this._onClickSquare}
            onDragStart={this._onDragStart}
            draggable={isDraggable && isMoveable}>
           {piece}
