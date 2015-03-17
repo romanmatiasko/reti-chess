@@ -86,14 +86,15 @@
       &.to { background: lighten($blue, 20%) !important; }
 
       a {
+        font-family: 'Smart Regular';
         width: 62.5px;
         height: 62.5px;
         font-size: 3.5rem;
         color: #424242;
         text-decoration: none;
-        display: block;
+        display: inline-block;
         cursor: default;
-        
+
         &[draggable="true"] {
           cursor: pointer;
         }
@@ -110,17 +111,14 @@
 .feedback {
   color: #424242;
   line-height: 28px;
-  text-indent: 28px;
   margin-top: 1em;
   display: block;
   clear: left;
   float: left;
 
-  &.white {
-    background: url('../img/whiteking.png') 0% 50% no-repeat;
-  }
-  &.black {
-    background: url('../img/whiteking.png') 0% 50% no-repeat;
+  .icon {
+    font-family: 'Smart Regular';
+    font-size: 2rem;
   }
 }
 

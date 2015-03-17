@@ -1,18 +1,18 @@
 const ChessPieces = {
   // white pieces
-  'K': '\u2654',
-  'Q': '\u2655',
-  'R': '\u2656',
-  'B': '\u2657',
-  'N': '\u2658',
-  'P': '\u2659',
+  'K': 'F',
+  'Q': 'E',
+  'R': 'D',
+  'B': 'C',
+  'N': 'B',
+  'P': 'A',
   // black pieces
-  'k': '\u265a',
-  'q': '\u265b',
-  'r': '\u265c',
-  'b': '\u265d',
-  'n': '\u265e',
-  'p': '\u265f',
+  'k': 'f',
+  'q': 'e',
+  'r': 'd',
+  'b': 'c',
+  'n': 'b',
+  'p': 'a',
   // empty square
   '-': undefined
 };

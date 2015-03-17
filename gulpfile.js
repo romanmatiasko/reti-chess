@@ -153,12 +153,21 @@ var imageminTask = function() {
 };
 
 var copyTask = function() {
-  console.log('Copying sound files');
+  console.log('Copying sound files and fonts');
   gulp.src('./src/snd/*')
     .pipe(gulp.dest(IS_DEVELOPMENT ? './build/snd/' : './dist/snd/'))
     .pipe(notify({
       message: function() {
         gutil.log(gutil.colors.green('SOUND FILES copied.'));
+      },
+      onLast: true
+    }));
+
+  gulp.src('./src/fonts/*')
+    .pipe(gulp.dest(IS_DEVELOPMENT ? './build/fonts/' : './dist/fonts/'))
+    .pipe(notify({
+      message: function() {
+        gutil.log(gutil.colors.green('FONTS copied.'));
       },
       onLast: true
     }));

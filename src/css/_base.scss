@@ -4,6 +4,17 @@ $red: #d12521;
 $grey: #dad7d2;
 $dark-grey: #261e26;
 
+@font-face {
+  font-family: 'Smart Regular';
+  src: url('../fonts/smart-regular.eot');
+  src: url('../fonts/smart-regular.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/smart-regular.woff2') format('woff2'),
+       url('../fonts/smart-regular.woff') format('woff'),
+       url('../fonts/smart-regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 * { 
   margin: 0;
   padding: 0;

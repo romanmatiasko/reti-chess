@@ -7,7 +7,6 @@ import onGameChange from '../mixins/onGameChange';
 import Chessboard from './Chessboard';
 import CapturedPieces from './CapturedPieces';
 import TableOfMoves from './TableOfMoves';
-import cx from 'classnames';
 import omit from 'lodash.omit';
 
 const ChessboardInterface = React.createClass({
@@ -33,11 +32,6 @@ const ChessboardInterface = React.createClass({
   },
   render() {
     const {promotion, turn, gameOver, check} = this.state;
-    const cxFeedback = cx({
-      feedback: true,
-      white: turn === 'w',
-      black: turn === 'b'
-    });
 
     return (
       <div id="board-moves-wrapper" className="clearfix">
@@ -72,14 +66,21 @@ const ChessboardInterface = React.createClass({
           </label>
         </span>
 
-        <span className={cxFeedback}>
+        <span className="feedback">
           {!gameOver.get('status') ? 
             <span>
+              <span className="icon">
+                {/* F -> white king, f -> black king*/
+                  turn === 'w' ? 'F' : 'f'}
+              </span>
               {`${turn === 'w' ? 'White' : 'Black'} to move.`}
               {check ? <strong> Check.</strong> : null}
             </span> :
 
             <strong>
+              <span className="icon">
+                {gameOver.get('winner') === 'White' ? 'F' : 'f'}
+              </span>
               {this._getGameOverMessage()}
             </strong>
           }
