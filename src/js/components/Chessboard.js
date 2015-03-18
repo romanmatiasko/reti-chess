@@ -8,7 +8,7 @@ import onGameChange from '../mixins/onGameChange';
 import maybeReverse from '../mixins/maybeReverse';
 import omit from 'lodash.omit';
 import cx from 'classnames';
-import {Seq, Repeat, List} from 'immutable';
+import {Seq, Repeat, List, Set} from 'immutable';
 
 const FILES = Seq.Indexed('abcdefgh');
 const RANKS = Seq.Indexed('12345678');
@@ -64,7 +64,8 @@ const Chessboard = React.createClass({
   },
   render() {
     const {color, isOpponentAvailable, gameOver} = this.props;
-    const fenArray = this.state.fen.split(' ');
+    const {fen, moveFrom, lastMove, kingInCheck} = this.state;
+    const fenArray = fen.split(' ');
     const placement = fenArray[0];
     const isItMyTurn = fenArray[1] === color.charAt(0);
     const rows = this._maybeReverse(placement.split('/'));
@@ -79,10 +80,11 @@ const Chessboard = React.createClass({
             placement={placement}
             color={color}
             isMoveable={isItMyTurn && isOpponentAvailable && !gameOver}
-            moveFrom={this.state.moveFrom}
-            lastMove={this.state.lastMove}
+            moveFrom={moveFrom}
+            lastMove={lastMove}
             setMoveFrom={this._setMoveFrom}
-            kingInCheck={this.state.kingInCheck} />)}
+            kingInCheck={kingInCheck}
+            validMoves={GameStore.getValidMoves(moveFrom)} />)}
       </table>
     );
   },
@@ -134,7 +136,8 @@ const Row = React.createClass({
     moveFrom: React.PropTypes.string,
     lastMove: React.PropTypes.object,
     setMoveFrom: React.PropTypes.func.isRequired,
-    kingInCheck: React.PropTypes.oneOf([false, 'K', 'k']).isRequired
+    kingInCheck: React.PropTypes.oneOf([false, 'K', 'k']).isRequired,
+    validMoves: React.PropTypes.instanceOf(Set).isRequired
   },
   mixins: [maybeReverse],
 
@@ -172,35 +175,39 @@ const Column = React.createClass({
     moveFrom: React.PropTypes.string,
     lastMove: React.PropTypes.object,
     setMoveFrom: React.PropTypes.func.isRequired,
-    kingInCheck: React.PropTypes.oneOf([false, 'K', 'k']).isRequired
+    kingInCheck: React.PropTypes.oneOf([false, 'K', 'k']).isRequired,
+    validMoves: React.PropTypes.instanceOf(Set).isRequired
   },
 
   render() {
     const {moveFrom, lastMove, square, color,
-           isMoveable, kingInCheck} = this.props;
+           isMoveable, kingInCheck, validMoves} = this.props;
     const piece = ChessPieces[this.props.piece];
     const rgx = color === 'white' ? /^[KQRBNP]$/ : /^[kqrbnp]$/;
     const isDraggable = rgx.test(this.props.piece);
+    const isDroppable = moveFrom && validMoves.has(square);
 
-    return piece ? 
+    return (
       <td className={cx({
-            selected: moveFrom === square,
-            to: lastMove.get('to') === square
+            selected: moveFrom === square && !validMoves.isEmpty(),
+            from: lastMove.get('from') === square,
+            to: lastMove.get('to') === square,
+            droppable: isDroppable
           })}
-          onDragOver={!isDraggable ? this._onDragOver : null}
-          onDrop={!isDraggable ? this._onDrop : null}>
+          onClick={!piece ? this._onClickSquare : null}
+          onDragOver={isDroppable ? this._onDragOver : null}
+          onDrop={isDroppable ? this._onDrop : null}>
 
-        <a className={kingInCheck === this.props.piece ? 'in-check' : null}
-           onClick={this._onClickSquare}
-           onDragStart={this._onDragStart}
-           draggable={isDraggable && isMoveable}>
-          {piece}
-        </a>
-      </td> :
-      <td className={lastMove.get('from') === square ? 'from' : null}
-          onClick={this._onClickSquare}
-          onDragOver={this._onDragOver}
-          onDrop={this._onDrop} />;
+        {piece ?
+          <a className={kingInCheck === this.props.piece ? 'in-check' : null}
+             onClick={this._onClickSquare}
+             onDragStart={this._onDragStart}
+             draggable={isDraggable && isMoveable}>
+            {piece}
+          </a>
+        :null}
+      </td>
+    );
   },
   _onClickSquare() {
     const {isMoveable, color, moveFrom, square, piece} = this.props;
@@ -219,6 +226,7 @@ const Column = React.createClass({
     e.dataTransfer.effectAllowed = 'move';
     // setData is required by firefox
     e.dataTransfer.setData('text/plain', '');
+
     this.props.setMoveFrom(this.props.square);
   },
   _onDragOver(e) {

@@ -5,7 +5,7 @@ import {EventEmitter2 as EventEmitter} from 'eventemitter2';
 import GameConstants from '../constants/GameConstants';
 import ChessPieces from '../constants/ChessPieces';
 import {Chess} from 'chess.js';
-import {List, Map, OrderedMap} from 'immutable';
+import {List, Map, OrderedMap, Set} from 'immutable';
 
 const CHANGE_EVENT = 'change';
 const MOVE_EVENT = 'new-move';
@@ -42,6 +42,13 @@ const GameStore = Object.assign({}, EventEmitter.prototype, {
       lastMove: _lastMove,
       check: _check
     };
+  },
+  getValidMoves(square) {
+    return square ? Set(
+      _chess.moves({
+        square: square,
+        verbose: true
+      }).map(move => move.to)) : Set();
   }
 });
 
@@ -84,7 +91,7 @@ function makeMove(from, to, capture, emitMove) {
 
   if (capture || move.flags === 'e') {
     const capturedPiece = capture ||
-      (_turn === 'w' ? '\u2659' : '\u265f'); // en passant
+      ChessPieces[_turn === 'w' ? 'P' : 'p']; // en passant
 
     _capturedPieces = _capturedPieces
       .update(_turn, list => list.push(capturedPiece));

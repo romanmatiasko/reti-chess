@@ -79,11 +79,24 @@
       background: #fefefe;
       display: block;
       float: left;
+      position: relative;
 
-      &.moving { background: lighten($red, 30%) !important; }
-      &.selected { background: lighten($red, 30%) !important; }
+      &.moving, &.selected { background: lighten($red, 30%) !important; }
       &.from { background: lighten($blue, 25%) !important; }
       &.to { background: lighten($blue, 20%) !important; }
+      &.droppable::after {
+        position: absolute;
+        content: "";
+        width: 6px;
+        height: 6px;
+        border: 2px solid $red;
+        top: 50%;
+        left: 50%;
+        margin-left: -5px;
+        margin-top: -5px;
+        background: lighten($red, 15%);
+        transform: rotate(45deg);
+      }
 
       a {
         font-family: 'Smart Regular';
