@@ -23,9 +23,13 @@ const Index = React.createClass({
 
     io.on('created', data => {
       const {time, inc} = this.state;
+      const loc = window.location;
+
+      const origin = loc.origin || `${loc.protocol}//${loc.hostname}` +
+        (loc.port ? ':' + loc.port : '');
 
       this.setState({
-        link: `${document.location.origin}/play/${data.token}/${time}/${inc}`,
+        link: `${origin}/play/${data.token}/${time}/${inc}`,
         hasExpired: false
       });
     });

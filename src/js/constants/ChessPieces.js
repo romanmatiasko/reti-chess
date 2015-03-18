@@ -1,4 +1,5 @@
 const ChessPieces = {
+  // key: piece from FEN, value: piece from Smart Regular chess font
   // white pieces
   'K': 'F',
   'Q': 'E',
