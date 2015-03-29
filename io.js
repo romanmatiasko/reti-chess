@@ -68,7 +68,6 @@ io.sockets.on('connection', socket => {
 
     _games = _games.updateIn([data.token, 'players'], players =>
       players.push(Map({
-        id: socket.id,
         socket: socket,
         color: color,
         time: data.time - data.inc + 1,
@@ -79,7 +78,7 @@ io.sockets.on('connection', socket => {
     socket.emit('joined', {color: color});
 
     if (nOfPlayers === 1) {
-      io.sockets.in(data.token).emit('both-joined');
+      io.to(data.token).emit('both-joined');
     }
   });
 
@@ -99,7 +98,7 @@ io.sockets.on('connection', socket => {
     if (!_games.has(data.token)) return;
     clearInterval(_games.getIn([data.token, 'interval']));
 
-    io.sockets.in(data.token).emit('player-resigned', {
+    io.to(data.token).emit('player-resigned', {
       color: data.color
     });
   });
@@ -119,27 +118,17 @@ io.sockets.on('connection', socket => {
         .set('inc', data.inc)
         .update('color', color => color === 'black' ? 'white' : 'black')));
 
-    io.sockets.in(data.token).emit('rematch-accepted');
+    io.to(data.token).emit('rematch-accepted');
   });
 
-  socket.on('disconnect', data => {
-    let tokenToDelete;
+  socket.on('disconnect', () => {
+    const token = findToken(socket);
 
-    _games.forEach((game, token) => {
-      const opponent = getOpponent(token, socket);
+    if (!token) return;
 
-      if (opponent) {
-        opponent.get('socket').emit('opponent-disconnected');
-        clearInterval(game.get('interval'));
-        tokenToDelete = token;
-
-        return false;
-      }
-    });
-
-    if (tokenToDelete) {
-      _games = _games.delete(tokenToDelete);
-    }
+    maybeEmit('opponent-disconnected', {}, token, socket);
+    clearInterval(_games.getIn([token, 'interval']));
+    _games = _games.delete(token);
   });
 
 });
@@ -151,6 +140,11 @@ function maybeEmit(event, data, token, socket) {
   if (opponent) {
     opponent.get('socket').emit(event, data);
   }
+}
+
+function findToken(socket) {
+  return _games.findKey((game, token) =>
+    game.get('players').some(player => player.get('socket') === socket));
 }
 
 function runClock(color, token, socket) {
@@ -171,12 +165,12 @@ function runClock(color, token, socket) {
           });
 
           if (timeLeft >= 0) {
-            io.sockets.in(token).emit('countdown', {
+            io.to(token).emit('countdown', {
               time: timeLeft,
               color: color
             });
           } else {
-            io.sockets.in(token).emit('countdown-gameover', {
+            io.to(token).emit('countdown-gameover', {
               color: color
             });
             clearInterval(_games.getIn([token, 'interval']));

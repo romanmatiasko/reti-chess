@@ -32,9 +32,9 @@ router.get('/play/:token/:time/:inc', (req, res) => {
 });
 
 router.get('/logs', (req, res) => {
-  fs.readFile(path.join(__dirname, 'logs/games.log'), (err, data) => {
+  fs.readFile(path.join(__dirname, '../logs/games.log'), (err, data) => {
     if (err) {
-      res.redirect('/');
+      return res.redirect('/');
     }
     res.set('Content-Type', 'text/plain');
     res.send(data);

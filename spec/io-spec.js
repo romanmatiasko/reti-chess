@@ -14,7 +14,7 @@ function getGames() {
   games = server.getGames();
 }
 
-describe('Socket.IO', () => {
+describe('io', () => {
   
   it('should create new game', done => {
     p1 = client.connect(url, options);
@@ -206,4 +206,24 @@ describe('Socket.IO', () => {
     });
   });
 
+  it('should delete game with only one player on disconnect', done => {
+    p3 = client.connect(url, options);
+    p3.on('connect', () => p3.emit('start'));
+    p3.on('created', data => p3.emit('join', {
+      token: data.token,
+      time: 10 * 60,
+      inc: 5
+    }));
+
+    p3.on('joined', () => {
+      getGames();
+      expect(games.size).toBe(1);
+      p3.disconnect();
+      setTimeout(() => {
+        getGames();
+        expect(games.size).toBe(0);
+        done();
+      }, 0);
+    });
+  });
 });

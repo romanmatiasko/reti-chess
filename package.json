@@ -1,6 +1,6 @@
 {
   "name": "retichess",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "scripts": {
     "start": "node --harmony ./bin/www",
     "test": "node --harmony ./node_modules/jasmine/bin/jasmine.js && jest",
@@ -8,18 +8,18 @@
     "deploy": "NODE_ENV=production gulp"
   },
   "dependencies": {
-    "babel": "^4.7.13",
-    "body-parser": "^1.12.0",
+    "babel": "^4.7.16",
+    "body-parser": "^1.12.2",
     "chess.js": "jhlywa/chess.js",
     "classnames": "^1.2.0",
     "debug": "^2.1.3",
     "es6-shim": "^0.27.1",
     "eventemitter2": "^0.4.14",
-    "express": "^4.12.2",
+    "express": "^4.12.3",
     "flux": "^2.0.1",
-    "immutable": "^3.6.4",
+    "immutable": "^3.7.0",
     "jade": "^1.9.2",
-    "lodash.omit": "^3.0.0",
+    "lodash.omit": "^3.1.0",
     "morgan": "^1.5.2",
     "react": "^0.13.1",
     "serve-favicon": "^2.2.0",
@@ -28,6 +28,7 @@
     "winston": "^0.9.0"
   },
   "devDependencies": {
+    "babel-jest": "^4.0.0",
     "babelify": "^5.0.4",
     "browserify": "^9.0.3",
     "gulp": "^3.8.11",
@@ -37,20 +38,20 @@
     "gulp-imagemin": "^2.2.1",
     "gulp-notify": "^2.2.0",
     "gulp-sass": "^1.3.3",
-    "gulp-sourcemaps": "^1.5.0",
+    "gulp-sourcemaps": "^1.5.1",
     "gulp-streamify": "0.0.5",
     "gulp-uglify": "^1.1.0",
     "gulp-util": "^3.0.4",
     "jasmine": "^2.2.1",
     "jest-cli": "^0.4.0",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "2.4.0"
+    "watchify": "2.6.2"
   },
   "engines": {
     "node": "^0.12.0"
   },
   "jest": {
-    "scriptPreprocessor": "./jest-preprocessor.js",
+    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
     "unmockedModulePathPatterns": [
       "eventemmiter2",
       "immutable",
