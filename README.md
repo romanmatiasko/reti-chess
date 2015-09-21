@@ -5,7 +5,7 @@ A lightweight, real-time chess app built in [Node](http://nodejs.org/), [Express
 
 You can play the game on [www.retichess.com](http://www.retichess.com/).
 
-If you want to run it locally:
+If you want to run it locally (with node **v0.12**):
 * Clone the repo
 * Install dependencies
 ```sh
