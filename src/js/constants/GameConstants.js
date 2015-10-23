@@ -1,5 +1,6 @@
 import keyMirror from 'react/lib/keyMirror';
 
+
 export default keyMirror({
   MAKE_MOVE: null,
   REMATCH: null,

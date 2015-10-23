@@ -1,8 +1,8 @@
-'use strict';
-
 import React from 'react/addons';
+
 import ChatStore from '../stores/ChatStore';
 import ChatActions from '../actions/ChatActions';
+
 
 const Chat = React.createClass({
   

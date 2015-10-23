@@ -1,7 +1,7 @@
-'use strict';
-
 import React from 'react/addons';
+
 import cx from 'classnames';
+
 
 const Modal = React.createClass({
   

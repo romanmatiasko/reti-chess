@@ -1,13 +1,13 @@
-'use strict';
-
 import React from 'react/addons';
+import omit from 'lodash.omit';
+
 import GameStore from '../stores/GameStore';
 import GameActions from '../actions/GameActions';
 import onGameChange from '../mixins/onGameChange';
 import Chessboard from './Chessboard';
 import CapturedPieces from './CapturedPieces';
 import TableOfMoves from './TableOfMoves';
-import omit from 'lodash.omit';
+
 
 const ChessboardInterface = React.createClass({
   

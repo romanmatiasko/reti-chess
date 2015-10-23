@@ -1,9 +1,9 @@
-'use strict';
+import {EventEmitter2 as EventEmitter} from 'eventemitter2';
+import {List, Map} from 'immutable';
 
 import AppDispatcher from '../dispatcher/AppDispatcher';
-import {EventEmitter2 as EventEmitter} from 'eventemitter2';
 import ChatConstants from '../constants/ChatConstants';
-import {List, Map} from 'immutable';
+
 
 const CHANGE_EVENT = 'change';
   

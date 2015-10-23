@@ -223,7 +223,7 @@ describe('io', () => {
         getGames();
         expect(games.size).toBe(0);
         done();
-      }, 0);
+      }, 100);
     });
   });
 });

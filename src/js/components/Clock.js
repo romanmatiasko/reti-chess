@@ -1,7 +1,7 @@
-'use strict';
-
 import React from 'react/addons';
+
 import GameActions from '../actions/GameActions';
+
 
 const PureRenderMixin = React.addons.PureRenderMixin;
 

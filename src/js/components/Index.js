@@ -1,8 +1,8 @@
-'use strict';
-
 import React from 'react';
+
 import CreateGameForm from './CreateGameForm';
 import io from '../io';
+
 
 const Index = React.createClass({
   

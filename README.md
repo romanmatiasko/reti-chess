@@ -5,15 +5,14 @@ A lightweight, real-time chess app built in [Node](http://nodejs.org/), [Express
 
 You can play the game on [www.retichess.com](http://www.retichess.com/).
 
-If you want to run it locally (with node **v0.12**):
+If you want to run it locally (with node **v4.2**):
 * Clone the repo
 * Install dependencies
 ```sh
 npm install
-```
-* Set NODE_ENV to developement
-```sh
-export NODE_ENV=development
+# create empty logfile for winston
+mkdir logs
+touch logs/games.log
 ```
 * Run the server
 ```sh
@@ -22,11 +21,11 @@ npm start
 * Preferred way is to run the server with nodemon
 ```sh
 npm install -g nodemon # if you don't have nodemon installed yet
-nodemon --harmony bin/www
+nodemon bin/www
 ```
 * Run gulp if you want to recompile static assets when you save a file
 ```sh
-gulp
+npm run build
 ```
 * App will run on **localhost:3000**
 

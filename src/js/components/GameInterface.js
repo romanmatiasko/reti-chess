@@ -1,13 +1,13 @@
-'use strict';
-
 import React from 'react/addons';
+import {Map} from 'immutable';
+
 import GameHeader from './GameHeader';
 import Chat from './Chat';
 import Modal from './Modal';
 import GameActions from '../actions/GameActions';
 import GameStore from '../stores/GameStore';
 import ChessboardInterface from './ChessboardInterface';
-import {Map} from 'immutable';
+
 
 const GameInterface = React.createClass({
   

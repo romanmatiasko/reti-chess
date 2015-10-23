@@ -1,14 +1,15 @@
 import GameConstants from '../constants/GameConstants';
 import AppDispatcher from '../dispatcher/AppDispatcher';
 
+
 const GameActions = {
   makeMove(from, to, capture, emitMove) {
     AppDispatcher.handleViewAction({
       actionType: GameConstants.MAKE_MOVE,
-      from: from,
-      to: to,
-      capture: capture,
-      emitMove: emitMove
+      from,
+      to,
+      capture,
+      emitMove
     });
   },
   rematch() {
@@ -19,13 +20,13 @@ const GameActions = {
   gameOver(options) {
     AppDispatcher.handleViewAction({
       actionType: GameConstants.GAME_OVER,
-      options: options
+      options
     });
   },
   changePromotion(promotion) {
     AppDispatcher.handleViewAction({
       actionType: GameConstants.CHANGE_PROMOTION,
-      promotion: promotion
+      promotion
     });
   }
 };

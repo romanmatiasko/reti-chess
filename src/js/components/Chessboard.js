@@ -1,14 +1,14 @@
-'use strict';
-
 import React from 'react/addons';
+import omit from 'lodash.omit';
+import cx from 'classnames';
+import {Seq, Repeat, List, Set} from 'immutable';
+
 import GameStore from '../stores/GameStore';
 import GameActions from '../actions/GameActions';
 import ChessPieces from '../constants/ChessPieces';
 import onGameChange from '../mixins/onGameChange';
 import maybeReverse from '../mixins/maybeReverse';
-import omit from 'lodash.omit';
-import cx from 'classnames';
-import {Seq, Repeat, List, Set} from 'immutable';
+
 
 const FILES = Seq.Indexed('abcdefgh');
 const RANKS = Seq.Indexed('12345678');

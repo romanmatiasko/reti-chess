@@ -1,11 +1,11 @@
-'use strict';
-
-import AppDispatcher from '../dispatcher/AppDispatcher';
 import {EventEmitter2 as EventEmitter} from 'eventemitter2';
-import GameConstants from '../constants/GameConstants';
-import ChessPieces from '../constants/ChessPieces';
 import {Chess} from 'chess.js';
 import {List, Map, OrderedMap, Set} from 'immutable';
+
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import GameConstants from '../constants/GameConstants';
+import ChessPieces from '../constants/ChessPieces';
+
 
 const CHANGE_EVENT = 'change';
 const MOVE_EVENT = 'new-move';

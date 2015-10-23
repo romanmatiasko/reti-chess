@@ -1,10 +1,10 @@
-'use strict';
-
 import React from 'react/addons';
+import omit from 'lodash.omit';
+
 import Clock from './Clock';
 import ChatStore from '../stores/ChatStore';
 import ChatActions from '../actions/ChatActions';
-import omit from 'lodash.omit';
+
 
 const GameHeader = React.createClass({
   

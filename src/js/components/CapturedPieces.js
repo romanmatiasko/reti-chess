@@ -1,8 +1,8 @@
-'use strict';
-
 import React from 'react/addons';
+
 import GameStore from '../stores/GameStore';
 import onGameChange from '../mixins/onGameChange';
+
 
 const CapturedPieces = React.createClass({
   
